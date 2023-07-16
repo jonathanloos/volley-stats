@@ -1,14 +1,31 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Games</h1>
-
-<div id="games">
-  <% @games.each do |game| %>
-    <%= render game %>
-    <p>
-      <%= link_to "Show this game", game %>
-    </p>
-  <% end %>
+<div class="d-flex justify-content-between mt-4">
+  <h1>Games</h1>
+  <div>
+    <%= link_to "New Game", new_game_path, class: "btn btn-primary" %>
+  </div>
 </div>
 
-<%= link_to "New game", new_game_path %>
+<div id="games">
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Home Team</th>
+        <th>Date</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @games.each do |game| %>
+        <tr>
+          <th><%= game.title %></th>
+          <th><%= link_to game.team %></th>
+          <th><%= game.date %></th>
+          <th><%= link_to "edit", edit_game_path(game) %></th>
+          <th><%= link_to "delete", game, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></th>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

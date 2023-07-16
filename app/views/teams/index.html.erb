@@ -1,14 +1,27 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Teams</h1>
-
-<div id="teams">
-  <% @teams.each do |team| %>
-    <%= render team %>
-    <p>
-      <%= link_to "Show this team", team %>
-    </p>
-  <% end %>
+<div class="d-flex justify-content-between mt-4">
+  <h1>Teams</h1>
+  <div>
+    <%= link_to "New Team", new_team_path, class: "btn btn-primary" %>
+  </div>
 </div>
 
-<%= link_to "New team", new_team_path %>
+<div id="users">
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Club</th>
+        <th>Players</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @teams.each do |team| %>
+        <tr>
+          <th><%= team.name %></th>
+          <th><%= team.club %></th>
+          <th><%= team.users.count %></th>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

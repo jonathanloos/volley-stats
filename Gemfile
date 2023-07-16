@@ -14,6 +14,8 @@ gem "pg"
 
 # Use bootstrap as our css framework
 gem 'bootstrap', '~> 5.2', '>= 5.2.2'
+gem "bootstrap_form", "~> 5.1"
+gem "view_component"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
