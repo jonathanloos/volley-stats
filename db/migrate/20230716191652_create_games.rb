@@ -3,6 +3,7 @@ class CreateGames < ActiveRecord::Migration[7.0]
     create_table :games do |t|
       t.references :team, null: false, foreign_key: true
       t.string :title
+      t.string :youtube_link
       t.datetime :date
 
       t.timestamps
