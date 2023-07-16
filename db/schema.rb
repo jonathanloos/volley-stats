@@ -16,18 +16,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
 
   create_table "events", force: :cascade do |t|
     t.bigint "volleyball_set_id", null: false
-    t.bigint "user_id"
+    t.bigint "player_id"
     t.bigint "game_id", null: false
     t.bigint "team_id", null: false
     t.integer "rotation"
+    t.integer "type"
     t.integer "continuation"
     t.integer "earned"
     t.integer "given"
+    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_events_on_game_id"
+    t.index ["player_id"], name: "index_events_on_player_id"
     t.index ["team_id"], name: "index_events_on_team_id"
-    t.index ["user_id"], name: "index_events_on_user_id"
     t.index ["volleyball_set_id"], name: "index_events_on_volleyball_set_id"
   end
 
@@ -38,6 +40,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_games_on_team_id"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id", null: false
+    t.bigint "volleyball_set_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_players_on_game_id"
+    t.index ["user_id"], name: "index_players_on_user_id"
+    t.index ["volleyball_set_id"], name: "index_players_on_volleyball_set_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -70,10 +84,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
   end
 
   add_foreign_key "events", "games"
+  add_foreign_key "events", "players"
   add_foreign_key "events", "teams"
-  add_foreign_key "events", "users"
   add_foreign_key "events", "volleyball_sets"
   add_foreign_key "games", "teams"
+  add_foreign_key "players", "games"
+  add_foreign_key "players", "users"
+  add_foreign_key "players", "volleyball_sets"
   add_foreign_key "users", "teams"
   add_foreign_key "volleyball_sets", "games"
   add_foreign_key "volleyball_sets", "teams"
