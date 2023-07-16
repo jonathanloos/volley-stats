@@ -1,0 +1,32 @@
+<%= form_with(model: volleyball_set) do |form| %>
+  <% if volleyball_set.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(volleyball_set.errors.count, "error") %> prohibited this volleyball_set from being saved:</h2>
+
+      <ul>
+        <% volleyball_set.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :game_id, style: "display: block" %>
+    <%= form.text_field :game_id %>
+  </div>
+
+  <div>
+    <%= form.label :team_id, style: "display: block" %>
+    <%= form.text_field :team_id %>
+  </div>
+
+  <div>
+    <%= form.label :order, style: "display: block" %>
+    <%= form.number_field :order %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

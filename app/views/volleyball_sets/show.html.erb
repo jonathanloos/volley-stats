@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @volleyball_set %>
+
+<div>
+  <%= link_to "Edit this volleyball set", edit_volleyball_set_path(@volleyball_set) %> |
+  <%= link_to "Back to volleyball sets", volleyball_sets_path %>
+
+  <%= button_to "Destroy this volleyball set", @volleyball_set, method: :delete %>
+</div>

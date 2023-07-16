@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Volleyball sets</h1>
+
+<div id="volleyball_sets">
+  <% @volleyball_sets.each do |volleyball_set| %>
+    <%= render volleyball_set %>
+    <p>
+      <%= link_to "Show this volleyball set", volleyball_set %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New volleyball set", new_volleyball_set_path %>

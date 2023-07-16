@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  team: one
+  title: MyString
+  date: 2023-07-16 19:16:52
+
+two:
+  team: two
+  title: MyString
+  date: 2023-07-16 19:16:52

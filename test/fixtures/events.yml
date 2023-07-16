@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  volleyball_set: one
+  user: one
+  game: one
+  team: one
+  rotation: 1
+  continuation: 1
+  earned: 1
+  given: 1
+
+two:
+  volleyball_set: two
+  user: two
+  game: two
+  team: two
+  rotation: 1
+  continuation: 1
+  earned: 1
+  given: 1
