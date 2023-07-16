@@ -12,6 +12,8 @@
         <th>Name</th>
         <th>Club</th>
         <th>Players</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -20,6 +22,8 @@
           <th><%= team.name %></th>
           <th><%= team.club %></th>
           <th><%= team.users.count %></th>
+          <th><%= link_to "edit", edit_team_path(team) %></th>
+          <th><%= link_to "delete", team, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></th>
         </tr>
       <% end %>
     </tbody>

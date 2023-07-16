@@ -1,4 +1,4 @@
-<%= form_with(model: game) do |form| %>
+<%= bootstrap_form_with(model: game) do |form| %>
   <% if game.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(game.errors.count, "error") %> prohibited this game from being saved:</h2>
@@ -12,17 +12,14 @@
   <% end %>
 
   <div>
-    <%= form.label :team_id, style: "display: block" %>
-    <%= form.text_field :team_id %>
+    <%= form.collection_select :team_id, Team.all, :id, :name, label: "Home Team" %>
   </div>
 
   <div>
-    <%= form.label :title, style: "display: block" %>
     <%= form.text_field :title %>
   </div>
 
   <div>
-    <%= form.label :date, style: "display: block" %>
     <%= form.datetime_field :date %>
   </div>
 

@@ -1,10 +1,22 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @game %>
+<div class="d-flex justify-content-between mt-4">
+  <div>
+    <h1 class="mb-0"><%= @game %></h1>
+    <small class="text-muted"><%= @game.date.strftime("%Y-%m-%d") %>
+  </div>
+  <div>
+    <%= link_to "Edit", edit_game_path(@game), class: "btn btn-primary" %>
+  </div>
+</div>
 
-<div>
-  <%= link_to "Edit this game", edit_game_path(@game) %> |
-  <%= link_to "Back to games", games_path %>
-
-  <%= link_to "Destroy this game", @game, turbo: {method: :delete} %>
+<h3 class="mt-3">Players</h3>
+<div class="card">
+  <div class="card-body">
+    <ul class="list-group">
+      <% @game.players.each do |player| %>
+        <li class="list-group-item"><%= player %></li>
+      <% end %>
+    </ul>
+  </div>
 </div>
