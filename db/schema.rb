@@ -36,6 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
   create_table "games", force: :cascade do |t|
     t.bigint "team_id", null: false
     t.string "title"
+    t.string "youtube_link"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
