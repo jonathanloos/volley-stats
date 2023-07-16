@@ -1,0 +1,40 @@
+// For format details, see <https://aka.ms/devcontainer.json>. For config options, see the README at:
+// <https://github.com/microsoft/vscode-dev-containers/tree/v0.217.4/containers/docker-from-docker-compose>
+{
+	"name": "VolleyStats",
+	"dockerComposeFile": [
+    "docker-compose.yml"
+  ],
+	"service": "app",
+	"workspaceFolder": "/app",
+
+	// Set *default* container specific settings.json values on container create.
+	"customizations": {
+        "vscode": {
+            "settings": {
+                "editor.formatOnSave": false,
+                "[ruby]": {},
+                "files.associations": {
+                    "*.erb": "erb"
+                },
+                "[erb]": {},
+                "[html]": {},
+                    // Editor defaults
+                // RoR standard is two space indents
+                "editor.insertSpaces": true,
+                "editor.tabSize": 2
+            },
+            "extensions": [
+                "rebornix.Ruby",
+                "kaiwood.endwise",
+                "eamodio.gitlens"
+            ]
+        }
+    },
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+    "forwardPorts": [
+        3000,
+        3036
+    ]
+}
