@@ -1,0 +1,53 @@
+# https://codewithhugo.com/docker-compose-local-https/
+version: '3.6'
+
+volumes:
+  postgres_data:
+  bundle:
+  node_modules:
+  rails_cache:
+  public:
+
+networks:
+  flt-sim-net:
+    name: volley_stats_network
+
+services:
+  volley_stats_app:
+    container_name: volley_stats_app
+    build:
+      context: ../
+      dockerfile: docker/app/Dockerfile
+    image: volley_stats:dev
+    working_dir: /app
+    depends_on:
+      - volley_stats_db
+    links:
+      - volley_stats_db
+    ports:
+      - 3000:3000
+      - 1234:1234
+      - 26162:26162
+    stdin_open: true
+    tty: true
+    volumes:
+      - ..:/app:cached
+      - rails_cache:/app/tmp/cache
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - public:/app/public/vite
+      - ~/.ssh:/root/.ssh:ro
+    tmpfs:
+      - /tmp
+    networks:
+      - flt-sim-net
+  volley_stats_db:
+    image: postgres:11.6-alpine
+    container_name: volley_stats_db
+    volumes:
+      - ../docker/db/certs/server.crt:/var/lib/postgresql/server.crt
+      - ../docker/db/certs/server.key:/var/lib/postgresql/server.key
+      - postgres_data:/var/lib/postgresql/data
+      # - ../docker/db/digitalaf-role.sql:/docker-entrypoint-initdb.d/digitalaf-role.sql
+    networks:
+      - flt-sim-net

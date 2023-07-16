@@ -3,9 +3,10 @@
 {
 	"name": "VolleyStats",
 	"dockerComposeFile": [
-    "docker-compose.yml"
-  ],
-	"service": "app",
+        "../docker/docker-compose.dev.yml",
+        "docker-compose.yml"
+    ],
+	"service": "volley_stats_app",
 	"workspaceFolder": "/app",
 
 	// Set *default* container specific settings.json values on container create.
