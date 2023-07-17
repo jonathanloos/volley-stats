@@ -25,7 +25,7 @@ class PlayersController < ApplicationController
 
     respond_to do |format|
       if @player.save
-        format.html { redirect_to player_url(@player), notice: "Player was successfully created." }
+        format.turbo_stream
         format.json { render :show, status: :created, location: @player }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class PlayersController < ApplicationController
   def update
     respond_to do |format|
       if @player.update(player_params)
-        format.html { redirect_to player_url(@player), notice: "Player was successfully updated." }
+        format.html
         format.json { render :show, status: :ok, location: @player }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +52,7 @@ class PlayersController < ApplicationController
     @player.destroy
 
     respond_to do |format|
-      format.html { redirect_to players_url, notice: "Player was successfully destroyed." }
+      format.turbo_stream
       format.json { head :no_content }
     end
   end

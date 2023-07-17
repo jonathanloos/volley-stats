@@ -10,13 +10,13 @@
   </div>
 </div>
 
-<h3 class="mt-3">Players</h3>
-<div class="card">
-  <div class="card-body">
-    <ul class="list-group">
-      <% @game.players.each do |player| %>
-        <li class="list-group-item"><%= player %></li>
-      <% end %>
-    </ul>
-  </div>
-</div>
+<% @game.volleyball_sets.each do |volleyball_set| %>
+  <h3 class="mt-4">Players for set <%= volleyball_set.order %></h3>
+  <%= render Players::ListComponent.new(players: volleyball_set.players.order(:position), volleyball_set: volleyball_set) %>
+<% end %>
+
+<%= bootstrap_form_with model: [@game, VolleyballSet.new] do |form| %>
+  <%= form.hidden_field :game_id, value: @game.id %>
+  <%= form.hidden_field :team_id, value: @game.team_id %>
+  <%= form.submit "+ Set", class: "btn btn-outline-primary w-100 mt-2" %>
+<% end %>

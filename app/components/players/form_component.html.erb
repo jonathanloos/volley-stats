@@ -1,0 +1,18 @@
+<%= turbo_frame_tag dom_id(@player) do %>
+  <%= bootstrap_form_with model: form_model, class: "d-flex flex-row w-100", data: {turbo_stream: true} do |form| %>
+    <%= form.hidden_field :volleyball_set_id, value: @player.volleyball_set_id %>
+    <%= form.hidden_field :game_id, value: @player.game_id %>
+    <% if @player.new_record? %>
+      <%= form.collection_select :user_id, User.where.not(id: @player.volleyball_set.players.pluck(:user_id)), :id, :fulle_name, required: true, hide_label: true, wrapper_class: "flex-grow-1 m-0 me-2", placeholder: "Player" %>
+    <% else %>
+      <p class="m-0 flex-grow-1"><%= @player %></p>
+    <% end %>
+    <%= form.select :position, Player.positions.map { |position, _| [position.humanize.titleize, position] }, hide_label: true, wrapper_class: "m-0 me-2" %>
+    <div class="d-flex flex-row">
+      <%= form.submit "save", class: "btn btn-primary btn-sm" %>
+      <% if @player.persisted? %>
+        <%= link_to "x", player_path(@player), class: "text-danger fs-4 ms-2 text-decoration-none", data: {turbo_method: :delete, turbo_stream: true} %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

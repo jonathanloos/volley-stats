@@ -5,6 +5,8 @@ class Player < ApplicationRecord
   belongs_to :game
   belongs_to :volleyball_set
 
+  validates :position, presence: true
+
   def to_s
     user.to_s
   end

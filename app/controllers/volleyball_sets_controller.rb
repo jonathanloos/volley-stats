@@ -25,10 +25,10 @@ class VolleyballSetsController < ApplicationController
 
     respond_to do |format|
       if @volleyball_set.save
-        format.html { redirect_to volleyball_set_url(@volleyball_set), notice: "Volleyball set was successfully created." }
+        format.html { redirect_to @volleyball_set.game, notice: "Volleyball set was successfully created." }
         format.json { render :show, status: :created, location: @volleyball_set }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { redirect_to @volleyball_set.game, alert: "Could not create set.", status: :unprocessable_entity }
         format.json { render json: @volleyball_set.errors, status: :unprocessable_entity }
       end
     end
