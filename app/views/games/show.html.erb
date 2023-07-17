@@ -11,12 +11,17 @@
 </div>
 
 <% @game.volleyball_sets.each do |volleyball_set| %>
-  <h3 class="mt-4">Players for set <%= volleyball_set.order %></h3>
+  <div class="d-flex flex-row justify-content-between align-items-center">
+    <h3 class="mt-4">Players for set <%= volleyball_set.order %></h3>
+    <div>
+      <%= link_to "Log Events", volleyball_set_log_events_path(volleyball_set), target: "_blank", data: {turbo_frame: "_top"} %>
+    </div>
+  </div>
   <%= render Players::ListComponent.new(players: volleyball_set.players.order(:position), volleyball_set: volleyball_set) %>
 <% end %>
 
 <%= bootstrap_form_with model: [@game, VolleyballSet.new] do |form| %>
   <%= form.hidden_field :game_id, value: @game.id %>
   <%= form.hidden_field :team_id, value: @game.team_id %>
-  <%= form.submit "+ Set", class: "btn btn-outline-primary w-100 mt-2" %>
+  <%= form.submit "+ Set", class: "btn btn-outline-primary w-100 mt-4" %>
 <% end %>

@@ -3,6 +3,7 @@ class VolleyballSet < ApplicationRecord
   belongs_to :team
 
   has_many :players
+  has_many :events
 
   before_validation :set_order
 

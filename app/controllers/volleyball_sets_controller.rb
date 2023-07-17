@@ -1,5 +1,5 @@
 class VolleyballSetsController < ApplicationController
-  before_action :set_volleyball_set, only: %i[ show edit update destroy ]
+  before_action :set_volleyball_set, only: %i[ show edit update destroy log_events ]
 
   # GET /volleyball_sets or /volleyball_sets.json
   def index
@@ -55,6 +55,11 @@ class VolleyballSetsController < ApplicationController
       format.html { redirect_to volleyball_sets_url, notice: "Volleyball set was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  # GET /volleyball_sets/1/log_events
+  def log_events
+    @events = @volleyball_set.events
   end
 
   private
