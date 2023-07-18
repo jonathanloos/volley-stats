@@ -19,7 +19,10 @@
     </div>
     <ul class="list-group">
       <% @volleyball_set.players.each do |player| %>
-        <li class="list-group-item"><%= player.user.jersey_number %>: <%= player %></li>
+        <li class="list-group-item d-flex flex-row justify-content-between">
+          <span><%= player.user.jersey_number %>: <%= player %></span>
+          <span class="text-muted"><%= player.position.humanize %></span>
+        </li>
       <% end %>
     </ul>
   </div>
