@@ -20,11 +20,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.bigint "game_id", null: false
     t.bigint "team_id", null: false
     t.integer "rotation"
-    t.integer "type"
-    t.integer "continuation"
-    t.integer "earned"
-    t.integer "given"
+    t.integer "rally_skill"
+    t.integer "skill_point"
+    t.integer "skill_error"
     t.integer "position"
+    t.integer "passing_quality"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_events_on_game_id"
