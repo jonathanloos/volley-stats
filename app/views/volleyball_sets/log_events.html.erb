@@ -3,3 +3,57 @@
   <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %>
 </div>
 
+<div class="row mt-4">
+  <div class="col-md-3">
+    <div class="d-flex flex-row">
+      <div class="text-center w-100">
+        <small class="text-muted"><%= @volleyball_set.game.team %></small>
+        <h4 class="my-2">0</h4>
+        <small class="text-muted">TOL: 1</small>
+      </div>
+      <div class="text-center w-100">
+        <small class="text-muted">Away</small>
+        <h4 class="my-2">0</h4>
+        <small class="text-muted">TOL: 1</small>
+      </div>
+    </div>
+    <ul class="list-group">
+      <% @volleyball_set.players.each do |player| %>
+        <li class="list-group-item"><%= player.user.jersey_number %>: <%= player %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-md-9">
+    <h4>Action</h4>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <h6>In Rally</h6>
+            <ul class="list-group">
+              <% Event.rally_skills.keys.each do |rally_skill| %>
+                <li class="list-group-item"><%= rally_skill.humanize %></li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h6>Point Earned</h6>
+            <ul class="list-group">
+              <% Event.skill_points.keys.each do |skill_point| %>
+                <li class="list-group-item"><%= skill_point.humanize %></li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h6>Point Given</h6>
+            <ul class="list-group">
+              <% Event.skill_errors.keys.each do |skill_error| %>
+                <li class="list-group-item"><%= skill_error.humanize %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
