@@ -10,6 +10,14 @@ class Event < ApplicationRecord
   validates :passing_quality, numericality: { in: 0..4 }
   before_validation :set_passing_quality_if_error
 
+  enum type: {
+    point_earned: 0,
+    point_given: 1,
+    substitution: 2,
+    timeout: 3,
+    rotation: 4
+  }
+
   enum rally_skill: {
     free_ball: 0,
     hit_in_play: 1,
@@ -45,7 +53,7 @@ class Event < ApplicationRecord
     net: 12,
     lift: 13,
     under: 14,
-    over_net_reach: 15,
+    over: 15,
     foot_fault: 16,
     out_of_rotation: 17,
     back_row_attack: 18
