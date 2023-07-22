@@ -31,6 +31,7 @@
           </button>
         <% end %>
       </ul>
+      <button data-game-events-target="clearButton" data-action="game-events#clear" class="btn btn-light d-none w-100">clear</button>
     </div>
     <div class="col-md-9">
       <div class="d-flex flex-row justify-content-between">
@@ -80,7 +81,7 @@
       <h4 class="mt-4">Quality</h4>
       <div class="card">
         <div class="card-body">
-          <h6>Passing</h6>
+          <h6>Passing (low - high)</h6>
           <div class="row">
             <% 4.times do |i| %>
               <div class="col-md-3 p-1">
@@ -92,6 +93,14 @@
           <div class="row">
             <% 6.times do |i| %>
               <div class="col-sm-2 p-1">
+                <button class="btn btn-secondary w-100 h-100"><%= i + 1 %></button>
+              </div>
+            <% end %>
+          </div>
+          <h6 class="mt-2">Pass off serve (high-low)</h6>
+          <div class="row">
+            <% 4.times do |i| %>
+              <div class="col-sm-3 p-1">
                 <button class="btn btn-secondary w-100 h-100"><%= i + 1 %></button>
               </div>
             <% end %>
