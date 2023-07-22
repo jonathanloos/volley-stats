@@ -11,7 +11,6 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.integer :skill_point
       t.integer :skill_error
       t.integer :position
-      t.integer :quality
 
       t.timestamps
     end
