@@ -52,7 +52,7 @@ class VolleyballSetsController < ApplicationController
     @volleyball_set.destroy
 
     respond_to do |format|
-      format.html { redirect_to volleyball_sets_url, notice: "Volleyball set was successfully destroyed." }
+      format.html { redirect_to @volleyball_set.game, notice: "Volleyball set was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -70,6 +70,6 @@ class VolleyballSetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def volleyball_set_params
-      params.require(:volleyball_set).permit(:game_id, :team_id, :order)
+      params.require(:volleyball_set).permit(:game_id, :team_id, :order, :starting_rotation)
     end
 end

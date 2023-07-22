@@ -2,8 +2,8 @@ class VolleyballSet < ApplicationRecord
   belongs_to :game
   belongs_to :team
 
-  has_many :players, -> { order(position: :asc) }
-  has_many :events
+  has_many :players, -> { order(position: :asc) }, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   validates :starting_rotation, numericality: {in: 1..6}, if: -> { persisted? }
 
