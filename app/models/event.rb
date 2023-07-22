@@ -7,7 +7,8 @@ class Event < ApplicationRecord
   belongs_to :game
   belongs_to :team
 
-  validates :passing_quality, numericality: { in: 0..4 }
+  validates :quality, numericality: { in: 0..6 }, if: -> { !serve_receive? }
+  validates :quality, numericality: { in: 0..4 }, if: -> { serve_receive? }
   before_validation :set_passing_quality_if_error
 
   enum type: {
@@ -24,7 +25,8 @@ class Event < ApplicationRecord
     block_in_play: 2,
     serve_receive: 3,
     free_ball_receive: 4,
-    dig: 5
+    dig: 5,
+    serve: 6
   }, _prefix: true
 
   enum skill_point: {
@@ -58,6 +60,16 @@ class Event < ApplicationRecord
     out_of_rotation: 17,
     back_row_attack: 18
   }, _prefix: true
+
+  QUALITY_CATEGORIES = {
+    serve_receive: :passing,
+    attack: :attacking,
+    tip: :attacking,
+    dump: :attacking,
+    downball: :attacking,
+    hit_in_play: :attacking,
+    serve: :serving
+  }.with_indifferent_access
 
   private
 
