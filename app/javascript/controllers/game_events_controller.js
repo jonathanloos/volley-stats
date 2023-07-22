@@ -15,6 +15,9 @@ export default class extends Controller {
     // reset all quality metrics
     this.toggleQualitySections()
 
+    // reset all quality buttons
+    this.toggleQualityButtons()
+
     // clear the play outline
     this.clearPlayOutline()
 
