@@ -3,6 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton", "pointsAgainst", "pointsFor", "submitButton", "rotation"]
 
+  static values = { plays: {type: Array, default: []} }
+
   connect() { }
 
   clear () {
@@ -28,8 +30,12 @@ export default class extends Controller {
     this.toggleSubmitButton()
   }
 
-  submitEvent() {
+  submitEvent(event) {
     // post the event to the controller
+
+    // adjust score
+    this.adjustScore(event.target.dataset.actionType)
+
     // clear all previous values
     this.clear()
 
@@ -38,19 +44,22 @@ export default class extends Controller {
   }
 
   selectActionEvent(event) {
-    // Disable the rest of the action buttons
+    // disable the rest of the action buttons
     this.toggleActionButtons(event.target)
 
-    // Add action to overview sentence
+    // add point for/against to play overview
+    this.submitButtonTarget.setAttribute('data-action-type', event.target.dataset.actionType)
+
+    // add action to play overview
     this.actionSelectionTarget.innerHTML = `${event.target.dataset.actionName} (${event.target.dataset.actionType})`
 
-    // Show quality sections
+    // show quality sections
     this.toggleQualitySections(event.target.dataset.qualityMetric)
 
-    // Show the clear button
+    // show the clear button
     this.clearButtonTarget.classList.remove('d-none')
 
-    // Show submit button
+    // show submit button
     this.toggleSubmitButton()
   }
 
@@ -74,7 +83,7 @@ export default class extends Controller {
     // Disable the rest of the action buttons
     this.toggleQualityButtons(event.target)
 
-    // Add action to overview sentence
+    // Add action to play overview
     this.qualitySelectionTarget.innerHTML = `- ${event.target.innerHTML}`
   }
 
@@ -147,11 +156,29 @@ export default class extends Controller {
     this.qualitySelectionTarget.innerHTML = null
   }
 
-  addPoint(type) {
-    if (type == "point") {
-      this.pointsForTarget.innerHTML = this.pointsForTarget.innerHTML + 1
+  adjustScore(type) {
+    
+    if (type === "point") {
+      this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) + 1
+      this.playsValue.push({play_type: 'pointFor'})
+    } else if (type === "error") {
+      this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) + 1
+      this.playsValue.push({play_type: 'pointAgainst'})
     } else {
-      this.pointsAgainstTarget.innerHTML = this.pointsAgainstTarget.innerHTML + 1
+      this.playsValue.push({play_type: 'rally'})
+    }
+
+    // adjust rotation
+    this.adjustRotation()
+  }
+
+  adjustRotation() {
+    if (this.playsValue.length >= 2 && this.playsValue[this.playsValue.length - 1].play_type === "pointFor") {
+      const filteredPlays = this.playsValue.filter(play => play.play_type !== "rally")
+
+      if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "pointAgainst") {
+        this.rotationTarget.innerHTML = parseInt(this.rotationTarget.innerHTML) + 1
+      }
     }
   }
 
