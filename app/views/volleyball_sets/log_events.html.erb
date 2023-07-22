@@ -1,25 +1,25 @@
-<div class="row mt-4">
-  <div class="col-md-8">
-    <h1 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.order %></span></h1>
-    <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %></small>
-  </div>
-  <div class="col-md-4">
-    <div class="d-flex flex-row mt-3 m-md-0">
-      <div class="text-center w-100">
-        <small class="text-muted text-nowrap"><%= @volleyball_set.game.team %></small>
-        <h4 class="my-2">0</h4>
-        <small class="text-muted text-nowrap">TOL: 1</small>
-      </div>
-      <div class="text-center w-100">
-        <small class="text-muted text-nowrap">Away</small>
-        <h4 class="my-2">0</h4>
-        <small class="text-muted text-nowrap">TOL: 1</small>
+<div data-controller="game-events">
+  <div class="row mt-4">
+    <div class="col-md-8">
+      <h1 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.order %></span></h1>
+      <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %></small>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex flex-row mt-3 m-md-0">
+        <div class="text-center w-100">
+          <small class="text-muted text-nowrap"><%= @volleyball_set.game.team %></small>
+          <h4 class="my-2" data-game-events-target="pointsFor">0</h4>
+          <small class="text-muted text-nowrap">TOL: 1</small>
+        </div>
+        <div class="text-center w-100">
+          <small class="text-muted text-nowrap">Away</small>
+          <h4 class="my-2" data-game-events-target="pointsAgainst">0</h4>
+          <small class="text-muted text-nowrap">TOL: 1</small>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div data-controller="game-events">
   <div class="row mt-4">
     <div class="col-md-3">
       <h4>Lineup</h4>
@@ -40,6 +40,7 @@
           <h4 class="me-1" data-game-events-target="playerSelection"></h4>
           <h4 class="me-1" data-game-events-target="actionSelection"></h4>
           <h4 class="me-1" data-game-events-target="qualitySelection"></h4>
+          <button data-game-events-target="submitButton" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none">save</button>
         </div>
       </div>
       <div class="card">
@@ -70,7 +71,7 @@
               <div class="row">
                 <% Event.skill_errors.keys.each do |skill_error| %>
                   <div class="col-4 p-1">
-                    <button class="btn btn-outline-danger w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="error" data-quality-metric="<%= Event::QUALITY_CATEGORIES[skill_error] %>" data-action-name="<%= skill_error.humanize.downcase %>"><%= skill_error.humanize %></button>
+                    <button class="btn btn-outline-danger w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="error" data-action-name="<%= skill_error.humanize.downcase %>"><%= skill_error.humanize %></button>
                   </div>
                 <% end %>
               </div>

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton"]
+  static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton", "pointsAgainst", "pointsFor", "submitButton"]
 
   connect() { }
 
@@ -25,6 +25,16 @@ export default class extends Controller {
     this.clearButtonTarget.classList.add('d-none')
 
     // hide submit button
+    this.toggleSubmitButton()
+  }
+
+  submitEvent() {
+    // post the event to the controller
+    // clear all previous values
+    this.clear()
+
+    // update rotation
+    // update server?
   }
 
   selectActionEvent(event) {
@@ -40,7 +50,8 @@ export default class extends Controller {
     // Show the clear button
     this.clearButtonTarget.classList.remove('d-none')
 
-    // show submit button
+    // Show submit button
+    this.toggleSubmitButton()
   }
 
   // loop through all buttons and disable them except the activeButton
@@ -88,6 +99,7 @@ export default class extends Controller {
     this.clearButtonTarget.classList.remove('d-none')
 
     // Show submit button
+    this.toggleSubmitButton()
   }
 
   togglePlayers(activePlayer) {
@@ -133,5 +145,22 @@ export default class extends Controller {
     this.playerSelectionTarget.innerHTML = null
     this.actionSelectionTarget.innerHTML = null
     this.qualitySelectionTarget.innerHTML = null
+  }
+
+  addPoint(type) {
+    if (type == "point") {
+      this.pointsForTarget.innerHTML = this.pointsForTarget.innerHTML + 1
+    } else {
+      this.pointsAgainstTarget.innerHTML = this.pointsAgainstTarget.innerHTML + 1
+    }
+  }
+
+  toggleSubmitButton() {
+    // Check if both a player and an action have been selected
+    if (this.playerSelectionTarget.innerHTML !== "" && this.actionSelectionTarget.innerHTML !== "") {
+      this.submitButtonTarget.classList.remove("d-none")
+    } else {
+      this.submitButtonTarget.classList.add("d-none")
+    }
   }
 }

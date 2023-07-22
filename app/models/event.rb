@@ -7,8 +7,6 @@ class Event < ApplicationRecord
   belongs_to :game
   belongs_to :team
 
-  validates :quality, numericality: { in: 0..6 }, if: -> { !serve_receive? }
-  validates :quality, numericality: { in: 0..4 }, if: -> { serve_receive? }
   before_validation :set_passing_quality_if_error
 
   enum type: {
