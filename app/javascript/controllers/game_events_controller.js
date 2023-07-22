@@ -177,7 +177,11 @@ export default class extends Controller {
       const filteredPlays = this.playsValue.filter(play => play.play_type !== "rally")
 
       if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "pointAgainst") {
-        this.rotationTarget.innerHTML = parseInt(this.rotationTarget.innerHTML) + 1
+        if (parseInt(this.rotationTarget.innerHTML) == 6) {
+          this.rotationTarget.innerHTML = 1
+        } else {
+          this.rotationTarget.innerHTML = parseInt(this.rotationTarget.innerHTML) + 1
+        }
       }
     }
   }
