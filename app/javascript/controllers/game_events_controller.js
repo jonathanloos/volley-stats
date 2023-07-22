@@ -48,10 +48,13 @@ export default class extends Controller {
   toggleActionButtons(activeButton) {
     this.actionButtonTargets.forEach(button => {
       if (activeButton === undefined) {
-        button.classList.remove("disabled")
+        button.classList.remove("active")
 
       } else if (button !== activeButton) {
-        button.classList.add("disabled")
+        button.classList.remove("active")
+
+      } else {
+        button.classList.add("active")
       }
     })
   }
@@ -90,11 +93,10 @@ export default class extends Controller {
   togglePlayers(activePlayer) {
     this.playerTargets.forEach(button => {
       if (activePlayer === undefined) {
-        button.classList.remove("disabled")
         button.classList.remove("active")
 
       } else if (button !== activePlayer) {
-        button.classList.add("disabled")
+        button.classList.remove("active")
       }
     })
   }
@@ -102,10 +104,13 @@ export default class extends Controller {
   toggleQualityButtons(activeQualityButton) {
     this.qualityButtonTargets.forEach(button => {
       if (activeQualityButton === undefined) {
-        button.classList.remove("disabled")
+        button.classList.remove("active")
 
       } else if (button !== activeQualityButton) {
-        button.classList.add("disabled")
+        button.classList.remove("active")
+
+      } else {
+        button.classList.add("active")
       }
     })
   }
