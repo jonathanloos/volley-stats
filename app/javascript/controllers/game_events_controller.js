@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton", "pointsAgainst", "pointsFor", "submitButton"]
+  static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton", "pointsAgainst", "pointsFor", "submitButton", "rotation"]
 
   connect() { }
 

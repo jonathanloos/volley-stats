@@ -3,6 +3,8 @@ class CreateVolleyballSets < ActiveRecord::Migration[7.0]
     create_table :volleyball_sets do |t|
       t.references :game, null: false, foreign_key: true
       t.references :team, null: false, foreign_key: true
+      t.integer :starting_rotation
+      t.integer :rotation
       t.integer :order
 
       t.timestamps

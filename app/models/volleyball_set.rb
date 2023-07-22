@@ -5,6 +5,8 @@ class VolleyballSet < ApplicationRecord
   has_many :players, -> { order(position: :asc) }
   has_many :events
 
+  validates :starting_rotation, numericality: {in: 1..6}, if: -> { persisted? }
+
   before_validation :set_order
 
   validates :order, presence: true
