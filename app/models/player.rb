@@ -6,6 +6,7 @@ class Player < ApplicationRecord
   belongs_to :volleyball_set
 
   validates :position, presence: true
+  validates :rotation, numericality: {in: 1..6}
 
   def to_s
     user.to_s

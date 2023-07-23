@@ -8,6 +8,11 @@
       <p class="m-0 flex-grow-1"><%= @player %></p>
     <% end %>
     <%= form.select :position, Player.positions.map { |position, _| [position.humanize.titleize, position] }, hide_label: true, wrapper_class: "m-0 me-2" %>
+
+    <% if !@player.volleyball_set.all_rotations_covered? %>
+      <%= form.select :rotation, options_for_select(1..6, next_rotation), hide_label: true, wrapper_class: "m-0 me-2" %>
+    <% end %>
+
     <div class="d-flex flex-row">
       <%= form.submit "save", class: "btn btn-primary btn-sm" %>
       <% if @player.persisted? %>
