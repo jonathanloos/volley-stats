@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton", "pointsAgainst", "pointsFor", "submitButton", "rotation"]
+  static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton", "pointsAgainst", "pointsFor", "submitButton", "rotation", "undoButton"]
 
   static values = { plays: {type: Array, default: []} }
 
@@ -161,12 +161,26 @@ export default class extends Controller {
     if (type === "point") {
       this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) + 1
       this.playsValue.push({play_type: 'pointFor'})
+
     } else if (type === "error") {
       this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) + 1
       this.playsValue.push({play_type: 'pointAgainst'})
+
+    } else if (type == "undo") {
+      const most_recent_play = this.playsValue[this.playsValue.length - 1].play_type
+
+      if (most_recent_play == "pointFor") {
+        this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) - 1
+      } else if (most_recent_play == "pointAgainst") {
+        this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) - 1
+      }
+
     } else {
       this.playsValue.push({play_type: 'rally'})
     }
+
+    // show undo button
+    this.toggleUndoButton()
 
     // adjust rotation
     this.adjustRotation()
@@ -183,6 +197,25 @@ export default class extends Controller {
           this.rotationTarget.innerHTML = parseInt(this.rotationTarget.innerHTML) - 1
         }
       }
+    }
+  }
+
+  undoAction() {
+    // adjust the score
+    this.adjustScore("undo")
+
+    // remove most recent play
+    this.playsValue.pop()
+
+    // hide/show undo button
+    this.toggleUndoButton()
+  }
+
+  toggleUndoButton() {
+    if (this.playsValue.length > 0) {
+      this.undoButtonTarget.classList.remove("d-none")
+    } else {
+      this.undoButtonTarget.classList.add("d-none")
     }
   }
 

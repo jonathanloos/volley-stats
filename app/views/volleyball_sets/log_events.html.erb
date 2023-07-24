@@ -31,7 +31,10 @@
           </button>
         <% end %>
       </ul>
-      <button data-game-events-target="clearButton" data-action="game-events#clear" class="btn btn-light d-none w-100">clear</button>
+      <div class="d-flex flex-row">
+        <button data-game-events-target="undoButton" data-action="game-events#undoAction" class="btn btn-primary d-none flex-grow-1">undo</button>
+        <button data-game-events-target="clearButton" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1">clear</button>
+      </div>
       <p>Rotation: <span data-game-events-target="rotation"><%= @volleyball_set.starting_rotation %></span></p>
     </div>
     <div class="col-md-9">
