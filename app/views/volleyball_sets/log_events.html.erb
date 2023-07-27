@@ -21,7 +21,7 @@
   </div>
 
   <div class="row mt-4">
-    <div class="col-md-3">
+    <div class="col-md-3 p-0">
       <h4>Lineup</h4>
       <ul class="btn-group-vertical w-100 ps-0">
         <% @volleyball_set.players.each do |player| %>
@@ -32,8 +32,40 @@
         <% end %>
       </ul>
       <div class="d-flex flex-row">
-        <button data-game-events-target="undoButton" data-action="game-events#undoAction" class="btn btn-primary d-none flex-grow-1">undo</button>
-        <button data-game-events-target="clearButton" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1">clear</button>
+        <button data-game-events-target="undoButton" data-action="game-events#undoAction" class="btn btn-primary d-none flex-grow-1 mb-3">undo</button>
+        <button data-game-events-target="clearButton" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1 mb-3">clear</button>
+      </div>
+      <div class="d-flex flex-row">
+        <div class="d-flex flex-column flex-grow-1">
+          <div class="border-bottom border-end p-1 text-center d-flex flex-column">
+            <h4 id="rotation4"  class="m-0"><%= @volleyball_set.players.find_by(rotation: 4).user.jersey_number %></h4>
+            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 4).rotation %></small>
+          </div>
+          <div class="border-top border-end p-1 text-center d-flex flex-column flex-grow-1">
+            <h4 id="rotation5" class="m-0"><%= @volleyball_set.players.find_by(rotation: 5).user.jersey_number %></h4>
+            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 5).rotation %></small>
+          </div>
+        </div>
+        <div class="d-flex flex-column flex-grow-1">
+          <div class="border-bottom border-end border-start p-1 text-center d-flex flex-column">
+            <h4 id="rotation3" class="m-0"><%= @volleyball_set.players.find_by(rotation: 3).user.jersey_number %></h4>
+            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 3).rotation %></small>
+          </div>
+          <div class="border-top border-end border-start p-1 text-center d-flex flex-column">
+            <h4 id="rotation6" class="m-0"><%= @volleyball_set.players.find_by(rotation: 6).user.jersey_number %></h4>
+            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 6).rotation %></small>
+          </div>
+        </div>
+        <div class="d-flex flex-column flex-grow-1">
+          <div class="border-bottom border-start p-1 text-center d-flex flex-column">
+            <h4 id="rotation2" class="m-0"><%= @volleyball_set.players.find_by(rotation: 2).user.jersey_number %></h4>
+            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 2).rotation %></small>
+          </div>
+          <div class="border-top border-start p-1 text-center d-flex flex-column">
+            <h4 id="rotation1" class="m-0"><%= @volleyball_set.players.find_by(rotation: 1).user.jersey_number %></h4>
+            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 1).rotation %></small>
+          </div>
+        </div>
       </div>
       <p>Rotation: <span data-game-events-target="rotation"><%= @volleyball_set.starting_rotation %></span></p>
     </div>

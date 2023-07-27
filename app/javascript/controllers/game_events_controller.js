@@ -198,6 +198,38 @@ export default class extends Controller {
         }
       }
     }
+
+    // go around the court
+    let nextPlayerNumber = undefined
+    let currentPlayerNumber = undefined
+    const rotations = [6, 5, 4, 3, 2, 1]
+
+    // TODO: Rotate back
+    rotations.forEach(rotation => {
+      console.log(rotation)
+      // save the next rotations number because we're going to override it
+      // if rotation 1, next rotation is rotation 6
+      if (rotation === 1){
+        nextPlayerNumber = document.getElementById(`rotation6`).innerHTML
+      } else {
+        nextPlayerNumber = document.getElementById(`rotation${rotation - 1}`).innerHTML
+      }
+
+      // on the first iteration set the currentPlayerNumber
+      if (currentPlayerNumber === undefined) {
+        currentPlayerNumber = document.getElementById(`rotation${rotation}`).innerHTML
+      }
+
+      // set the current number to the next position
+      if (rotation === 1){
+        document.getElementById(`rotation6`).innerHTML = currentPlayerNumber
+      } else {
+        document.getElementById(`rotation${rotation - 1}`).innerHTML = currentPlayerNumber
+      }
+
+      // set the current number as the next rotations number
+      currentPlayerNumber = nextPlayerNumber
+    })
   }
 
   undoAction() {
