@@ -196,24 +196,29 @@ export default class extends Controller {
         } else {
           this.rotationTarget.innerHTML = parseInt(this.rotationTarget.innerHTML) - 1
         }
+        this.rotate()
       }
     }
+  }
 
-    // go around the court
+  rotate() {
     let nextPlayerNumber = undefined
     let currentPlayerNumber = undefined
+    let nextRotationId = undefined
     const rotations = [6, 5, 4, 3, 2, 1]
 
     // TODO: Rotate back
     rotations.forEach(rotation => {
-      console.log(rotation)
-      // save the next rotations number because we're going to override it
-      // if rotation 1, next rotation is rotation 6
-      if (rotation === 1){
-        nextPlayerNumber = document.getElementById(`rotation6`).innerHTML
+
+      // need to wrap back to 6 when in rotation 1
+      if (rotation === 1) {
+        nextRotationId = "rotation6"
       } else {
-        nextPlayerNumber = document.getElementById(`rotation${rotation - 1}`).innerHTML
+        nextRotationId = `rotation${rotation - 1}`
       }
+
+      // save the next rotations number because we're going to override it
+      nextPlayerNumber = document.getElementById(nextRotationId).innerHTML
 
       // on the first iteration set the currentPlayerNumber
       if (currentPlayerNumber === undefined) {
@@ -221,11 +226,7 @@ export default class extends Controller {
       }
 
       // set the current number to the next position
-      if (rotation === 1){
-        document.getElementById(`rotation6`).innerHTML = currentPlayerNumber
-      } else {
-        document.getElementById(`rotation${rotation - 1}`).innerHTML = currentPlayerNumber
-      }
+      document.getElementById(nextRotationId).innerHTML = currentPlayerNumber
 
       // set the current number as the next rotations number
       currentPlayerNumber = nextPlayerNumber
