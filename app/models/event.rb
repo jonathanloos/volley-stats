@@ -1,13 +1,16 @@
 class Event < ApplicationRecord
-  include Positionable
+  include Roleable
 
-  belongs_to :volleyball_set
-  belongs_to :user, optional: true
-  belongs_to :player, optional: true
   belongs_to :game
+  belongs_to :player, optional: true
   belongs_to :team
+  belongs_to :user, optional: true
+  belongs_to :volleyball_set
+
+  acts_as_list scope: :volleyball_set
 
   before_validation :set_passing_quality_if_error
+  validates :rotation, numericality: { only_integer: true, in: [1, 2, 3, 4, 5, 6] }
 
   enum type: {
     point_earned: 0,

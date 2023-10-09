@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Positionable
+  include Roleable
 
   belongs_to :team
 

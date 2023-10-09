@@ -1,8 +1,10 @@
-<div class="list-group mb-2" id="<%= dom_id(@volleyball_set, :players) %>">
-  <% if @players.any? %>
-    <%= render Players::ListItemComponent.with_collection(@players) %>
-  <% else %>
-    <li class="list-group-item disabled">No players for this set</li>
-  <% end %>
+<div id="<%= dom_id(@volleyball_set, :players) %>">
+  <div class="list-group mb-2">
+    <% if @players.any? %>
+      <%= render Players::ListItemComponent.with_collection(@players) %>
+    <% else %>
+      <li class="list-group-item disabled">No players for this set</li>
+    <% end %>
+  </div>
+  <%= render Players::FormComponent.new(player: @new_player) %>
 </div>
-<%= render Players::FormComponent.new(player: @new_player) %>

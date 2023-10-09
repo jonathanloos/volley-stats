@@ -1,7 +1,3 @@
-<%= turbo_stream.append dom_id(@player.volleyball_set, :players) do %>
-  <%= render(Players::ListItemComponent.new(player: @player)) %>
-<% end %>
-
-<%= turbo_stream.replace dom_id(Player.new) do %>
-  <%= render Players::FormComponent.new(player: Player.new(game: @player.game, volleyball_set: @player.volleyball_set)) %>
+<%= turbo_stream.replace dom_id(@player.volleyball_set, :players) do %>
+  <%= render(Players::ListComponent.new(players: @player.volleyball_set.players, volleyball_set: @player.volleyball_set)) %>
 <% end %>

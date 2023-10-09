@@ -17,7 +17,7 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "First name", with: @user.first_name
     fill_in "Jersey number", with: @user.jersey_number
     fill_in "Last name", with: @user.last_name
-    fill_in "Position", with: @user.position
+    fill_in "Role", with: @user.role
     fill_in "Team", with: @user.team_id
     click_on "Create User"
 
@@ -32,7 +32,7 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "First name", with: @user.first_name
     fill_in "Jersey number", with: @user.jersey_number
     fill_in "Last name", with: @user.last_name
-    fill_in "Position", with: @user.position
+    fill_in "Role", with: @user.role
     fill_in "Team", with: @user.team_id
     click_on "Update User"
 

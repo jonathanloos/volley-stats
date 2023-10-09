@@ -55,6 +55,7 @@ export default class extends Controller {
 
     // show quality sections
     this.toggleQualitySections(event.target.dataset.qualityMetric)
+    this.qualitySelectionTarget.innerHTML = ""
 
     // show the clear button
     this.clearButtonTarget.classList.remove('d-none')

@@ -12,7 +12,7 @@
         <th>First</th>
         <th>Last</th>
         <th>Team</th>
-        <th>Position</th>
+        <th>Role</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -23,7 +23,7 @@
           <th><%= user.first_name %></th>
           <th><%= user.last_name %></th>
           <th><%= link_to user.team %></th>
-          <th><%= user.position.humanize %></th>
+          <th><%= user.role&.humanize %></th>
           <th><%= link_to "edit", edit_user_path(user) %></th>
           <th><%= link_to "delete", user, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></th>
         </tr>

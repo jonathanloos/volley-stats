@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.integer "skill_point"
     t.integer "skill_error"
     t.integer "position"
+    t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_events_on_game_id"
@@ -47,7 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.bigint "user_id", null: false
     t.bigint "game_id", null: false
     t.bigint "volleyball_set_id", null: false
-    t.integer "position"
+    t.integer "role"
     t.integer "rotation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -69,7 +70,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.string "last_name"
     t.integer "jersey_number"
     t.bigint "team_id", null: false
-    t.integer "position"
+    t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_users_on_team_id"

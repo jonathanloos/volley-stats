@@ -1,6 +1,6 @@
 <turbo-frame id="<%= dom_id(@player) %>" class="list-group-item list-group-item-action">
   <%= link_to edit_player_path(@player), class: "d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark" do %>
     <p class="m-0 flex-grow-1"><%= @player %></p>
-    <p class="m-0 text-muted"><%= @player.position.humanize %></p>
+    <p class="m-0 text-muted"><%= @player.role.humanize %></p>
   <% end %>
 </turbo-frame>
