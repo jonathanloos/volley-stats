@@ -12,6 +12,9 @@ gem "sprockets-rails"
 # Use postgres as the database for Active Record
 gem "pg"
 
+# order events
+gem 'acts_as_list', '~> 1.1.0'
+
 # Use bootstrap as our css framework
 gem 'bootstrap', '~> 5.2', '>= 5.2.2'
 gem "bootstrap_form", "~> 5.1"
