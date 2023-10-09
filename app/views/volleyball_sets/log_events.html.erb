@@ -25,17 +25,34 @@
       <h4>Lineup</h4>
       <ul class="btn-group-vertical w-100 ps-0">
         <% @volleyball_set.players.each do |player| %>
-          <button class="btn btn-outline-secondary d-flex flex-row justify-content-between py-2" data-game-events-target="player" data-action="click->game-events#selectPlayer" data-name="<%= player %>">
-            <span><%= player.user.jersey_number %>: <%= player %></span>
-            <span><%= player.role.humanize %></span>
+          <button class="btn btn-outline-secondary d-flex flex-row justify-content-between py-2" 
+            data-game-events-target="player" 
+            data-action="click->game-events#selectPlayer" 
+            data-name="<%= player %>"
+            data-id="<%= player.id %>">
+              <span><%= player.user.jersey_number %>: <%= player %></span>
+              <span><%= player.role.humanize %></span>
           </button>
         <% end %>
       </ul>
+      <turbo-fame id="<%= dom_id(Event.new) %>">
+        <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"game-events-target": "submissionForm"} do |form| %>
+          <%= form.hidden_field :player_id, value: 1, data: {"game-events-target": "playerSubmission"} %>
+          <%= form.hidden_field :category, value: nil, data: {"game-events-target": "categorySubmission"} %>
+          <%= form.hidden_field :rally_skill, value: nil, data: {"game-events-target": "rallySkillSubmission"} %>
+          <%= form.hidden_field :skill_point, value: nil, data: {"game-events-target": "skillPointSubmission"} %>
+          <%= form.hidden_field :skill_error, value: nil, data: {"game-events-target": "skillErrorSubmission"} %>
+          <%= form.hidden_field :quality, value: nil, data: {"game-events-target": "qualitySubmission"} %>
+          <%= form.hidden_field :rotation, value: @volleyball_set.starting_rotation, data: {"game-events-target": "rotationSubmission"} %>
+        <% end %>
+      </turbo-frame>
+
       <div class="d-flex flex-row" style="gap: 5px">
-        <button data-game-events-target="submitButton" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none flex-grow-1 mb-3">save</button>
-        <button data-game-events-target="clearButton" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1 mb-3">clear</button>
-        <button data-game-events-target="undoButton" data-action="game-events#undoAction" class="btn btn-light d-none flex-grow-1 mb-3">undo</button>
+        <button data-game-events-target="submitButton" type="button" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none flex-grow-1 mb-3">save</button>
+        <button data-game-events-target="clearButton" type="button" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1 mb-3">clear</button>
+        <button data-game-events-target="undoButton" type="button" data-action="game-events#undoAction" class="btn btn-light d-none flex-grow-1 mb-3">undo</button>
       </div>
+
       <div class="border border-3 mt-4"></div>
       <div class="d-flex flex-row">
         <div class="d-flex flex-column flex-grow-1">
@@ -88,7 +105,7 @@
               <div class="row">
                 <% Event.rally_skills.keys.each do |rally_skill| %>
                   <div class="col-12 p-1">
-                    <button class="btn btn-sm btn-outline-secondary w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="rally" data-quality-metric="<%= Event::QUALITY_CATEGORIES[rally_skill] %>" data-action-name="<%= rally_skill.humanize.downcase %>"><%= rally_skill.humanize %></button>
+                    <button class="btn btn-sm btn-outline-secondary w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="rally_skill" data-enum-value="<%= rally_skill %>" data-quality-metric="<%= Event::QUALITY_CATEGORIES[rally_skill] %>" data-action-name="<%= rally_skill.humanize.downcase %>"><%= rally_skill.humanize %></button>
                   </div>
                 <% end %>
               </div>
@@ -98,7 +115,7 @@
               <div class="row">
                 <% Event.skill_points.keys.each do |skill_point| %>
                   <div class="col-md-12 p-1">
-                    <button class="btn btn-sm btn-outline-success w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="point" data-quality-metric="<%= Event::QUALITY_CATEGORIES[skill_point] %>" data-action-name="<%= skill_point.humanize.downcase %>"><%= skill_point.humanize %></button>
+                    <button class="btn btn-sm btn-outline-success w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="skill_point" data-enum-value="<%= skill_point %>" data-quality-metric="<%= Event::QUALITY_CATEGORIES[skill_point] %>" data-action-name="<%= skill_point.humanize.downcase %>"><%= skill_point.humanize %></button>
                   </div>
                 <% end %>
               </div>
@@ -108,7 +125,7 @@
               <div class="row">
                 <% Event.skill_errors.keys.each do |skill_error| %>
                   <div class="col-4 p-1">
-                    <button class="btn btn-sm btn-outline-danger w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="error" data-action-name="<%= skill_error.humanize.downcase %>"><%= skill_error.humanize %></button>
+                    <button class="btn btn-sm btn-outline-danger w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="skill_error" data-enum-value="<%= skill_error %>" data-action-name="<%= skill_error.humanize.downcase %>"><%= skill_error.humanize %></button>
                   </div>
                 <% end %>
               </div>
@@ -154,3 +171,9 @@
     </div>
   </div>
 </div>
+
+<ul class="list-group">
+  <% @volleyball_set.events.each do |event| %>
+    <li class="list-group-item"><%= event %></li>
+  <% end %>
+</ul>

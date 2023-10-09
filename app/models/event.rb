@@ -9,15 +9,16 @@ class Event < ApplicationRecord
 
   acts_as_list scope: :volleyball_set
 
-  before_validation :set_passing_quality_if_error
-  validates :rotation, numericality: { only_integer: true, in: [1, 2, 3, 4, 5, 6] }
+  validates :category, presence: true
+  validates :rotation, numericality: { only_integer: true, in: 1..6 }
 
-  enum type: {
+  enum category: {
     point_earned: 0,
     point_given: 1,
-    substitution: 2,
-    timeout: 3,
-    rotation: 4
+    continuation: 2,
+    substitution: 3,
+    timeout: 4,
+    rotation: 5
   }
 
   enum rally_skill: {
@@ -72,9 +73,17 @@ class Event < ApplicationRecord
     serve: :serving
   }.with_indifferent_access
 
-  private
+  def to_s
+    text = "#{position}. #{category.humanize}: "
+    text += if category == "point_earned"
+      "#{skill_point.humanize.titleize} by #{user}"
+    elsif category == "point_given"
+      "#{skill_error.humanize.titleize} by #{user}"
+    else
+      "#{rally_skill.humanize.titleize} by #{user}"
+    end
 
-  def set_passing_quality_if_error
-    self.passing_quality = 0 if given_serve_receive?
+    text += " - #{quality} quality" if quality.present?
+    text
   end
 end

@@ -3,7 +3,7 @@
     <%= form.hidden_field :volleyball_set_id, value: @player.volleyball_set_id %>
     <%= form.hidden_field :game_id, value: @player.game_id %>
     <% if @player.new_record? %>
-      <%= form.collection_select :user_id, User.where.not(id: @player.volleyball_set.players.pluck(:user_id)), :id, :fulle_name, required: true, hide_label: true, wrapper_class: "flex-grow-1 m-0 me-2", placeholder: "Player" %>
+      <%= form.collection_select :user_id, User.where.not(id: @player.volleyball_set.players.pluck(:user_id)), :id, :full_name, required: true, hide_label: true, wrapper_class: "flex-grow-1 m-0 me-2", placeholder: "Player" %>
     <% else %>
       <p class="m-0 flex-grow-1"><%= @player %></p>
     <% end %>

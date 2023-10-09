@@ -1,7 +1,23 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["actionButton", "player", "playerSelection", "actionSelection", "qualitySelection", "clear", "clearButton", "qualityMeasure", "qualityButton", "pointsAgainst", "pointsFor", "submitButton", "rotation", "undoButton"]
+  static targets = [
+    "actionButton", 
+    "player", 
+    "playerSelection", 
+    "actionSelection", 
+    "qualitySelection", 
+    "clear", 
+    "clearButton", 
+    "qualityMeasure", 
+    "qualityButton", 
+    "pointsAgainst", 
+    "pointsFor", 
+    "submitButton", 
+    "rotation", 
+    "undoButton",
+    "submissionForm", "playerSubmission", "categorySubmission", "rallySkillSubmission", "skillPointSubmission", "skillErrorSubmission", "skillErrorSubmission", "qualitySubmission", "rotationSubmission"
+  ]
 
   static values = { plays: {type: Array, default: []} }
 
@@ -28,19 +44,25 @@ export default class extends Controller {
 
     // hide submit button
     this.toggleSubmitButton()
+
+    // clear the form values
+    this.categorySubmissionTarget.value = ""
+    this.playerSubmissionTarget.value = ""
+    this.rallySkillSubmissionTarget.value = ""
+    this.skillPointSubmissionTarget.value = ""
+    this.skillErrorSubmissionTarget.value = ""
+    this.qualitySubmissionTarget.value = ""
   }
 
   submitEvent(event) {
-    // post the event to the controller
-
     // adjust score
     this.adjustScore(event.target.dataset.actionType)
 
+    // submit form
+    this.submissionFormTarget.requestSubmit()
+
     // clear all previous values
     this.clear()
-
-    // update rotation
-    // update server?
   }
 
   selectActionEvent(event) {
@@ -52,6 +74,23 @@ export default class extends Controller {
 
     // add action to play overview
     this.actionSelectionTarget.innerHTML = `${event.target.dataset.actionName} (${event.target.dataset.actionType})`
+
+    // update the form accordingly
+    this.rallySkillSubmissionTarget.value = ""
+    this.skillPointSubmissionTarget.value = ""
+    this.skillErrorSubmissionTarget.value = ""
+    this.qualitySubmissionTarget.value = ""
+
+    if (event.target.dataset.actionType == "rally_skill") {
+      this.rallySkillSubmissionTarget.value = event.target.dataset.enumValue
+
+    } else if (event.target.dataset.actionType == "skill_point") {
+      this.skillPointSubmissionTarget.value = event.target.dataset.enumValue
+
+    } else {
+      // skill_error
+      this.skillErrorSubmissionTarget.value = event.target.dataset.enumValue
+    }
 
     // show quality sections
     this.toggleQualitySections(event.target.dataset.qualityMetric)
@@ -86,6 +125,9 @@ export default class extends Controller {
 
     // Add action to play overview
     this.qualitySelectionTarget.innerHTML = `- ${event.target.innerHTML}`
+
+    // Update the form value
+    this.qualitySubmissionTarget.value = event.target.innerHTML
   }
 
   selectPlayer(event) {
@@ -104,6 +146,9 @@ export default class extends Controller {
 
     // Add players name to play outline
     this.playerSelectionTarget.innerHTML = activePlayer.dataset.name
+
+    // Add the player id to the form
+    this.playerSubmissionTarget.value = activePlayer.dataset.id
 
     // Show the clear button
     this.clearButtonTarget.classList.remove('d-none')
@@ -158,26 +203,29 @@ export default class extends Controller {
   }
 
   adjustScore(type) {
-    
-    if (type === "point") {
+    if (type === "skill_point") {
       this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) + 1
-      this.playsValue.push({play_type: 'pointFor'})
+      this.playsValue.push({play_type: 'point_earned'})
+      this.categorySubmissionTarget.value = "point_earned"
 
-    } else if (type === "error") {
+    } else if (type === "skill_error") {
       this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) + 1
-      this.playsValue.push({play_type: 'pointAgainst'})
+      this.playsValue.push({play_type: 'point_given'})
+      this.categorySubmissionTarget.value = "point_given"
 
     } else if (type == "undo") {
+      // todo: destroy most recent event.
       const most_recent_play = this.playsValue[this.playsValue.length - 1].play_type
 
-      if (most_recent_play == "pointFor") {
+      if (most_recent_play == "point_earned") {
         this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) - 1
-      } else if (most_recent_play == "pointAgainst") {
+      } else if (most_recent_play == "point_given") {
         this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) - 1
       }
 
     } else {
       this.playsValue.push({play_type: 'rally'})
+      this.categorySubmissionTarget.value = "continuation"
     }
 
     // show undo button
@@ -188,14 +236,16 @@ export default class extends Controller {
   }
 
   adjustRotation() {
-    if (this.playsValue.length >= 2 && this.playsValue[this.playsValue.length - 1].play_type === "pointFor") {
+    if (this.playsValue.length >= 2 && this.playsValue[this.playsValue.length - 1].play_type === "point_earned") {
       const filteredPlays = this.playsValue.filter(play => play.play_type !== "rally")
 
-      if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "pointAgainst") {
+      if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "point_given") {
         if (parseInt(this.rotationTarget.innerHTML) == 1) {
           this.rotationTarget.innerHTML = 6
+          this.rotationSubmissionTarget.value = 6
         } else {
           this.rotationTarget.innerHTML = parseInt(this.rotationTarget.innerHTML) - 1
+          this.rotationSubmissionTarget.value = parseInt(this.rotationTarget.innerHTML) - 1
         }
         this.rotate()
       }
@@ -261,4 +311,28 @@ export default class extends Controller {
       this.submitButtonTarget.classList.add("d-none")
     }
   }
+
+  // // {event: {player_id: 1, game_id: 1, team_id: 1, user_id: 1, volleyball_set_id: 1, type: "point_earned", rally_skill: "", skill_point: "", skill_error: "", quality: "", rotation: 3, }}
+  // async createEvent() {
+  //   // send event to server
+  //   let formData = new FormData()
+  //   formData.append("event[player_id]", 1)
+  //   formData.append("event[game_id]", 1)
+  //   formData.append("event[team_id]", 1)
+  //   formData.append("event[volleyball_set_id]", 1)
+  //   formData.append("event[type]", "point_earned")
+  //   formData.append("event[rally_skill]", "free_ball")
+  //   formData.append("event[skill_point]", undefined)
+  //   formData.append("event[skill_error]", undefined)
+
+  //   let response = await fetch('/events', {
+  //     method: 'POST',
+  //     body: formData
+  //   })
+  //   let result = await response.json()
+  //   alert(result.message)
+
+  //   // if failed, undo?
+  //   // "something went wrong, refresh?"
+  // }
 }

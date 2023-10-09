@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  resources :events
   resources :games do
+    
     resources :volleyball_sets, shallow: true do
+      resources :events, shallow: true
+
       get :log_events, on: :member
       resources :players, shallow: true
     end

@@ -1,5 +1,8 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[ show edit update destroy ]
+  before_action :set_volleyball_set, only: %i[create]
+
+  layout false
 
   # GET /events or /events.json
   def index
@@ -22,10 +25,15 @@ class EventsController < ApplicationController
   # POST /events or /events.json
   def create
     @event = Event.new(event_params)
+    @event.volleyball_set = @volleyball_set
+    @event.game = @volleyball_set.game
+    @event.team = @volleyball_set.game.team
+    @event.user = @event.player.user
+    @event.role = @event.player.role
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to event_url(@event), notice: "Event was successfully created." }
+        format.html
         format.json { render :show, status: :created, location: @event }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -63,8 +71,12 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
     end
 
+    def set_volleyball_set
+      @volleyball_set = VolleyballSet.find(params[:volleyball_set_id])
+    end
+
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:volleyball_set_id, :user_id, :game_id, :team_id, :rotation, :continuation, :earned, :given)
+      params.require(:event).permit(:player_id, :rotation, :category, :rally_skill, :skill_point, :skill_error, :quality, :rotation)
     end
 end
