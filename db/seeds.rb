@@ -2,8 +2,9 @@
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
 Team.create(name: "Apex", year: 2023)
+Team.create(name: "EXO", year: 2023)
 User.create(first_name: "Jonathan", last_name: "Loos", team: Team.all.first, jersey_number: 14)
-User.create(first_name: "Joel", last_name: "Semplonius", team: Team.all.first, jersey_number: 14)
+User.create(first_name: "Joel", last_name: "Semplonius", team: Team.all.first, jersey_number: 17)
 
 User.create(first_name: "Player", last_name: "1", team: Team.all.first, jersey_number: 1, role: :setter)
 User.create(first_name: "Player", last_name: "2", team: Team.all.first, jersey_number: 2, role: :left_side)
@@ -18,3 +19,5 @@ User.create(first_name: "Player", last_name: "10", team: Team.all.first, jersey_
 User.create(first_name: "Player", last_name: "11", team: Team.all.first, jersey_number: 11, role: :middle)
 User.create(first_name: "Player", last_name: "13", team: Team.all.first, jersey_number: 12, role: :middle)
 User.create(first_name: "Player", last_name: "13", team: Team.all.first, jersey_number: 13, role: :libero)
+
+Game.create(home_team: Team.first, away_team: Team.second, date: DateTime.now)

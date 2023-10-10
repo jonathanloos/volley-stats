@@ -14,7 +14,6 @@ export default class extends Controller {
     "pointsAgainst", 
     "pointsFor", 
     "submitButton", 
-    "rotation", 
     "undoButton",
     "submissionForm", "playerSubmission", "categorySubmission", "rallySkillSubmission", "skillPointSubmission", "skillErrorSubmission", "skillErrorSubmission", "qualitySubmission", "rotationSubmission"
   ]
@@ -240,13 +239,6 @@ export default class extends Controller {
       const filteredPlays = this.playsValue.filter(play => play.play_type !== "rally")
 
       if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "point_given") {
-        if (parseInt(this.rotationTarget.innerHTML) == 1) {
-          this.rotationTarget.innerHTML = 6
-          this.rotationSubmissionTarget.value = 6
-        } else {
-          this.rotationTarget.innerHTML = parseInt(this.rotationTarget.innerHTML) - 1
-          this.rotationSubmissionTarget.value = parseInt(this.rotationTarget.innerHTML) - 1
-        }
         this.rotate()
       }
     }

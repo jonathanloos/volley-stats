@@ -10,7 +10,8 @@ class Event < ApplicationRecord
   acts_as_list scope: :volleyball_set
 
   validates :category, presence: true
-  validates :rotation, numericality: { only_integer: true, in: 1..6 }
+  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }
+  validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
 
   enum category: {
     point_earned: 0,
@@ -84,6 +85,8 @@ class Event < ApplicationRecord
     end
 
     text += " - #{quality} quality" if quality.present?
+    text += " - player rotation: #{player_rotation}"
+    text += " - setter rotation: #{setter_rotation}"
     text
   end
 end

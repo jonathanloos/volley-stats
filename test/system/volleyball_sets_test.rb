@@ -15,7 +15,7 @@ class VolleyballSetsTest < ApplicationSystemTestCase
     click_on "New volleyball set"
 
     fill_in "Game", with: @volleyball_set.game_id
-    fill_in "Order", with: @volleyball_set.order
+    fill_in "Position", with: @volleyball_set.position
     fill_in "Team", with: @volleyball_set.team_id
     click_on "Create Volleyball set"
 
@@ -28,7 +28,7 @@ class VolleyballSetsTest < ApplicationSystemTestCase
     click_on "Edit this volleyball set", match: :first
 
     fill_in "Game", with: @volleyball_set.game_id
-    fill_in "Order", with: @volleyball_set.order
+    fill_in "Position", with: @volleyball_set.position
     fill_in "Team", with: @volleyball_set.team_id
     click_on "Update Volleyball set"
 

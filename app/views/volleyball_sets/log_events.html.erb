@@ -1,19 +1,20 @@
 <div data-controller="game-events">
   <div class="row mt-4">
     <div class="col-md-8">
-      <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.order %></span></h2>
+      <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
       <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %></small>
     </div>
     <div class="col-md-4">
       <div class="d-flex flex-row mt-3 m-md-0">
         <div class="text-center w-100">
-          <small class="text-muted text-nowrap"><%= @volleyball_set.game.team %></small>
-          <h4 class="my-1" data-game-events-target="pointsFor">0</h4>
+          <small class="text-muted text-nowrap"><%= @volleyball_set.game.home_team %></small>
+          <h4 class="my-1" data-game-events-target="pointsFor"><%= @volleyball_set.home_score %></h4>
           <small class="text-muted text-nowrap">TOL: 1</small>
         </div>
         <div class="text-center w-100">
-          <small class="text-muted text-nowrap">Away</small>
-          <h4 class="my-1" data-game-events-target="pointsAgainst">0</h4>
+          <small class="text-muted text-nowrap"><%= @volleyball_set.game.away_team %></small>
+          <h4 class="my-1" data-game-events-target="pointsAgainst"><%= @volleyball_set.away_score %></h4>
+          <%# todo: time outs left %>
           <small class="text-muted text-nowrap">TOL: 1</small>
         </div>
       </div>
@@ -35,7 +36,7 @@
           </button>
         <% end %>
       </ul>
-      <turbo-fame id="<%= dom_id(Event.new) %>">
+      <%= turbo_frame_tag dom_id(Event.new) do %>
         <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"game-events-target": "submissionForm"} do |form| %>
           <%= form.hidden_field :player_id, value: 1, data: {"game-events-target": "playerSubmission"} %>
           <%= form.hidden_field :category, value: nil, data: {"game-events-target": "categorySubmission"} %>
@@ -43,9 +44,8 @@
           <%= form.hidden_field :skill_point, value: nil, data: {"game-events-target": "skillPointSubmission"} %>
           <%= form.hidden_field :skill_error, value: nil, data: {"game-events-target": "skillErrorSubmission"} %>
           <%= form.hidden_field :quality, value: nil, data: {"game-events-target": "qualitySubmission"} %>
-          <%= form.hidden_field :rotation, value: @volleyball_set.starting_rotation, data: {"game-events-target": "rotationSubmission"} %>
         <% end %>
-      </turbo-frame>
+      <% end %>
 
       <div class="d-flex flex-row" style="gap: 5px">
         <button data-game-events-target="submitButton" type="button" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none flex-grow-1 mb-3">save</button>
@@ -53,7 +53,7 @@
         <button data-game-events-target="undoButton" type="button" data-action="game-events#undoAction" class="btn btn-light d-none flex-grow-1 mb-3">undo</button>
       </div>
 
-      <div class="border border-3 mt-4"></div>
+      <div class="border border-3"></div>
       <div class="d-flex flex-row">
         <div class="d-flex flex-column flex-grow-1">
           <div class="border-bottom border-end p-1 text-center d-flex flex-column">
@@ -86,7 +86,6 @@
           </div>
         </div>
       </div>
-      <p>Rotation: <span data-game-events-target="rotation"><%= @volleyball_set.starting_rotation %></span></p>
     </div>
     <div class="col-md-9">
       <div class="d-flex flex-row justify-content-between">
@@ -172,8 +171,10 @@
   </div>
 </div>
 
-<ul class="list-group">
-  <% @volleyball_set.events.each do |event| %>
-    <li class="list-group-item"><%= event %></li>
-  <% end %>
-</ul>
+<%= turbo_frame_tag :events do %>
+  <ul class="list-group mt-4">
+    <% @volleyball_set.events.reverse_each do |event| %>
+      <li class="list-group-item"><%= event %></li>
+    <% end %>
+  </ul>
+<% end %>

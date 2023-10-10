@@ -21,7 +21,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.bigint "game_id", null: false
     t.bigint "team_id", null: false
     t.integer "quality"
-    t.integer "rotation"
+    t.integer "player_rotation"
+    t.integer "setter_rotation"
     t.integer "rally_skill"
     t.integer "skill_point"
     t.integer "skill_error"
@@ -38,13 +39,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
   end
 
   create_table "games", force: :cascade do |t|
-    t.bigint "team_id", null: false
+    t.bigint "home_team_id", null: false
+    t.bigint "away_team_id", null: false
     t.string "title"
     t.string "youtube_link"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["team_id"], name: "index_games_on_team_id"
+    t.index ["away_team_id"], name: "index_games_on_away_team_id"
+    t.index ["home_team_id"], name: "index_games_on_home_team_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -82,9 +85,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
   create_table "volleyball_sets", force: :cascade do |t|
     t.bigint "game_id", null: false
     t.bigint "team_id", null: false
-    t.integer "starting_rotation"
-    t.integer "rotation"
-    t.integer "order"
+    t.integer "starting_setter_rotation"
+    t.integer "setter_rotation"
+    t.integer "rotation", default: 1
+    t.integer "position"
+    t.integer "home_score", default: 0
+    t.integer "away_score", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_volleyball_sets_on_game_id"
@@ -96,7 +102,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
   add_foreign_key "events", "teams"
   add_foreign_key "events", "users"
   add_foreign_key "events", "volleyball_sets"
-  add_foreign_key "games", "teams"
+  add_foreign_key "games", "teams", column: "away_team_id"
+  add_foreign_key "games", "teams", column: "home_team_id"
   add_foreign_key "players", "games"
   add_foreign_key "players", "users"
   add_foreign_key "players", "volleyball_sets"

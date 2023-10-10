@@ -1,5 +1,6 @@
 class VolleyballSetsController < ApplicationController
   before_action :set_volleyball_set, only: %i[ show edit update destroy log_events ]
+  before_action :set_game, only: %i[ create ]
 
   # GET /volleyball_sets or /volleyball_sets.json
   def index
@@ -22,6 +23,9 @@ class VolleyballSetsController < ApplicationController
   # POST /volleyball_sets or /volleyball_sets.json
   def create
     @volleyball_set = VolleyballSet.new(volleyball_set_params)
+    @volleyball_set.game = @game
+    @volleyball_set.team = @game.home_team
+    @volleyball_set.setter_rotation = @volleyball_set.starting_setter_rotation
 
     respond_to do |format|
       if @volleyball_set.save
@@ -68,8 +72,12 @@ class VolleyballSetsController < ApplicationController
       @volleyball_set = VolleyballSet.find(params[:id])
     end
 
+    def set_game
+      @game = Game.find(params[:game_id])
+    end
+
     # Only allow a list of trusted parameters through.
     def volleyball_set_params
-      params.require(:volleyball_set).permit(:game_id, :team_id, :order, :starting_rotation)
+      params.require(:volleyball_set).permit(:order, :starting_setter_rotation)
     end
 end

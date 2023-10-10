@@ -17,7 +17,7 @@ class VolleyballSetsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create volleyball_set" do
     assert_difference("VolleyballSet.count") do
-      post volleyball_sets_url, params: { volleyball_set: { game_id: @volleyball_set.game_id, order: @volleyball_set.order, team_id: @volleyball_set.team_id } }
+      post volleyball_sets_url, params: { volleyball_set: { game_id: @volleyball_set.game_id, position: @volleyball_set.position, team_id: @volleyball_set.team_id } }
     end
 
     assert_redirected_to volleyball_set_url(VolleyballSet.last)
@@ -34,7 +34,7 @@ class VolleyballSetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update volleyball_set" do
-    patch volleyball_set_url(@volleyball_set), params: { volleyball_set: { game_id: @volleyball_set.game_id, order: @volleyball_set.order, team_id: @volleyball_set.team_id } }
+    patch volleyball_set_url(@volleyball_set), params: { volleyball_set: { game_id: @volleyball_set.game_id, position: @volleyball_set.position, team_id: @volleyball_set.team_id } }
     assert_redirected_to volleyball_set_url(@volleyball_set)
   end
 

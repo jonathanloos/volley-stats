@@ -26,17 +26,13 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.volleyball_set = @volleyball_set
-    @event.game = @volleyball_set.game
-    @event.team = @volleyball_set.game.team
-    @event.user = @event.player.user
-    @event.role = @event.player.role
 
     respond_to do |format|
-      if @event.save
-        format.html
+      if Events::CreateService.call(event: @event)
+        format.turbo_stream
         format.json { render :show, status: :created, location: @event }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
@@ -77,6 +73,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:player_id, :rotation, :category, :rally_skill, :skill_point, :skill_error, :quality, :rotation)
+      params.require(:event).permit(:player_id, :category, :rally_skill, :skill_point, :skill_error, :quality, :rotation)
     end
 end

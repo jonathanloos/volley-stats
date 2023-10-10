@@ -11,6 +11,7 @@
       <tr>
         <th>Title</th>
         <th>Home Team</th>
+        <th>Away Team</th>
         <th>Date</th>
         <th>Show</th>
         <th>Edit</th>
@@ -21,7 +22,8 @@
       <% @games.each do |game| %>
         <tr>
           <th><%= game.title %></th>
-          <th><%= link_to game.team %></th>
+          <th><%= link_to game.home_team %></th>
+          <th><%= link_to game.away_team %></th>
           <th><%= game.date %></th>
           <th><%= link_to "show", game_path(game) %></th>
           <th><%= link_to "edit", edit_game_path(game) %></th>
