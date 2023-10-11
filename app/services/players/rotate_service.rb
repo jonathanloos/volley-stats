@@ -33,8 +33,9 @@ class Players::RotateService < ApplicationService
   end
 
   def should_rotate?
-    second_last_event = @volleyball_set.events.second_to_last
-    last_event = @volleyball_set.events.last
+    events = @volleyball_set.events.where(category: [:point_earned, :point_given])
+    second_last_event = events.second_to_last
+    last_event = events.last
     
     # only ever rotate on a won point
     return false unless last_event.present? && last_event.point_earned?
