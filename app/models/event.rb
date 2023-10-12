@@ -87,6 +87,7 @@ class Event < ApplicationRecord
     text += " - #{quality} quality" if quality.present?
     text += " - player rotation: #{player_rotation}"
     text += " - setter rotation: #{setter_rotation}"
+    text += " - #{home_score} | #{away_score}"
     text
   end
 end

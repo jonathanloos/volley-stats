@@ -22,6 +22,9 @@ class Events::CreateService < ApplicationService
 
       # adjust points
       VolleyballSets::ScoreService.call(volleyball_set: @volleyball_set)
+
+      # update the event score cache
+      @event.update(home_score: @volleyball_set.home_score, away_score: @volleyball_set.away_score)
     end
   rescue => e
     @event.errors.add(:base, e)

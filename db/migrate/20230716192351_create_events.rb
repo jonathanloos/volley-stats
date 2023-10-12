@@ -15,6 +15,8 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.integer :position
       t.integer :role
       t.integer :category
+      t.integer :home_score
+      t.integer :away_score
 
       t.timestamps
     end
