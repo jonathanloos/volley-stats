@@ -29,6 +29,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.integer "position"
     t.integer "role"
     t.integer "category"
+    t.integer "home_score"
+    t.integer "away_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_events_on_game_id"

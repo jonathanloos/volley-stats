@@ -1,16 +1,15 @@
 # This class will create a crew member
 class VolleyballSets::ScoreService < ApplicationService
-  def initialize(volleyball_set:)
+  def initialize(volleyball_set:, event:)
     @volleyball_set = volleyball_set
+    @event = event
   end
 
   def call
     VolleyballSet.transaction do
-      most_recent_event = @volleyball_set.events.last
+      return true unless @event.point_earned? || @event.point_given?
 
-      return true unless most_recent_event.nil? || most_recent_event.point_earned? || most_recent_event.point_given?
-
-      if most_recent_event.point_earned?
+      if @event.point_earned?
         @volleyball_set.update(home_score: @volleyball_set.home_score + 1)
       else
         @volleyball_set.update(away_score: @volleyball_set.away_score + 1)

@@ -12,6 +12,8 @@ class Event < ApplicationRecord
   validates :category, presence: true
   validates :player_rotation, numericality: { only_integer: true, in: 1..6 }
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
+  validates :home_score, numericality: { only_integer: true }
+  validates :away_score, numericality: { only_integer: true }
 
   enum category: {
     point_earned: 0,
@@ -87,6 +89,7 @@ class Event < ApplicationRecord
     text += " - #{quality} quality" if quality.present?
     text += " - player rotation: #{player_rotation}"
     text += " - setter rotation: #{setter_rotation}"
+    text += " - #{home_score} | #{away_score}"
     text
   end
 end
