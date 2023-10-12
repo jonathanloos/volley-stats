@@ -5,6 +5,8 @@ class Player < ApplicationRecord
   belongs_to :game
   belongs_to :volleyball_set
 
+  has_many :events, dependent: :destroy
+
   validates :role, presence: true
   validates :rotation, numericality: {in: 1..6}, if: -> {rotation.present?}
 

@@ -2,7 +2,11 @@
   <%= @volleyball_set.game %> set <%= @volleyball_set.position %>
 <% end %>
 
-<div data-controller="game-events">
+<div class="my-3">
+  <%= link_to "back to game", @volleyball_set.game %>
+</div>
+
+<div data-controller="game-events" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
   <div class="row mt-4">
     <div class="col-md-8 ps-0">
       <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
@@ -30,13 +34,18 @@
       <h4>Lineup</h4>
       <ul class="btn-group-vertical w-100 ps-0">
         <% @volleyball_set.players.each do |player| %>
-          <button class="btn btn-outline-secondary d-flex flex-row justify-content-between py-2" 
+          <button class="btn btn-outline-secondary d-flex flex-row justify-content-between py-2 align-items-center" 
             data-game-events-target="player" 
             data-action="click->game-events#selectPlayer" 
             data-name="<%= player %>"
             data-id="<%= player.id %>">
-              <span><%= player.user.jersey_number %>: <%= player %></span>
-              <span><%= player.role.humanize %></span>
+              <div>
+                <span><%= player.user.jersey_number %></span>
+                <span><%= player.role.humanize %></span>
+              </div>
+              <% if player.rotation == 1 && @volleyball_set.home_team_serving? %>
+                <div class="badge bg-light text-dark">serving</div>
+              <% end %>
           </button>
         <% end %>
       </ul>

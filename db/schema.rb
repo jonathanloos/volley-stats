@@ -86,7 +86,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
 
   create_table "volleyball_sets", force: :cascade do |t|
     t.bigint "game_id", null: false
-    t.bigint "team_id", null: false
+    t.bigint "serving_team_id"
+    t.bigint "receiving_team_id"
     t.integer "starting_setter_rotation"
     t.integer "setter_rotation"
     t.integer "rotation", default: 1
@@ -96,7 +97,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_volleyball_sets_on_game_id"
-    t.index ["team_id"], name: "index_volleyball_sets_on_team_id"
+    t.index ["receiving_team_id"], name: "index_volleyball_sets_on_receiving_team_id"
+    t.index ["serving_team_id"], name: "index_volleyball_sets_on_serving_team_id"
   end
 
   add_foreign_key "events", "games"
@@ -111,5 +113,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_192351) do
   add_foreign_key "players", "volleyball_sets"
   add_foreign_key "users", "teams"
   add_foreign_key "volleyball_sets", "games"
-  add_foreign_key "volleyball_sets", "teams"
+  add_foreign_key "volleyball_sets", "teams", column: "receiving_team_id"
+  add_foreign_key "volleyball_sets", "teams", column: "serving_team_id"
 end

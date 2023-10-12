@@ -1,6 +1,7 @@
 class VolleyballSet < ApplicationRecord
   belongs_to :game
-  belongs_to :team
+  belongs_to :serving_team, class_name: "Team"
+  belongs_to :receiving_team, class_name: "Team"
 
   acts_as_list scope: :game
 
@@ -15,5 +16,9 @@ class VolleyballSet < ApplicationRecord
 
   def active_players
     players.where.not(rotation: nil)
+  end
+
+  def home_team_serving?
+    (events.empty? && serving_team == game.home_team) || (events.where(category: [:point_earned, :point_given]).any? && events.where(category: [:point_earned, :point_given]).last.point_earned?)
   end
 end
