@@ -14,17 +14,16 @@ class Events::CreateService < ApplicationService
 
   def call
     Event.transaction do
-      # save the event
-      @event.save!
-
       # rotate players
       Players::RotateService.call(players: @volleyball_set.active_players)
 
       # adjust points
-      VolleyballSets::ScoreService.call(volleyball_set: @volleyball_set)
+      VolleyballSets::ScoreService.call(volleyball_set: @volleyball_set, event: @event)
 
       # update the event score cache
-      @event.update(home_score: @volleyball_set.home_score, away_score: @volleyball_set.away_score)
+      @event.home_score = @volleyball_set.home_score
+      @event.away_score = @volleyball_set.away_score
+      @event.save!
     end
   rescue => e
     @event.errors.add(:base, e)
