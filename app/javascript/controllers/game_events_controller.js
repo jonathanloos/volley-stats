@@ -134,7 +134,7 @@ export default class extends Controller {
 
     // Weird HTML thing if they click the small tag instead of the li
     if (activePlayer.dataset.name === undefined) {
-      activePlayer = event.target.parentElement
+      activePlayer = event.target.closest('button')
     }
 
     // Add active class to selected player
