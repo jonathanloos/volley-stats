@@ -73,7 +73,8 @@ class Event < ApplicationRecord
     dump: :attacking,
     downball: :attacking,
     hit_in_play: :attacking,
-    serve: :serving
+    serve: :serving,
+    ace: :attacking
   }.with_indifferent_access
 
   def to_s
