@@ -39,6 +39,9 @@ class Players::RotateService < ApplicationService
     # only ever rotate on a won point
     return false unless @most_recent_event.point_earned?
 
+    # if the home team is serving and they win points off the start
+    return false if points.point_given.empty? && @volleyball_set.serving_team == @most_recent_event.team
+
     # if the home team received first and they win a point, rotate
     return true if points.point_earned.empty? && @volleyball_set.receiving_team == @most_recent_event.team
 
