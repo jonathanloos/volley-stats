@@ -20,7 +20,7 @@ User.create(first_name: "Player", last_name: "11", team: Team.all.first, jersey_
 User.create(first_name: "Player", last_name: "13", team: Team.all.first, jersey_number: 12, role: :middle)
 libero = User.create(first_name: "Player", last_name: "13", team: Team.all.first, jersey_number: 13, role: :libero)
 
-game = Game.create(home_team: Team.first, away_team: Team.second, date: DateTime.now)
+game = Game.create(title: "Finals", home_team: Team.first, away_team: Team.second, date: DateTime.now)
 volleyball_set = VolleyballSet.create(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.home_team)
 Player.create(game: game, volleyball_set: volleyball_set, user: setter, role: :setter, rotation: 1)
 Player.create(game: game, volleyball_set: volleyball_set, user: left_side_1, role: :left_side, rotation: 2)
