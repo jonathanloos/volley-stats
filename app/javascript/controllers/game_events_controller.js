@@ -241,10 +241,8 @@ export default class extends Controller {
       // if the home team is receiving and win a point, but haven't won any prior points
       if (this.receivingValue == true && filteredPlays.filter(play => play.play_type === "point_earned").length === 1) {
         this.rotate()
-      }
-
-      // if the second last point is present and it was a point given
-      if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "point_given") {
+      } else if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "point_given") {
+        // if the second last point is present and it was a point given
         this.rotate()
       }
     }
