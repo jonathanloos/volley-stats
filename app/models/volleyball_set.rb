@@ -6,7 +6,7 @@ class VolleyballSet < ApplicationRecord
   acts_as_list scope: :game
 
   has_many :players, -> { order(rotation: :asc, role: :asc) }, dependent: :destroy
-  has_many :events, dependent: :destroy
+  has_many :events, -> { order(:position) }, dependent: :destroy
 
   validates :starting_setter_rotation, numericality: {in: 1..6}, if: -> { persisted? }
 
