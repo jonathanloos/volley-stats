@@ -32,23 +32,9 @@
   <div class="row">
     <div class="col-md-3 p-0">
       <h4>Lineup</h4>
-      <ul class="btn-group-vertical w-100 ps-0">
-        <% @volleyball_set.players.each do |player| %>
-          <button class="btn btn-outline-secondary d-flex flex-row justify-content-between py-2 align-items-center" 
-            data-game-events-target="player" 
-            data-action="click->game-events#selectPlayer" 
-            data-name="<%= player %>"
-            data-id="<%= player.id %>">
-              <div>
-                <span><%= player.user.jersey_number %></span>
-                <span><%= player.role.humanize %></span>
-              </div>
-              <% if player.rotation == 1 && @volleyball_set.home_team_serving? %>
-                <div class="badge bg-light text-dark">serving</div>
-              <% end %>
-          </button>
-        <% end %>
-      </ul>
+      <%= turbo_frame_tag :players do %>
+        <%= render(Players::LineupComponent.new(volleyball_set: @volleyball_set)) %>
+      <% end %>
       <%= turbo_frame_tag dom_id(Event.new) do %>
         <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"game-events-target": "submissionForm"} do |form| %>
           <%= form.hidden_field :player_id, value: 1, data: {"game-events-target": "playerSubmission"} %>

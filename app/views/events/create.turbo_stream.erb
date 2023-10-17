@@ -20,3 +20,9 @@
     </ul>
   </turbo-frame>
 <% end %>
+
+<%= turbo_stream.replace :players do %>
+  <%= turbo_frame_tag :players do %>
+    <%= render(Players::LineupComponent.new(volleyball_set: @volleyball_set)) %>
+  <% end %>
+<% end %>
