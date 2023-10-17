@@ -22,6 +22,7 @@ RUN apk update \
     make \
     nodejs \
     openssl1.1-compat \
+    openssh-client \
     postgresql-client \
     shared-mime-info \
     tzdata \
