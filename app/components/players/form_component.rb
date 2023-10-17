@@ -3,11 +3,14 @@
 class Players::FormComponent < ApplicationComponent
   def initialize(player:)
     @player = player
+    @volleyball_set = @player.volleyball_set
   end
 
   def next_rotation
-    if !@player.volleyball_set.all_rotations_covered? && @player.volleyball_set.players.where.not(rotation: nil).any?
-      @player.volleyball_set.players.where.not(rotation: nil).last.rotation + 1
+    return @volleyball_set.starting_setter_rotation if @volleyball_set.active_players.empty?
+
+    if !@volleyball_set.all_rotations_covered? && @volleyball_set.active_players.any?
+      @volleyball_set.active_players.last.rotation + 1
     end
   end
 
@@ -15,7 +18,7 @@ class Players::FormComponent < ApplicationComponent
     if @player.persisted?
       @player
     else
-      [@player.volleyball_set, @player]
+      [@volleyball_set, @player]
     end
   end
 end

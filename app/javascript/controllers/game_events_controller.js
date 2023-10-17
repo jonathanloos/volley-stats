@@ -18,7 +18,7 @@ export default class extends Controller {
     "submissionForm", "playerSubmission", "categorySubmission", "rallySkillSubmission", "skillPointSubmission", "skillErrorSubmission", "skillErrorSubmission", "qualitySubmission", "rotationSubmission"
   ]
 
-  static values = { plays: {type: Array, default: []} }
+  static values = { plays: {type: Array, default: []}, receiving: {type: Boolean, default: false} }
 
   connect() { }
 
@@ -134,7 +134,7 @@ export default class extends Controller {
 
     // Weird HTML thing if they click the small tag instead of the li
     if (activePlayer.dataset.name === undefined) {
-      activePlayer = event.target.parentElement
+      activePlayer = event.target.closest('button')
     }
 
     // Add active class to selected player
@@ -235,10 +235,14 @@ export default class extends Controller {
   }
 
   adjustRotation() {
-    if (this.playsValue.length >= 2 && this.playsValue[this.playsValue.length - 1].play_type === "point_earned") {
+    if (this.playsValue.length >= 1 && this.playsValue[this.playsValue.length - 1].play_type === "point_earned") {
       const filteredPlays = this.playsValue.filter(play => play.play_type !== "rally")
 
-      if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "point_given") {
+      // if the home team is receiving and win a point, but haven't won any prior points
+      if (this.receivingValue == true && filteredPlays.filter(play => play.play_type === "point_earned").length === 1) {
+        this.rotate()
+      } else if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "point_given") {
+        // if the second last point is present and it was a point given
         this.rotate()
       }
     }

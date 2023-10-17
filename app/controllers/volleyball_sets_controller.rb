@@ -24,7 +24,8 @@ class VolleyballSetsController < ApplicationController
   def create
     @volleyball_set = VolleyballSet.new(volleyball_set_params)
     @volleyball_set.game = @game
-    @volleyball_set.team = @game.home_team
+    @volleyball_set.serving_team = @game.home_team
+    @volleyball_set.receiving_team = @game.home_team
     @volleyball_set.setter_rotation = @volleyball_set.starting_setter_rotation
 
     respond_to do |format|
@@ -42,7 +43,7 @@ class VolleyballSetsController < ApplicationController
   def update
     respond_to do |format|
       if @volleyball_set.update(volleyball_set_params)
-        format.html { redirect_to volleyball_set_url(@volleyball_set), notice: "Volleyball set was successfully updated." }
+        format.html { redirect_to @volleyball_set.game, notice: "Volleyball set was successfully updated." }
         format.json { render :show, status: :ok, location: @volleyball_set }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -78,6 +79,6 @@ class VolleyballSetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def volleyball_set_params
-      params.require(:volleyball_set).permit(:order, :starting_setter_rotation)
+      params.require(:volleyball_set).permit(:starting_setter_rotation, :serving_team_id)
     end
 end

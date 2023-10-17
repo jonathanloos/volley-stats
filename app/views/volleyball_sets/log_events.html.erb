@@ -2,7 +2,11 @@
   <%= @volleyball_set.game %> set <%= @volleyball_set.position %>
 <% end %>
 
-<div data-controller="game-events">
+<div class="my-3">
+  <%= link_to "back to game", @volleyball_set.game %>
+</div>
+
+<div data-controller="game-events" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
   <div class="row mt-4">
     <div class="col-md-8 ps-0">
       <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
@@ -28,18 +32,9 @@
   <div class="row">
     <div class="col-md-3 p-0">
       <h4>Lineup</h4>
-      <ul class="btn-group-vertical w-100 ps-0">
-        <% @volleyball_set.players.each do |player| %>
-          <button class="btn btn-outline-secondary d-flex flex-row justify-content-between py-2" 
-            data-game-events-target="player" 
-            data-action="click->game-events#selectPlayer" 
-            data-name="<%= player %>"
-            data-id="<%= player.id %>">
-              <span><%= player.user.jersey_number %>: <%= player %></span>
-              <span><%= player.role.humanize %></span>
-          </button>
-        <% end %>
-      </ul>
+      <%= turbo_frame_tag :players do %>
+        <%= render(Players::LineupComponent.new(volleyball_set: @volleyball_set)) %>
+      <% end %>
       <%= turbo_frame_tag dom_id(Event.new) do %>
         <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"game-events-target": "submissionForm"} do |form| %>
           <%= form.hidden_field :player_id, value: 1, data: {"game-events-target": "playerSubmission"} %>

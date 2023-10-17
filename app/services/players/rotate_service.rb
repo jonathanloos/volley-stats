@@ -1,12 +1,13 @@
 # This class will create a crew member
 class Players::RotateService < ApplicationService
-  def initialize(players:)
+  def initialize(players:, most_recent_event:)
     @players = players
     @volleyball_set = @players.first.volleyball_set
+    @most_recent_event = most_recent_event
   end
 
   def call
-    Event.transaction do
+    Player.transaction do
       return true unless should_rotate?
 
       # cache the setter rotation on the set
@@ -33,18 +34,19 @@ class Players::RotateService < ApplicationService
   end
 
   def should_rotate?
-    events = @volleyball_set.events.where(category: [:point_earned, :point_given])
-    second_last_event = events.second_to_last
-    last_event = events.last
-    
-    # only ever rotate on a won point
-    return false unless last_event.present? && last_event.point_earned?
+    points = @volleyball_set.events.where(category: [:point_earned, :point_given])
 
-    # todo: if the home team received first and they win a point, rotate
-    return true if false && second_last_event.nil?
+    # only ever rotate on a won point
+    return false unless @most_recent_event.point_earned?
+
+    # if the home team is serving and they win points off the start
+    return false if points.point_given.empty? && @volleyball_set.serving_team == @most_recent_event.team
+
+    # if the home team received first and they win a point, rotate
+    return true if points.point_earned.empty? && @volleyball_set.receiving_team == @most_recent_event.team
 
     # if the second last event was a lost point and the most recent event is a win, rotate
-    return true if second_last_event.present? && second_last_event.point_given?
+    return true if points.last.present? && points.last.point_given?
 
     # if the home team served first and they win points, don't rotate
     false
