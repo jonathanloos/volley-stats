@@ -1,8 +1,19 @@
 function help () {
   echo "commands:"
   echo
-  echo "  go - start the rails server and bind host & ports"
-  echo "  db - reset the database with seed data"
+  echo "  db    - reset the database with seed data"
+  echo "  init  - run for initial setup. Download dependencies, reset db, etc"
+  echo "  go    - start the rails server and bind host & ports"
+}
+
+function init () {
+  echo "Installing Gems"
+  bundle install
+
+  echo "Reset db"
+  db
+
+  echo "All set"
 }
 
 function go () {
