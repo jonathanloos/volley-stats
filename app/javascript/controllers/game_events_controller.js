@@ -307,28 +307,4 @@ export default class extends Controller {
       this.submitButtonTarget.classList.add("d-none")
     }
   }
-
-  // // {event: {player_id: 1, game_id: 1, team_id: 1, user_id: 1, volleyball_set_id: 1, type: "point_earned", rally_skill: "", skill_point: "", skill_error: "", quality: "", rotation: 3, }}
-  // async createEvent() {
-  //   // send event to server
-  //   let formData = new FormData()
-  //   formData.append("event[player_id]", 1)
-  //   formData.append("event[game_id]", 1)
-  //   formData.append("event[team_id]", 1)
-  //   formData.append("event[volleyball_set_id]", 1)
-  //   formData.append("event[type]", "point_earned")
-  //   formData.append("event[rally_skill]", "free_ball")
-  //   formData.append("event[skill_point]", undefined)
-  //   formData.append("event[skill_error]", undefined)
-
-  //   let response = await fetch('/events', {
-  //     method: 'POST',
-  //     body: formData
-  //   })
-  //   let result = await response.json()
-  //   alert(result.message)
-
-  //   // if failed, undo?
-  //   // "something went wrong, refresh?"
-  // }
 }

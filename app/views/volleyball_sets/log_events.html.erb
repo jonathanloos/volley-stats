@@ -49,7 +49,9 @@
       <div class="d-flex flex-row" style="gap: 5px">
         <button data-game-events-target="submitButton" type="button" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none flex-grow-1 mb-3">save</button>
         <button data-game-events-target="clearButton" type="button" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1 mb-3">clear</button>
-        <button data-game-events-target="undoButton" type="button" data-action="game-events#undoAction" class="btn btn-light <%= "d-none" if @volleyball_set.events.empty? %> flex-grow-1 mb-3">undo</button>
+        <%= turbo_frame_tag :undo_button, class: "flex-grow-1" do %>
+          <%= link_to "undo", @volleyball_set.events.last, class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} w-100 mb-3", data: {action: "game-events#undoAction", "game-events-target": "undoButton", turbo_method: :delete, turbo_stream: true} %>
+        <% end %>
       </div>
 
       <div class="border border-3"></div>

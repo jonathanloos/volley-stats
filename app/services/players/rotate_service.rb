@@ -1,28 +1,47 @@
 # This class will create a crew member
 class Players::RotateService < ApplicationService
-  def initialize(players:, most_recent_event:)
+  def initialize(players:, most_recent_event:, undo_action: false)
     @players = players
     @volleyball_set = @players.first.volleyball_set
     @most_recent_event = most_recent_event
+    @undo_action = undo_action
   end
 
   def call
     Player.transaction do
       return true unless should_rotate?
 
-      # cache the setter rotation on the set
-      if @volleyball_set.setter_rotation == 1
-        @volleyball_set.update(setter_rotation: 6)
-      else
-        @volleyball_set.update(setter_rotation: @volleyball_set.setter_rotation - 1)
-      end
-
-      # iterate through players and update their rotation
-      @players.each do |player|
-        if player.rotation == 1
-          player.update(rotation: 6)
+      if @undo_action
+        # cache the setter rotation on the set
+        if @volleyball_set.setter_rotation == 6
+          @volleyball_set.update(setter_rotation: 1)
         else
-          player.update(rotation: player.rotation - 1)
+          @volleyball_set.update(setter_rotation: @volleyball_set.setter_rotation + 1)
+        end
+
+        # iterate through players and update their rotation
+        @players.each do |player|
+          if player.rotation == 6
+            player.update(rotation: 1)
+          else
+            player.update(rotation: player.rotation + 1)
+          end
+        end
+      else
+        # cache the setter rotation on the set
+        if @volleyball_set.setter_rotation == 1
+          @volleyball_set.update(setter_rotation: 6)
+        else
+          @volleyball_set.update(setter_rotation: @volleyball_set.setter_rotation - 1)
+        end
+
+        # iterate through players and update their rotation
+        @players.each do |player|
+          if player.rotation == 1
+            player.update(rotation: 6)
+          else
+            player.update(rotation: player.rotation - 1)
+          end
         end
       end
 
