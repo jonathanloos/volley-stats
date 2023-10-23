@@ -15,6 +15,8 @@ class Event < ApplicationRecord
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }
 
+  scope :points, -> { where(category: [:point_earned, :point_given]) }
+
   enum category: {
     point_earned: 0,
     point_given: 1,

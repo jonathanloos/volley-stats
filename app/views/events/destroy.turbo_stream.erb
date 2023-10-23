@@ -1,5 +1,5 @@
 <%= turbo_stream.replace dom_id(Event.new) do %>
-  <turbo-fame id="<%= dom_id(Event.new) %>">
+  <%= turbo_frame_tag dom_id(Event.new) do %>
     <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"game-events-target": "submissionForm"} do |form| %>
       <%= form.hidden_field :player_id, value: 1, data: {"game-events-target": "playerSubmission"} %>
       <%= form.hidden_field :category, value: nil, data: {"game-events-target": "categorySubmission"} %>
@@ -8,17 +8,17 @@
       <%= form.hidden_field :skill_error, value: nil, data: {"game-events-target": "skillErrorSubmission"} %>
       <%= form.hidden_field :quality, value: nil, data: {"game-events-target": "qualitySubmission"} %>
     <% end %>
-  </turbo-frame>
+  <% end %>
 <% end %>
 
 <%= turbo_stream.replace :events do %>
-  <turbo-fame id="events">
-    <ul class="list-group mt-4">
+  <%= turbo_frame_tag :events do %>
+    <ul class="list-group mt-4" id="eventList">
       <% @volleyball_set.events.reverse_each do |event| %>
         <li class="list-group-item"><%= event %></li>
       <% end %>
     </ul>
-  </turbo-frame>
+  <% end %>
 <% end %>
 
 <%= turbo_stream.replace :players do %>
@@ -28,5 +28,7 @@
 <% end %>
 
 <%= turbo_stream.replace :undo_button, class: "flex-grow-1" do %>
-  <%= link_to "undo", @volleyball_set.events.last, class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} flex-grow-1 mb-3", data: {action: "game-events#undoAction", turbo_method: :delete} %>
+  <%= turbo_frame_tag :undo_button, class: "flex-grow-1" do %>
+    <%= link_to "undo", @volleyball_set.events.last, id: "undoButton", class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} w-100 mb-3", data: {action: "game-events#undoAction", "game-events-target": "undoButton", turbo_method: :delete, turbo_stream: true} %>
+  <% end %>
 <% end %>

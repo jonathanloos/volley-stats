@@ -53,7 +53,7 @@ class Players::RotateService < ApplicationService
   end
 
   def should_rotate?
-    points = @volleyball_set.events.where(category: [:point_earned, :point_given])
+    points = @volleyball_set.events.points
 
     # only ever rotate on a won point
     return false unless @most_recent_event.point_earned?

@@ -213,12 +213,9 @@ export default class extends Controller {
       this.categorySubmissionTarget.value = "point_given"
 
     } else if (type == "undo") {
-      // todo: destroy most recent event.
-      const most_recent_play = this.playsValue[this.playsValue.length - 1].play_type
-
-      if (most_recent_play == "point_earned") {
+      if (this.categorySubmissionTarget.value == "point_earned") {
         this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) - 1
-      } else if (most_recent_play == "point_given") {
+      } else if (this.categorySubmissionTarget.value == "point_given") {
         this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) - 1
       }
 
@@ -292,10 +289,13 @@ export default class extends Controller {
   }
 
   toggleUndoButton() {
-    if (this.playsValue.length > 0) {
-      this.undoButtonTarget.classList.remove("d-none")
+    const undoButton = document.getElementById("undoButton")
+    const playsCount = document.getElementById("eventList").childElementCount
+
+    if (playsCount > 0) {
+      undoButton.classList.remove("d-none")
     } else {
-      this.undoButtonTarget.classList.add("d-none")
+      undoButton.classList.add("d-none")
     }
   }
 

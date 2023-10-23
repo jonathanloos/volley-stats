@@ -50,7 +50,7 @@
         <button data-game-events-target="submitButton" type="button" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none flex-grow-1 mb-3">save</button>
         <button data-game-events-target="clearButton" type="button" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1 mb-3">clear</button>
         <%= turbo_frame_tag :undo_button, class: "flex-grow-1" do %>
-          <%= link_to "undo", @volleyball_set.events.last, class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} w-100 mb-3", data: {action: "game-events#undoAction", "game-events-target": "undoButton", turbo_method: :delete, turbo_stream: true} %>
+          <%= link_to "undo", @volleyball_set.events.last, id: "undoButton", class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} w-100 mb-3", data: {action: "game-events#undoAction", "game-events-target": "undoButton", turbo_method: :delete, turbo_stream: true} %>
         <% end %>
       </div>
 
@@ -173,7 +173,7 @@
 </div>
 
 <%= turbo_frame_tag :events do %>
-  <ul class="list-group mt-4">
+  <ul class="list-group mt-4" id="eventList">
     <% @volleyball_set.events.reverse_each do |event| %>
       <li class="list-group-item"><%= event %></li>
     <% end %>
