@@ -18,7 +18,7 @@ export default class extends Controller {
     "submissionForm", "playerSubmission", "categorySubmission", "rallySkillSubmission", "skillPointSubmission", "skillErrorSubmission", "skillErrorSubmission", "qualitySubmission", "rotationSubmission"
   ]
 
-  static values = { plays: {type: Array, default: []}, receiving: {type: Boolean, default: false} }
+  static values = { receiving: {type: Boolean, default: false} }
 
   connect() { }
 
@@ -204,23 +204,23 @@ export default class extends Controller {
   adjustScore(type) {
     if (type === "skill_point") {
       this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) + 1
-      this.playsValue.push({play_type: 'point_earned'})
       this.categorySubmissionTarget.value = "point_earned"
 
     } else if (type === "skill_error") {
       this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) + 1
-      this.playsValue.push({play_type: 'point_given'})
       this.categorySubmissionTarget.value = "point_given"
 
     } else if (type == "undo") {
-      if (this.categorySubmissionTarget.value == "point_earned") {
+      // most recent event
+      const most_recent_event = document.getElementById("eventList").firstElementChild
+
+      if (most_recent_event.dataset.pointType == "point_earned") {
         this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) - 1
-      } else if (this.categorySubmissionTarget.value == "point_given") {
+      } else if (most_recent_event.dataset.pointType == "point_given") {
         this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) - 1
       }
 
     } else {
-      this.playsValue.push({play_type: 'rally'})
       this.categorySubmissionTarget.value = "continuation"
     }
 
@@ -228,17 +228,38 @@ export default class extends Controller {
     this.toggleUndoButton()
 
     // adjust rotation
-    this.adjustRotation()
+    this.adjustRotation(type)
   }
 
-  adjustRotation() {
-    if (this.playsValue.length >= 1 && this.playsValue[this.playsValue.length - 1].play_type === "point_earned") {
-      const filteredPlays = this.playsValue.filter(play => play.play_type !== "rally")
+  adjustRotation(type) {
+    // most recent event
+    const most_recent_event = document.getElementById("eventList").firstElementChild
+    let pointType = ""
+
+    if (type !== undefined) {
+      pointType = type
+    } else if (most_recent_event !== null) {
+      pointType = most_recent_event.dataset.pointType
+    } else {
+      return
+    }
+
+    // only rotate if you earn a point
+    if (pointType == "skill_point") {
+      
+      // only need the plays with points
+      let filteredPlays = []
+      for (let child of document.getElementById("eventList").children) {
+        if (child.dataset.pointType !== "continuation") {
+          filteredPlays.push(child.dataset.pointType)
+        }
+      }
+      filteredPlays = filteredPlays.reverse()
 
       // if the home team is receiving and win a point, but haven't won any prior points
-      if (this.receivingValue == true && filteredPlays.filter(play => play.play_type === "point_earned").length === 1) {
+      if (this.receivingValue == true && filteredPlays.filter(play => play === "point_earned").length === 0) {
         this.rotate()
-      } else if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 2].play_type === "point_given") {
+      } else if (filteredPlays.length >= 2 && filteredPlays[filteredPlays.length - 1] === "point_given") {
         // if the second last point is present and it was a point given
         this.rotate()
       }
@@ -280,9 +301,6 @@ export default class extends Controller {
   undoAction() {
     // adjust the score
     this.adjustScore("undo")
-
-    // remove most recent play
-    this.playsValue.pop()
 
     // hide/show undo button
     this.toggleUndoButton()

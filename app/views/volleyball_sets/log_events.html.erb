@@ -6,7 +6,7 @@
   <%= link_to "back to game", @volleyball_set.game %>
 </div>
 
-<div data-controller="game-events" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
+<div data-controller="game-events" data-point-type="<%= @volleyball_set.events.points.last&.category %>" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
   <div class="row mt-4">
     <div class="col-md-8 ps-0">
       <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
@@ -172,10 +172,4 @@
   </div>
 </div>
 
-<%= turbo_frame_tag :events do %>
-  <ul class="list-group mt-4" id="eventList">
-    <% @volleyball_set.events.reverse_each do |event| %>
-      <li class="list-group-item"><%= event %></li>
-    <% end %>
-  </ul>
-<% end %>
+<%= render(Events::ListComponent.new(volleyball_set: @volleyball_set)) %>

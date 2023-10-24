@@ -11,14 +11,8 @@
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace :events do %>
-  <%= turbo_frame_tag :events do %>
-    <ul class="list-group mt-4" id="eventList">
-      <% @volleyball_set.events.reverse_each do |event| %>
-        <li class="list-group-item"><%= event %></li>
-      <% end %>
-    </ul>
-  <% end %>
+<%= turbo_stream.replace :events, class: "flex-grow-1" do %>
+  <%= render(Events::ListComponent.new(volleyball_set: @volleyball_set)) %>
 <% end %>
 
 <%= turbo_stream.replace :players do %>
