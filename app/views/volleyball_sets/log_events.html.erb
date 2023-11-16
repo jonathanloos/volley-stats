@@ -6,7 +6,7 @@
   <%= link_to "back to game", @volleyball_set.game %>
 </div>
 
-<div data-controller="game-events" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
+<div data-controller="game-events" data-point-type="<%= @volleyball_set.events.points.last&.category %>" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
   <div class="row mt-4">
     <div class="col-md-8 ps-0">
       <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
@@ -49,7 +49,9 @@
       <div class="d-flex flex-row" style="gap: 5px">
         <button data-game-events-target="submitButton" type="button" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none flex-grow-1 mb-3">save</button>
         <button data-game-events-target="clearButton" type="button" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1 mb-3">clear</button>
-        <button data-game-events-target="undoButton" type="button" data-action="game-events#undoAction" class="btn btn-light <%= "d-none" if @volleyball_set.events.empty? %> flex-grow-1 mb-3">undo</button>
+        <%= turbo_frame_tag :undo_button, class: "flex-grow-1" do %>
+          <%= link_to "undo", @volleyball_set.events.last, id: "undoButton", class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} w-100 mb-3", data: {action: "game-events#undoAction", "game-events-target": "undoButton", turbo_method: :delete, turbo_stream: true} %>
+        <% end %>
       </div>
 
       <div class="border border-3"></div>
@@ -170,10 +172,4 @@
   </div>
 </div>
 
-<%= turbo_frame_tag :events do %>
-  <ul class="list-group mt-4">
-    <% @volleyball_set.events.reverse_each do |event| %>
-      <li class="list-group-item"><%= event %></li>
-    <% end %>
-  </ul>
-<% end %>
+<%= render(Events::ListComponent.new(volleyball_set: @volleyball_set)) %>

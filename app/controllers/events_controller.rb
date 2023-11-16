@@ -53,10 +53,12 @@ class EventsController < ApplicationController
 
   # DELETE /events/1 or /events/1.json
   def destroy
-    @event.destroy
+    @volleyball_set = @event.volleyball_set
+
+    Events::DestroyService.call(event: @event)
 
     respond_to do |format|
-      format.html { redirect_to events_url, notice: "Event was successfully destroyed." }
+      format.turbo_stream
       format.json { head :no_content }
     end
   end
