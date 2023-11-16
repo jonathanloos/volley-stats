@@ -16,6 +16,12 @@ class Event < ApplicationRecord
   validates :away_score, numericality: { only_integer: true }
 
   scope :points, -> { where(category: [:point_earned, :point_given]) }
+  scope :total_attack_attempts, -> { where(rally_skill: :hit_in_play).or(
+      where(skill_point: [:attack, :tip])
+    ).or(
+      where(skill_error: [:attack, :tip])
+    ).distinct
+  }
 
   enum category: {
     point_earned: 0,
