@@ -12,24 +12,78 @@
     <small class="text-muted"><%= @game.date.strftime("%Y-%m-%d") %>
   </div>
 </div>
-<div class="row">
+<div class="row mt-4">
   <div class="col-3">
     <div class="card" style="width: 18rem;">
       <div class="card-body">
-        <h5 class="card-title"><%= Games::StatsService.game_hitting_percentage(@game).round(3) %></h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">Overall hitting efficiency</h6>
+        <h6 class="card-subtitle text-body-secondary">HIT PERCENTAGE</h6>
+        <h4 class="card-title mb-3"><%= Games::StatsService.attack_percentage(events: @events).round(3) %></h4>
         <div class="row mt-3">
           <div class="col-4 d-flex flex-column align-items-center">
-            <h6><%= @game.events.skill_point_attack.count %></h6>
-            <p class="text-muted m-0">kills</p>
+            <p class="mb-0"><%= @events.skill_point_attack.count %></p>
+            <small class="text-muted m-0">kills</small>
           </div>
           <div class="col-4 d-flex flex-column align-items-center">
-            <h6><%= @game.events.skill_error_attack.count %></h6>
-            <p class="text-muted m-0">errors</p>
+            <p class="mb-0"><%= @events.skill_error_attack.count %></p>
+            <small class="text-muted m-0">errors</small>
           </div>
           <div class="col-4 d-flex flex-column align-items-center">
-            <h6><%= @game.events.total_attack_attempts.count %></h6>
-            <p class="text-muted m-0">kills</p>
+            <p class="mb-0"><%= @events.attack_attempts.count %></p>
+            <small class="text-muted m-0">attempts</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h6 class="card-subtitle text-body-secondary">PASS PERCENTAGE</h6>
+        <h4 class="card-title mb-3"><%= Games::StatsService.passing_average(events: @events).round(3) %></h4>
+        <div class="row mt-3">
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_error_serve_receive.count %></p>
+            <small class="text-muted m-0">error</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 1).count %></p>
+            <small class="text-muted m-0">1</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 2).count %></p>
+            <small class="text-muted m-0">2</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 3).count %></p>
+            <small class="text-muted m-0">3</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 4).count %></p>
+            <small class="text-muted m-0">4</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h6 class="card-subtitle text-body-secondary">POINTS EARNED</h6>
+        <h4 class="card-title mb-3"><%= Games::StatsService.points_earned(events: @events).round(3) %></h4>
+        <div class="row mt-3">
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.kills.count %></p>
+            <small class="text-muted m-0">KILLS</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_point_block.count %></p>
+            <small class="text-muted m-0">BLOCKS</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_point_ace.count %></p>
+            <small class="text-muted m-0">ACES</small>
           </div>
         </div>
       </div>

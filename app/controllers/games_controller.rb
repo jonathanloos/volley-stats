@@ -59,6 +59,7 @@ class GamesController < ApplicationController
 
   # GET /games/1/stats
   def stats
+    @events = @game.events
   end
 
   private
