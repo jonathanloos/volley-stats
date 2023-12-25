@@ -13,9 +13,15 @@ class Games::StatsService
     events.passing_events.where.not(quality: nil).average(:quality)
   end
 
-  def self.points_earned(events:, athlete: nil)
-    events = events.where(user: athlete) if athlete.present?
-
+  def self.points_earned(events:)
     events.where.not(skill_point: nil).count
+  end
+
+  def self.points_lost(events:)
+    events.skill_error_serve.or(
+      events.attack_errors
+    ).or(
+      events.skill_error_serve_receive
+    ).count
   end
 end
