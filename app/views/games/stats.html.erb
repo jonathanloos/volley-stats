@@ -13,38 +13,38 @@
   </div>
 </div>
 <div class="row mt-4">
-  <div class="col-3">
-    <div class="card" style="width: 18rem;">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
       <div class="card-body">
         <h6 class="card-subtitle text-body-secondary">HIT PERCENTAGE</h6>
         <h4 class="card-title mb-3"><%= Games::StatsService.attack_percentage(events: @events).round(3) %></h4>
         <div class="row mt-3">
           <div class="col-4 d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.skill_point_attack.count %></p>
-            <small class="text-muted m-0">kills</small>
+            <small class="text-muted m-0">KILL</small>
           </div>
           <div class="col-4 d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.skill_error_attack.count %></p>
-            <small class="text-muted m-0">errors</small>
+            <small class="text-muted m-0">ERR</small>
           </div>
           <div class="col-4 d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.attack_attempts.count %></p>
-            <small class="text-muted m-0">attempts</small>
+            <small class="text-muted m-0">TOT</small>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-3">
-    <div class="card" style="width: 18rem;">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
       <div class="card-body">
         <h6 class="card-subtitle text-body-secondary">PASS PERCENTAGE</h6>
         <h4 class="card-title mb-3"><%= Games::StatsService.passing_average(events: @events).round(3) %></h4>
         <div class="row mt-3">
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.skill_error_serve_receive.count %></p>
-            <small class="text-muted m-0">error</small>
+            <small class="text-muted m-0">ERR</small>
           </div>
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 1).count %></p>
@@ -67,33 +67,34 @@
     </div>
   </div>
 
-  <div class="col-3">
-    <div class="card" style="width: 18rem;">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
       <div class="card-body">
         <h6 class="card-subtitle text-body-secondary">POINTS EARNED</h6>
-        <h4 class="card-title mb-3"><%= Games::StatsService.points_earned(events: @events).round(3) %></h4>
+        <h4 class="card-title mb-3 text-success"><%= Games::StatsService.points_earned(events: @events).round(3) %></h4>
         <div class="row mt-3">
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.kills.count %></p>
-            <small class="text-muted m-0">KILLS</small>
+            <small class="text-muted m-0">KILL</small>
           </div>
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.skill_point_block.count %></p>
-            <small class="text-muted m-0">BLOCKS</small>
+            <small class="text-muted m-0">BLOCK</small>
           </div>
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.skill_point_ace.count %></p>
-            <small class="text-muted m-0">ACES</small>
+            <small class="text-muted m-0">ACE</small>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-3">
-    <div class="card" style="width: 18rem;">
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
       <div class="card-body">
         <h6 class="card-subtitle text-body-secondary">POINTS LOST</h6>
-        <h4 class="card-title mb-3"><%= Games::StatsService.points_lost(events: @events).round(3) %></h4>
+        <h4 class="card-title mb-3 text-danger"><%= Games::StatsService.points_lost(events: @events).round(3) %></h4>
         <div class="row mt-3">
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.skill_error_serve.count %></p>
@@ -101,11 +102,11 @@
           </div>
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.attack_errors.count %></p>
-            <small class="text-muted m-0">ATTACK</small>
+            <small class="text-muted m-0">ATT</small>
           </div>
           <div class="col d-flex flex-column align-items-center">
             <p class="mb-0"><%= @events.skill_error_serve_receive.count %></p>
-            <small class="text-muted m-0">PASSING</small>
+            <small class="text-muted m-0">PASS</small>
           </div>
         </div>
       </div>
