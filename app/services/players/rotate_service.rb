@@ -3,6 +3,8 @@ class Players::RotateService < ApplicationService
   def initialize(players:, most_recent_event:, undo_action: false)
     @players = players
     @volleyball_set = @players.first.volleyball_set
+    @home_team = @volleyball_set.game.home_team
+    @away_team = @volleyball_set.game.away_team
     @most_recent_event = most_recent_event
     @undo_action = undo_action
   end
@@ -54,20 +56,32 @@ class Players::RotateService < ApplicationService
 
   def should_rotate?
     points = @volleyball_set.events.points
+    home_team_points = points.where(team: @home_team)
+    away_team_points = points.where(team: @away_team)
 
     # only ever rotate on a won point
-    return false unless @most_recent_event.point_earned?
+    return false unless home_team_point?
 
-    # if the home team is serving and they win points off the start
-    return false if points.point_given.empty? && @volleyball_set.serving_team == @most_recent_event.team
+    # don't rotate if the home team is serving and they haven't conceded a point
+    return false if (home_team_points.point_given.empty? && away_team_points.point_earned.empty?) &&
+      @volleyball_set.serving_team == @home_team
 
     # if the home team received first and they win a point, rotate
-    return true if points.point_earned.empty? && @volleyball_set.receiving_team == @most_recent_event.team
+    return true if (home_team_points.point_earned.empty? && away_team_points.point_given.empty?) &&
+      @volleyball_set.receiving_team == @home_team
 
     # if the second last event was a lost point and the most recent event is a win, rotate
-    return true if points.last.present? && points.last.point_given?
+    second_last_point = points.last
+    return true if second_last_point.present? && (
+      (second_last_point.point_given? && second_last_point.team == @home_team) || # home team lost a point
+      (second_last_point.point_earned? && second_last_point.team == @away_team) # away team won a point
+    )
 
-    # if the home team served first and they win points, don't rotate
     false
+  end
+
+  def home_team_point?
+    (@most_recent_event.point_earned? && @most_recent_event.team == @home_team) ||
+      (@most_recent_event.point_given? && @most_recent_event.team == @away_team)
   end
 end

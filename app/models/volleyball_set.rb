@@ -23,7 +23,14 @@ class VolleyballSet < ApplicationRecord
   end
 
   def home_team_serving?
-    (events.empty? && serving_team == game.home_team) || (events.where(category: [:point_earned, :point_given]).any? && events.where(category: [:point_earned, :point_given]).last.point_earned?)
+    points = events.points
+    return true if points.empty? && serving_team == game.home_team
+
+    return false if points.empty?
+    return true if points.last.point_earned? && points.last.team == game.home_team
+    return true if points.last.point_given? && points.last.team == game.away_team
+
+    false
   end
 
   private

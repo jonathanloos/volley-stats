@@ -17,6 +17,6 @@ class Player < ApplicationRecord
   def serving?
     return false unless rotation == 1
 
-    (volleyball_set.events.point_earned.empty? && volleyball_set.home_team_serving?) || (volleyball_set.events.any? && volleyball_set.events.last.point_earned?)
+    volleyball_set.home_team_serving?
   end
 end

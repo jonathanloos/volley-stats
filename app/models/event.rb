@@ -14,7 +14,7 @@ class Event < ApplicationRecord
   acts_as_list scope: :volleyball_set
 
   validates :category, presence: true
-  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }
+  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? }
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }
@@ -101,15 +101,15 @@ class Event < ApplicationRecord
   def to_s
     text = "#{position}. #{category.humanize}: "
     text += if category == "point_earned"
-      "#{skill_point.humanize.titleize} by #{user}"
+      "#{skill_point.humanize.titleize} by #{user || team}"
     elsif category == "point_given"
-      "#{skill_error.humanize.titleize} by #{user}"
+      "#{skill_error.humanize.titleize} by #{user || team}"
     else
-      "#{rally_skill.humanize.titleize} by #{user}"
+      "#{rally_skill.humanize.titleize} by #{user || team}"
     end
 
     text += " - #{quality} quality" if quality.present?
-    text += " - player rotation: #{player_rotation}"
+    text += " - player rotation: #{player_rotation}" if player_rotation.present?
     text += " - setter rotation: #{setter_rotation}"
     text += " - #{home_score} | #{away_score}"
     text

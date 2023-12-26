@@ -4,12 +4,17 @@ class Events::CreateService < ApplicationService
     @event = event
     @volleyball_set = @event.volleyball_set
     @event.game = @volleyball_set.game
-    # todo: allow for away_team points
-    @event.team = @volleyball_set.game.home_team
-    @event.user = @event.player.user
-    @event.role = @event.player.role
-    @event.player_rotation = @event.player.rotation
     @event.setter_rotation = @volleyball_set.setter_rotation
+    @event.team = @volleyball_set.game.home_team
+
+    # if the player is nil it is a point for the away team
+    if @event.player.nil?
+      @event.team = @volleyball_set.game.away_team
+    else
+      @event.user = @event.player.user
+      @event.role = @event.player.role
+      @event.player_rotation = @event.player.rotation
+    end
   end
 
   def call
