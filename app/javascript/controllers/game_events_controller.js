@@ -203,7 +203,6 @@ export default class extends Controller {
 
   adjustScore(type) {
     if (type === "skill_point") {
-      console.log("Player sub traget earned:" , this.playerSubmissionTarget.value)
       if (this.playerSubmissionTarget.value === "") {
         this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) + 1
       } else {
@@ -212,7 +211,6 @@ export default class extends Controller {
       this.categorySubmissionTarget.value = "point_earned"
 
     } else if (type === "skill_error") {
-      console.log("Player sub traget error:" , this.playerSubmissionTarget.value)
       if (this.playerSubmissionTarget.value === "") {
         this.pointsForTarget.innerHTML = parseInt(this.pointsForTarget.innerHTML) + 1
       } else {
@@ -224,9 +222,6 @@ export default class extends Controller {
     } else if (type == "undo") {
       // most recent event
       const most_recent_event = document.getElementById("eventList").firstElementChild
-      console.log("Player ID: ", most_recent_event.dataset.playerId)
-      console.log("Player ID undefined: ", most_recent_event.dataset.playerId === undefined)
-      console.log("Player ID empty: ", most_recent_event.dataset.playerId === "")
       if (most_recent_event.dataset.pointType == "point_earned") {
         if (most_recent_event.dataset.playerId === "") {
           this.pointsAgainstTarget.innerHTML = parseInt(this.pointsAgainstTarget.innerHTML) - 1
