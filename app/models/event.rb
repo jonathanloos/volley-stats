@@ -1,6 +1,10 @@
 class Event < ApplicationRecord
   include Roleable
 
+  KILL_CATEGORIES = [:attack, :tip, :dump, :downball]
+  ATTACK_ERROR_CATEGORIES = [:attack, :tip, :dump, :downball, :third_contact]
+  IN_RALLY_THIRD_CONTACTS = [:hit_in_play, :free_ball]
+
   belongs_to :game
   belongs_to :player, optional: true
   belongs_to :team
@@ -16,6 +20,20 @@ class Event < ApplicationRecord
   validates :away_score, numericality: { only_integer: true }
 
   scope :points, -> { where(category: [:point_earned, :point_given]) }
+  scope :attack_attempts, -> { where(rally_skill: IN_RALLY_THIRD_CONTACTS).or(
+      where(skill_point: KILL_CATEGORIES)
+    ).or(
+      where(skill_error: ATTACK_ERROR_CATEGORIES)
+    )
+  }
+
+  scope :passing_events, -> { where(rally_skill: :serve_receive).or(
+      where(skill_error: :serve_receive)
+    )
+  }
+
+  scope :kills, -> { where(skill_point: KILL_CATEGORIES) }
+  scope :attack_errors, -> { where(skill_error: ATTACK_ERROR_CATEGORIES) }
 
   enum category: {
     point_earned: 0,
@@ -76,7 +94,8 @@ class Event < ApplicationRecord
     downball: :attacking,
     hit_in_play: :attacking,
     serve: :serving,
-    ace: :attacking
+    ace: :attacking,
+    free_ball_receive: :passing
   }.with_indifferent_access
 
   def to_s

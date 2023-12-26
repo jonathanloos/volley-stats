@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: %i[ show edit update destroy ]
+  before_action :set_game, only: %i[ show edit update destroy stats ]
 
   # GET /games or /games.json
   def index
@@ -55,6 +55,11 @@ class GamesController < ApplicationController
       format.html { redirect_to games_url, notice: "Game was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  # GET /games/1/stats
+  def stats
+    @events = @game.events
   end
 
   private

@@ -3,6 +3,8 @@ import "@hotwired/turbo-rails"
 import "@popperjs/core"
 import "bootstrap"
 import "controllers"
+import "chartkick"
+import "Chart.bundle"
 
 document.addEventListener("turbo:load", function () {
   // This code is copied from Bootstrap's docs. See link below.

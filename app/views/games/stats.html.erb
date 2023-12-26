@@ -1,0 +1,115 @@
+<% content_for(:page_title) do %>
+  <%= @game %> - Stats
+<% end %>
+
+<div class="my-3">
+  <%= link_to "back to set", @game %>
+</div>
+
+<div class="d-flex justify-content-between mt-4">
+  <div>
+    <h1 class="mb-0"><%= @game %> <%= @game.home_team %> vs <%= @game.away_team %> Stats</h1>
+    <small class="text-muted"><%= @game.date.strftime("%Y-%m-%d") %>
+  </div>
+</div>
+<div class="row mt-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
+      <div class="card-body">
+        <h6 class="card-subtitle text-body-secondary">HIT PERCENTAGE</h6>
+        <h4 class="card-title mb-3"><%= Games::StatsService.attack_percentage(events: @events).round(3) %></h4>
+        <div class="row mt-3">
+          <div class="col-4 d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_point_attack.count %></p>
+            <small class="text-muted m-0">KILL</small>
+          </div>
+          <div class="col-4 d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_error_attack.count %></p>
+            <small class="text-muted m-0">ERR</small>
+          </div>
+          <div class="col-4 d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.attack_attempts.count %></p>
+            <small class="text-muted m-0">TOT</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
+      <div class="card-body">
+        <h6 class="card-subtitle text-body-secondary">PASS PERCENTAGE</h6>
+        <h4 class="card-title mb-3"><%= Games::StatsService.passing_average(events: @events).round(3) %></h4>
+        <div class="row mt-3">
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_error_serve_receive.count %></p>
+            <small class="text-muted m-0">ERR</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 1).count %></p>
+            <small class="text-muted m-0">1</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 2).count %></p>
+            <small class="text-muted m-0">2</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 3).count %></p>
+            <small class="text-muted m-0">3</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 4).count %></p>
+            <small class="text-muted m-0">4</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
+      <div class="card-body">
+        <h6 class="card-subtitle text-body-secondary">POINTS EARNED</h6>
+        <h4 class="card-title mb-3 text-success"><%= Games::StatsService.points_earned(events: @events).round(3) %></h4>
+        <div class="row mt-3">
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.kills.count %></p>
+            <small class="text-muted m-0">KILL</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_point_block.count %></p>
+            <small class="text-muted m-0">BLOCK</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_point_ace.count %></p>
+            <small class="text-muted m-0">ACE</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="card w-100" style="width: 18rem;">
+      <div class="card-body">
+        <h6 class="card-subtitle text-body-secondary">POINTS LOST</h6>
+        <h4 class="card-title mb-3 text-danger"><%= Games::StatsService.points_lost(events: @events).round(3) %></h4>
+        <div class="row mt-3">
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_error_serve.count %></p>
+            <small class="text-muted m-0">SERVE</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.attack_errors.count %></p>
+            <small class="text-muted m-0">ATT</small>
+          </div>
+          <div class="col d-flex flex-column align-items-center">
+            <p class="mb-0"><%= @events.skill_error_serve_receive.count %></p>
+            <small class="text-muted m-0">PASS</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

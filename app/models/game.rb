@@ -4,6 +4,7 @@ class Game < ApplicationRecord
 
   has_many :volleyball_sets, dependent: :destroy
   has_many :players, dependent: :destroy
+  has_many :events, through: :volleyball_sets
 
   def to_s
     title

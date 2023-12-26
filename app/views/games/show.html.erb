@@ -10,7 +10,8 @@
     <small class="text-muted"><%= @game.date.strftime("%Y-%m-%d") %>
   </div>
   <div>
-    <%= link_to "Edit", edit_game_path(@game), class: "btn btn-primary" %>
+    <%= link_to "Edit", edit_game_path(@game), class: "btn btn-sm btn-outline-light text-dark border-0" %>
+    <%= link_to "Stats", stats_game_path(@game), class: "btn btn-sm btn-outline-light text-dark border-0" %>
   </div>
 </div>
 

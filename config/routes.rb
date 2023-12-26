@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       get :log_events, on: :member
       resources :players, shallow: true
     end
+
+    get :stats, on: :member
   end
   resources :users
   resources :teams
