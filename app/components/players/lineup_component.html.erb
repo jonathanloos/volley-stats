@@ -14,4 +14,16 @@
         <% end %>
     </button>
   <% end %>
+  <button class="btn btn-outline-secondary d-flex flex-row justify-content-between py-2 align-items-center" 
+    data-game-events-target="player" 
+    data-action="click->game-events#selectPlayer" 
+    data-name="<%= @volleyball_set.game.away_team %>"
+    data-id="">
+      <div>
+        <span><%= @volleyball_set.game.away_team %> Player</span>
+      </div>
+      <% if !@volleyball_set.home_team_serving? %>
+        <div class="badge bg-light text-dark">serving</div>
+      <% end %>
+  </button>
 </ul>

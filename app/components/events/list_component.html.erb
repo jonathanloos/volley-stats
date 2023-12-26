@@ -1,7 +1,7 @@
 <%= turbo_frame_tag :events do %>
   <ul class="list-group mt-4" id="eventList">
     <% @volleyball_set.events.reverse_each do |event| %>
-      <li class="list-group-item" data-point-type="<%= event.category %>"><%= event %></li>
+      <li class="list-group-item" data-point-type="<%= event.category %>" data-player-id="<%= event.player_id %>"><%= event %></li>
     <% end %>
   </ul>
 <% end %>
