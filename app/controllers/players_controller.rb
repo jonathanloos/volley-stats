@@ -1,5 +1,6 @@
 class PlayersController < ApplicationController
   before_action :set_player, only: %i[ show edit update destroy ]
+  before_action :set_volleyball_set, only: %i[create]
 
   # GET /players or /players.json
   def index
@@ -22,6 +23,8 @@ class PlayersController < ApplicationController
   # POST /players or /players.json
   def create
     @player = Player.new(player_params)
+    @player.volleyball_set = @volleyball_set
+    @player.game = @volleyball_set.game
 
     respond_to do |format|
       if @player.save
@@ -61,6 +64,10 @@ class PlayersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_player
       @player = Player.find(params[:id])
+    end
+
+    def set_volleyball_set
+      @player = VolleyballSet.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

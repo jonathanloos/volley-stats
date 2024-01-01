@@ -56,6 +56,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.bigint "user_id", null: false
     t.bigint "game_id", null: false
     t.bigint "volleyball_set_id", null: false
+    t.integer "status", default: 0
     t.integer "role"
     t.integer "rotation"
     t.datetime "created_at", null: false

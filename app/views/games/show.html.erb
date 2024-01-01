@@ -11,14 +11,14 @@
   </div>
   <div>
     <%= link_to "Edit", edit_game_path(@game), class: "btn btn-sm btn-outline-light text-dark border-0" %>
-    <%= link_to "Stats", stats_game_path(@game), class: "btn btn-sm btn-outline-light text-dark border-0" %>
+    <%= link_to "Stats", stats_game_path(@game), class: "btn btn-sm btn-outline-light text-dark border-0" if @game.events.any? %>
   </div>
 </div>
 
 <% @game.volleyball_sets.each do |volleyball_set| %>
   <div class="d-flex flex-row justify-content-between align-items-center mt-4 mb-2">
     <div>
-      <h3 class="m-0">Set <%= volleyball_set.position %> lineup</h3>
+      <h3 class="m-0">Set <%= volleyball_set.position %> roster</h3>
       <small>Add players starting from rotation <%= volleyball_set.starting_setter_rotation %></small>
     </div>
     <div class="d-flex flex-row align-items-center">
@@ -33,7 +33,43 @@
       </div>
     </div>
   </div>
-  <%= render Players::ListComponent.new(players: volleyball_set.players, volleyball_set: volleyball_set) %>
+  <div class="row">
+    <div class="col-lg-8">
+      <%= render Players::ListComponent.new(players: volleyball_set.players, volleyball_set: volleyball_set) %>
+    </div>
+    <div class="col-lg-4">
+      <%= bootstrap_form_with url: set_lineup_volleyball_set_path(volleyball_set), method: :put do |form| %>
+        <div class="border border-3 mt-4 mt-lg-0"></div>
+        <div class="d-flex flex-row">
+          <div class="d-flex flex-column flex-grow-1">
+            <div class="border-bottom border-end p-1 text-center d-flex flex-column">
+              <h4 class="m-0"><%= form.collection_select :rotation_four_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 4)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
+            </div>
+            <div class="border-top border-end p-1 text-center d-flex flex-column flex-grow-1">
+              <h4 class="m-0"><%= form.collection_select :rotation_five_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 5)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
+            </div>
+          </div>
+          <div class="d-flex flex-column flex-grow-1">
+            <div class="border-bottom border-end border-start p-1 text-center d-flex flex-column">
+              <h4 class="m-0"><%= form.collection_select :rotation_three_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 3)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
+            </div>
+            <div class="border-top border-end border-start p-1 text-center d-flex flex-column">
+              <h4 class="m-0"><%= form.collection_select :rotation_six_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 6)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
+            </div>
+          </div>
+          <div class="d-flex flex-column flex-grow-1">
+            <div class="border-bottom border-start p-1 text-center d-flex flex-column">
+              <h4 class="m-0"><%= form.collection_select :rotation_two_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 2)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
+            </div>
+            <div class="border-top border-start p-1 text-center d-flex flex-column">
+              <h4 class="m-0"><%= form.collection_select :rotation_one_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 1)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
+            </div>
+          </div>
+        </div>
+        <%= form.submit "Save Lineup", class: "btn btn-primary btn-sm w-100 mt-3" %>
+      <% end %>
+    </div>
+  </div>
 <% end %>
 
 <hr/>

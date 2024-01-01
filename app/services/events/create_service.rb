@@ -1,4 +1,4 @@
-# This class will create a crew member
+# This class will create an event
 class Events::CreateService < ApplicationService
   def initialize(event:)
     @event = event

@@ -1,4 +1,4 @@
-# This class will create a crew member
+# This class will adjust the score based on the most recent event.
 class VolleyballSets::ScoreService < ApplicationService
   def initialize(volleyball_set:, most_recent_event:, undo_action: false)
     @volleyball_set = volleyball_set

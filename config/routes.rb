@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :events, shallow: true
 
       get :log_events, on: :member
+      put :set_lineup, on: :member
       resources :players, shallow: true
     end
 
