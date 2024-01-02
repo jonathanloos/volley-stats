@@ -2,10 +2,6 @@
   <%= @volleyball_set.game %> set <%= @volleyball_set.position %>
 <% end %>
 
-<div class="my-3">
-  <%= link_to "back to game", @volleyball_set.game %>
-</div>
-
 <div data-controller="game-events" data-point-type="<%= @volleyball_set.events.points.last&.category %>" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
   <div class="row mt-4">
     <div class="col-md-8 ps-0">
@@ -86,6 +82,9 @@
             <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 1).rotation %></small>
           </div>
         </div>
+      </div>
+      <div class="my-3">
+        <%= link_to "back to game", @volleyball_set.game %>
       </div>
     </div>
     <div class="col-md-9">
