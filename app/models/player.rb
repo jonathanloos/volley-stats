@@ -32,6 +32,6 @@ class Player < ApplicationRecord
   private
 
   def set_status
-    self.status = rotation.present? ? :on_court : :bench
+    self.status = role.present? ? :on_court : :bench
   end
 end

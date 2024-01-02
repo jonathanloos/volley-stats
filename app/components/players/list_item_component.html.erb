@@ -3,7 +3,9 @@
     <p class="m-0 flex-grow-1"><%= @player.jersey_number %> <%= @player %></p>
     <div>
       <% if @player.on_court? %>
-        <div class="badge text-bg-success"><%= @player.role.humanize %> rotation <%= @player.rotation %></div>
+        <div class="badge text-bg-success">
+          <%= @player.role.humanize %> <%= "rotation #{@player.rotation}" if @player.rotation.present? %>
+        </div>
       <% else %>
         <div class="badge text-bg-light">Off</div>
       <% end %>

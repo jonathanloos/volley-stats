@@ -64,8 +64,8 @@ class VolleyballSetsController < ApplicationController
   end
 
   def set_lineup
-    if VolleyballSets::LineupService.call(volleyball_set: @volleyball_set, rotation_one_id: params[:rotation_one_id], rotation_two_id: params[:rotation_two_id], rotation_three_id: params[:rotation_three_id], rotation_four_id: params[:rotation_four_id], rotation_five_id: params[:rotation_five_id], rotation_six_id: params[:rotation_six_id])
-      redirect_to @volleyball_set.game, status: :ok, notice: "Lineup Saved"
+    if VolleyballSets::LineupService.call(volleyball_set: @volleyball_set, rotation_one_id: params[:rotation_one_id], rotation_two_id: params[:rotation_two_id], rotation_three_id: params[:rotation_three_id], rotation_four_id: params[:rotation_four_id], rotation_five_id: params[:rotation_five_id], rotation_six_id: params[:rotation_six_id], libero_id: params[:libero_id])
+      redirect_to @volleyball_set.game, status: :see_other, notice: "Lineup Saved"
     else
       redirect_to @volleyball_set.game, status: :unprocessable_entity, notice: "Error setting lineup: #{@volleyball_set.errors.full_messages.join(", ")}"
     end
