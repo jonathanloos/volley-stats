@@ -1,7 +1,7 @@
 <%= turbo_frame_tag dom_id(@player) do %>
   <%= bootstrap_form_with model: form_model, class: "d-flex flex-row w-100", data: {turbo_stream: true} do |form| %>
     <% if @player.new_record? %>
-      <%= form.collection_select :user_id, User.where.not(id: @player.volleyball_set.players.pluck(:user_id)), :id, :full_name, required: true, hide_label: true, wrapper_class: "flex-grow-1 m-0 me-2", placeholder: "Player" %>
+      <%= form.collection_select :user_id, @player.game.home_team.users.excluding(@player.volleyball_set.users), :id, :full_name, required: true, hide_label: true, wrapper_class: "flex-grow-1 m-0 me-2", placeholder: "Player" %>
     <% else %>
       <p class="m-0 flex-grow-1"><%= @player %></p>
     <% end %>

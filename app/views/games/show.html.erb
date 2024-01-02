@@ -18,8 +18,7 @@
 <% @game.volleyball_sets.each do |volleyball_set| %>
   <div class="d-flex flex-row justify-content-between align-items-center mt-4 mb-2">
     <div>
-      <h3 class="m-0">Set <%= volleyball_set.position %> roster</h3>
-      <small>Add players starting from rotation <%= volleyball_set.starting_setter_rotation %></small>
+      <h3 class="m-0">Set <%= volleyball_set.position %></h3>
     </div>
     <div class="d-flex flex-row align-items-center">
       <%= bootstrap_form_with model: volleyball_set do |form| %>
@@ -34,10 +33,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-6">
+      <h4 class="mt-4">Roster</h4>
       <%= render Players::ListComponent.new(players: volleyball_set.players, volleyball_set: volleyball_set) %>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
+      <h4 class="mt-4">Lineup</h4>
       <%= bootstrap_form_with url: set_lineup_volleyball_set_path(volleyball_set), method: :put do |form| %>
         <div class="border border-3 mt-4 mt-lg-0"></div>
         <div class="d-flex flex-row">

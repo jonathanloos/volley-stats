@@ -5,7 +5,7 @@
       <% if @player.on_court? %>
         <div class="badge text-bg-success"><%= @player.role.humanize %> rotation <%= @player.rotation %></div>
       <% else %>
-        <div class="badge text-bg-light">Bench</div>
+        <div class="badge text-bg-light">Off</div>
       <% end %>
     </div>
   <% end %>
