@@ -1,0 +1,106 @@
+<div class="card" data-controller="card">
+  <div class="card-body">
+    <div class="d-flex flex-row align-items-center mb-2">
+      <h4 class="flex-grow-1 m-0"><%= @player %></h4>
+      <div>
+        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#substitutionModal<%= @player.id %>">
+          Substitution
+        </button>
+
+        <div class="modal fade" id="substitutionModal<%= @player.id %>" tabindex="-1" aria-labelledby="substitutionModal<%= @player.id %>Label" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="substitutionModal<%= @player.id %>Label">Substitution: <%= @player %></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <h4>Coming In:</h4>
+                <ul class="list-group">
+                  <% @volleyball_set.players.bench.each do |player| %>
+                    <li class="list-group-item"><%= player %></li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Sub</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr/>
+    <%= turbo_frame_tag dom_id(Event.new) do %>
+      <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"card-target": "form"} do |form| %>
+        <%= form.hidden_field :player_id, value: @player.id %>
+        <%= form.hidden_field :category, value: nil, data: {"card-target": "categorySubmission"} %>
+        <%= form.hidden_field :rally_skill, value: nil, data: {"card-target": "rallySkillSubmission"} %>
+        <%= form.hidden_field :skill_point, value: nil, data: {"card-target": "skillPointSubmission"} %>
+        <%= form.hidden_field :skill_error, value: nil, data: {"card-target": "skillErrorSubmission"} %>
+        <%= form.hidden_field :quality, value: nil, data: {"card-target": "qualitySubmission"} %>
+      <% end %>
+    <% end %>
+    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+      <p class="m-0">Attack:</p>
+      <div class="d-flex flex-row gap-2 flex-nowrap">
+        <input type="radio" class="btn-check" name="attack-options-outlined-<%= @player.id %>" id="attack-secondary-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="continuation">
+        <label class="btn btn-outline-secondary btn-sm" for="attack-secondary-outlined-<%= @player.id %>">C</label>
+        <input type="radio" class="btn-check" name="attack-options-outlined-<%= @player.id %>" id="attack-success-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_earned">
+        <label class="btn btn-outline-success btn-sm" for="attack-success-outlined-<%= @player.id %>">K</label>
+        <input type="radio" class="btn-check" name="attack-options-outlined-<%= @player.id %>" id="attack-danger-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_given">
+        <label class="btn btn-outline-danger btn-sm" for="attack-danger-outlined-<%= @player.id %>">E</label>
+      </div>
+    </div>
+
+    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+      <p class="m-0">Serve:</p>
+      <div class="d-flex flex-row gap-2 flex-nowrap">
+        <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-secondary-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton"  data-category="continuation">
+        <label class="btn btn-outline-secondary btn-sm" for="serve-secondary-outlined-<%= @player.id %>">C</label>
+        <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-success-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_earned">
+        <label class="btn btn-outline-success btn-sm" for="serve-success-outlined-<%= @player.id %>">A</label>
+        <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-danger-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_given">
+        <label class="btn btn-outline-danger btn-sm" for="serve-danger-outlined-<%= @player.id %>">E</label>
+      </div>
+    </div>
+
+    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+      <p class="m-0">Pass:</p>
+      <div class="d-flex flex-row gap-2 flex-nowrap">
+        <input type="radio" class="btn-check" name="pass-options-outlined-<%= @player.id %>" id="pass-secondary-outlined-<%= @player.id %>-1" autocomplete="off" data-card-target="statButton" data-category="continuation">
+        <label class="btn btn-outline-secondary btn-sm" for="pass-secondary-outlined-<%= @player.id %>-1">1</label>
+        <input type="radio" class="btn-check" name="pass-options-outlined-<%= @player.id %>" id="pass-secondary-outlined-<%= @player.id %>-2" autocomplete="off" data-card-target="statButton" data-category="continuation">
+        <label class="btn btn-outline-secondary btn-sm" for="pass-secondary-outlined-<%= @player.id %>-2">2</label>
+        <input type="radio" class="btn-check" name="pass-options-outlined-<%= @player.id %>" id="pass-secondary-outlined-<%= @player.id %>-3" autocomplete="off" data-card-target="statButton" data-category="continuation">
+        <label class="btn btn-outline-secondary btn-sm" for="pass-secondary-outlined-<%= @player.id %>-3">3</label>
+        <input type="radio" class="btn-check" name="pass-options-outlined-<%= @player.id %>" id="pass-secondary-outlined-<%= @player.id %>-4" autocomplete="off" data-card-target="statButton" data-category="continuation">
+        <label class="btn btn-outline-secondary btn-sm" for="pass-secondary-outlined-<%= @player.id %>-4">4</label>
+        <input type="radio" class="btn-check" name="pass-options-outlined-<%= @player.id %>" id="pass-danger-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_given">
+        <label class="btn btn-outline-danger btn-sm" for="pass-danger-outlined-<%= @player.id %>">E</label>
+      </div>
+    </div>
+
+    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+      <p class="m-0">Block:</p>
+      <div class="d-flex flex-row gap-2 flex-nowrap">
+        <input type="radio" class="btn-check" name="block-options-outlined-<%= @player.id %>" id="block-secondary-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="continuation">
+        <label class="btn btn-outline-secondary btn-sm" for="block-secondary-outlined-<%= @player.id %>">C</label>
+        <input type="radio" class="btn-check" name="block-options-outlined-<%= @player.id %>" id="block-success-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_earned">
+        <label class="btn btn-outline-success btn-sm" for="block-success-outlined-<%= @player.id %>">K</label>
+        <input type="radio" class="btn-check" name="block-options-outlined-<%= @player.id %>" id="block-danger-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_given">
+        <label class="btn btn-outline-danger btn-sm" for="block-danger-outlined-<%= @player.id %>">E</label>
+      </div>
+    </div>
+
+    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+      <p class="m-0">Dig:</p>
+      <div class="d-flex flex-row gap-2 flex-nowrap">
+        <input type="radio" class="btn-check" name="dig-options-outlined-<%= @player.id %>" id="dig-success-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="continuation">
+        <label class="btn btn-outline-success btn-sm" for="dig-success-outlined-<%= @player.id %>">+</label>
+        <input type="radio" class="btn-check" name="dig-options-outlined-<%= @player.id %>" id="dig-danger-outlined-<%= @player.id %>" autocomplete="off" data-card-target="statButton" data-category="point_given">
+        <label class="btn btn-outline-danger btn-sm" for="dig-danger-outlined-<%= @player.id %>">E</label>
+      </div>
+    </div>
+  </div>
+</div>
