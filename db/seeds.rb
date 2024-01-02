@@ -19,17 +19,21 @@ middle_2 = User.create(first_name: "Joe", last_name: "K", team: apex, jersey_num
 User.create(first_name: "Nathan", last_name: "D", team: apex, jersey_number: 19, role: :middle)
 
 game = Game.create(title: "APEX Finals", home_team: apex, away_team: exo, date: DateTime.now)
-volleyball_set = VolleyballSet.create(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team)
-Player.create(game: game, volleyball_set: volleyball_set, user: setter, role: :setter, rotation: 1)
-Player.create(game: game, volleyball_set: volleyball_set, user: left_side_1, role: :left_side, rotation: 2)
-Player.create(game: game, volleyball_set: volleyball_set, user: middle_1, role: :middle, rotation: 3)
-Player.create(game: game, volleyball_set: volleyball_set, user: right_side, role: :right_side, rotation: 4)
-Player.create(game: game, volleyball_set: volleyball_set, user: left_side_2, role: :left_side, rotation: 5)
-Player.create(game: game, volleyball_set: volleyball_set, user: middle_2, role: :middle, rotation: 6)
+volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team)
+VolleyballSets::CreateService.call(volleyball_set: volleyball_set, game: game)
+VolleyballSets::LineupService.call(
+  volleyball_set: volleyball_set,
+  rotation_one_id: volleyball_set.players.find_by(user_id: setter.id),
+  rotation_two_id: volleyball_set.players.find_by(user_id: left_side_1.id),
+  rotation_three_id: volleyball_set.players.find_by(user_id: middle_1.id),
+  rotation_four_id: volleyball_set.players.find_by(user_id: right_side.id),
+  rotation_five_id: volleyball_set.players.find_by(user_id: left_side_2.id),
+  rotation_six_id: volleyball_set.players.find_by(user_id: middle_2.id)
+)
 
 right_side = User.create(first_name: "Nick", last_name: "S", team: exo, jersey_number: 1, role: :setter)
 middle_1 = User.create(first_name: "Cyrus", last_name: "K", team: exo, jersey_number: 2, role: :left_side)
-libero = User.create(first_name: "Nathan", last_name: "SB", team: exo, jersey_number: 4, role: :left_side)
+User.create(first_name: "Nathan", last_name: "SB", team: exo, jersey_number: 4, role: :left_side)
 User.create(first_name: "Elliott", last_name: "W", team: exo, jersey_number: 5, role: :left_side)
 User.create(first_name: "Grayson", last_name: "C", team: exo, jersey_number: 8, role: :left_side)
 middle_2 = User.create(first_name: "Lucas", last_name: "A", team: exo, jersey_number: 11, role: :right_side)
@@ -40,11 +44,14 @@ setter = User.create(first_name: "Aleksi", last_name: "E", team: exo, jersey_num
 left_side_2 = User.create(first_name: "Elliot", last_name: "W", team: exo, jersey_number: 25, role: :middle)
 
 game = Game.create(title: "EXO Finals", home_team: exo, away_team: apex, date: DateTime.now)
-volleyball_set = VolleyballSet.create(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team)
-Player.create(game: game, volleyball_set: volleyball_set, user: setter, role: :setter, rotation: 1)
-Player.create(game: game, volleyball_set: volleyball_set, user: left_side_1, role: :left_side, rotation: 2)
-Player.create(game: game, volleyball_set: volleyball_set, user: middle_1, role: :middle, rotation: 3)
-Player.create(game: game, volleyball_set: volleyball_set, user: right_side, role: :right_side, rotation: 4)
-Player.create(game: game, volleyball_set: volleyball_set, user: left_side_2, role: :left_side, rotation: 5)
-Player.create(game: game, volleyball_set: volleyball_set, user: middle_2, role: :middle, rotation: 6)
-Player.create(game: game, volleyball_set: volleyball_set, user: libero, role: :libero)
+volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team)
+VolleyballSets::CreateService.call(volleyball_set: volleyball_set, game: game)
+VolleyballSets::LineupService.call(
+  volleyball_set: volleyball_set,
+  rotation_one_id: volleyball_set.players.find_by(user_id: setter.id),
+  rotation_two_id: volleyball_set.players.find_by(user_id: left_side_1.id),
+  rotation_three_id: volleyball_set.players.find_by(user_id: middle_1.id),
+  rotation_four_id: volleyball_set.players.find_by(user_id: right_side.id),
+  rotation_five_id: volleyball_set.players.find_by(user_id: left_side_2.id),
+  rotation_six_id: volleyball_set.players.find_by(user_id: middle_2.id)
+)
