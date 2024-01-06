@@ -6,6 +6,8 @@
       <li class="list-group-item disabled">No players for this set</li>
     <% end %>
   </div>
-  <p class="mt-2 mb-0">Add Player</p>
-  <%= render Players::FormComponent.new(player: @new_player) %>
+  <% if @volleyball_set.game.home_team.users.excluding(@volleyball_set.users).any? %>
+    <p class="mt-2 mb-0">Add Player</p>
+    <%= render Players::FormComponent.new(player: @new_player) %>
+  <% end %>
 </div>

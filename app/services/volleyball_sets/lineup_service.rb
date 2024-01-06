@@ -1,6 +1,6 @@
 # This class will set the lineup for a volleyball set
 class VolleyballSets::LineupService < ApplicationService
-  def initialize(volleyball_set:, rotation_one_id:, rotation_two_id:, rotation_three_id:, rotation_four_id:, rotation_five_id:, rotation_six_id:, libero_id:)
+  def initialize(volleyball_set:, rotation_one_id:, rotation_two_id:, rotation_three_id:, rotation_four_id:, rotation_five_id:, rotation_six_id:, libero_id: nil)
     @volleyball_set = volleyball_set
     @rotation_one_id = rotation_one_id
     @rotation_two_id = rotation_two_id
@@ -35,8 +35,10 @@ class VolleyballSets::LineupService < ApplicationService
       player_6 = @volleyball_set.players.find(@rotation_six_id)
       player_6.update!(rotation: 6, role: player_6.user.role)
 
-      player_7 = @volleyball_set.players.find(@libero_id)
-      player_7.update!(role: :libero)
+      if @libero_id.present?
+        libero = @volleyball_set.players.find(@libero_id)
+        libero.update!(role: :libero)
+      end
 
       true
     end

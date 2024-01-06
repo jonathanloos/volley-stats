@@ -1,0 +1,34 @@
+<div>
+  <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#substitutionModal<%= @player.id %>">
+    Substitution
+  </button>
+
+  <div class="modal fade" id="substitutionModal<%= @player.id %>" tabindex="-1" aria-labelledby="substitutionModal<%= @player.id %>Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="substitutionModal<%= @player.id %>Label">Substitution: <%= @player %></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h4>Coming In:</h4>
+          <ul class="list-group">
+            <% @bench_players.each do |player| %>
+              <li class="list-group-item d-flex flex-row justify-content-between">
+                <%= player %>
+                <% if player.libero? %>
+                  <div>
+                    <div class="badge text-bg-primary">Libero</div>
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Sub</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

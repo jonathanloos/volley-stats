@@ -20,7 +20,7 @@ class Player < ApplicationRecord
   }
 
   def to_s
-    user.to_s
+    "#{user.first_name} #{user.last_name[0]}"
   end
 
   def serving?
@@ -32,6 +32,6 @@ class Player < ApplicationRecord
   private
 
   def set_status
-    self.status = role.present? ? :on_court : :bench
+    self.status = rotation.present? ? :on_court : :bench
   end
 end
