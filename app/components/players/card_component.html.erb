@@ -1,7 +1,9 @@
 <div class="card" data-controller="card">
   <div class="card-body">
     <div class="d-flex flex-row align-items-center mb-2">
-      <h4 class="flex-grow-1 m-0"><%= @player.persisted? ? @player : "#{@volleyball_set.game.away_team} Player" %> <span class="text-muted"><%= @player.jersey_number if @player.persisted? %></span></h4>
+      <h4 class="flex-grow-1 m-0">
+        <%= @player.persisted? ? @player : "#{@volleyball_set.game.away_team} Player" %> <span class="text-muted"><%= @player.jersey_number if @player.persisted? %></span>
+      </h4>
       <%= render(Players::SubstitutionComponent.new(player: @player)) if @player.persisted? %>
     </div>
     <hr/>

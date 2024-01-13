@@ -1,6 +1,8 @@
 class VolleyballSet < ApplicationRecord
   include ActiveModel::Dirty
 
+  ROTATIONS = [1, 2, 3, 4, 5, 6]
+
   belongs_to :game
   belongs_to :serving_team, class_name: "Team"
   belongs_to :receiving_team, class_name: "Team"
@@ -32,6 +34,10 @@ class VolleyballSet < ApplicationRecord
     return true if points.last.point_given? && points.last.team == game.away_team
 
     false
+  end
+
+  def has_full_starting_lineup?
+    (ROTATIONS - active_players.pluck(:rotation)).empty?
   end
 
   private

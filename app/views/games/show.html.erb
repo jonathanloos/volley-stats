@@ -24,9 +24,11 @@
       <%= bootstrap_form_with model: volleyball_set do |form| %>
         <%= form.select :serving_team_id, [["home", volleyball_set.game.home_team_id], ["away", volleyball_set.game.away_team_id]], {hide_label: true, wrapper_class: "m-0 me-2"}, {onchange: "this.form.submit();"} %>
       <% end %>
-      <div>
-        <%= link_to "log events", log_events_volleyball_set_path(volleyball_set), class: "me-2 btn btn-light border-0", data: {turbo_frame: "_top"} %>
-      </div>
+      <% if volleyball_set.has_full_starting_lineup? %>
+        <div>
+          <%= link_to "log events", log_events_volleyball_set_path(volleyball_set), class: "me-2 btn btn-light border-0", data: {turbo_frame: "_top"} %>
+        </div>
+      <% end %>
       <div>
         <%= link_to "remove", volleyball_set_path(volleyball_set), class: "text-danger btn btn-light border-0", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
       </div>
