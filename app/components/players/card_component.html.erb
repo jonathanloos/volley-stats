@@ -1,0 +1,145 @@
+<%= turbo_frame_tag dom_id(@player) do %>
+  <div class="card" data-controller="players--card">
+    <div class="card-body">
+      <div class="d-flex flex-row align-items-center mb-2">
+        <h4 class="flex-grow-1 m-0">
+          <%= @player %> <span class="text-muted"><%= @player.jersey_number if @player.persisted? %></span>
+        </h4>
+      </div>
+      <hr/>
+      <%= turbo_frame_tag dom_id(@player, :new_event) do %>
+        <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @player))) %>
+      <% end %>
+      <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+        <p class="m-0">Attack:</p>
+        <div class="d-flex flex-row gap-2 flex-nowrap">
+          <input type="radio" class="btn-check" name="attack-options-outlined-<%= @player.id %>" id="attack-secondary-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="hit_in_play">
+          <label class="btn btn-outline-secondary btn-sm" for="attack-secondary-outlined-<%= @player.id %>">C</label>
+          <input type="radio" class="btn-check" name="attack-options-outlined-<%= @player.id %>" id="attack-success-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_earned" data-skill-point="attack">
+          <label class="btn btn-outline-success btn-sm" for="attack-success-outlined-<%= @player.id %>">K</label>
+          <input type="radio" class="btn-check" name="attack-options-outlined-<%= @player.id %>" id="attack-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="attack">
+          <label class="btn btn-outline-danger btn-sm" for="attack-danger-outlined-<%= @player.id %>">E</label>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+        <p class="m-0">Serve:</p>
+        <div class="d-flex flex-row gap-2 flex-nowrap">
+          <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-secondary-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton"  data-category="continuation" data-rally-skill="serve">
+          <label class="btn btn-outline-secondary btn-sm" for="serve-secondary-outlined-<%= @player.id %>">C</label>
+          <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-success-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_earned" data-skill-point="ace">
+          <label class="btn btn-outline-success btn-sm" for="serve-success-outlined-<%= @player.id %>">A</label>
+          <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="serve">
+          <label class="btn btn-outline-danger btn-sm" for="serve-danger-outlined-<%= @player.id %>">E</label>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+        <p class="m-0">Reception:</p>
+        <div class="d-flex flex-row gap-2 flex-nowrap">
+          <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-secondary-outlined-<%= @player.id %>-1" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="serve_receive" data-quality="1">
+          <label class="btn btn-outline-secondary btn-sm" for="serve-receive-secondary-outlined-<%= @player.id %>-1">1</label>
+          <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-secondary-outlined-<%= @player.id %>-2" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="serve_receive" data-quality="2">
+          <label class="btn btn-outline-secondary btn-sm" for="serve-receive-secondary-outlined-<%= @player.id %>-2">2</label>
+          <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-secondary-outlined-<%= @player.id %>-3" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="serve_receive" data-quality="3">
+          <label class="btn btn-outline-secondary btn-sm" for="serve-receive-secondary-outlined-<%= @player.id %>-3">3</label>
+          <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-secondary-outlined-<%= @player.id %>-4" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="serve_receive" data-quality="4">
+          <label class="btn btn-outline-secondary btn-sm" for="serve-receive-secondary-outlined-<%= @player.id %>-4">4</label>
+          <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="serve_receive">
+          <label class="btn btn-outline-danger btn-sm" for="serve-receive-danger-outlined-<%= @player.id %>">E</label>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+        <p class="m-0">Block:</p>
+        <div class="d-flex flex-row gap-2 flex-nowrap">
+          <input type="radio" class="btn-check" name="block-options-outlined-<%= @player.id %>" id="block-secondary-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="block_in_play">
+          <label class="btn btn-outline-secondary btn-sm" for="block-secondary-outlined-<%= @player.id %>">C</label>
+          <input type="radio" class="btn-check" name="block-options-outlined-<%= @player.id %>" id="block-success-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_earned" data-skill-point="block">
+          <label class="btn btn-outline-success btn-sm" for="block-success-outlined-<%= @player.id %>">K</label>
+          <input type="radio" class="btn-check" name="block-options-outlined-<%= @player.id %>" id="block-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="block">
+          <label class="btn btn-outline-danger btn-sm" for="block-danger-outlined-<%= @player.id %>">E</label>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+        <p class="m-0">Dig:</p>
+        <div class="d-flex flex-row gap-2 flex-nowrap">
+          <input type="radio" class="btn-check" name="dig-options-outlined-<%= @player.id %>" id="dig-secondary-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="dig">
+          <label class="btn btn-outline-secondary btn-sm" for="dig-secondary-outlined-<%= @player.id %>">+</label>
+          <input type="radio" class="btn-check" name="dig-options-outlined-<%= @player.id %>" id="dig-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="dig">
+          <label class="btn btn-outline-danger btn-sm" for="dig-danger-outlined-<%= @player.id %>">E</label>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+        <p class="m-0">Other:</p>
+        <div>
+          <div>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#otherActionModal<%= @player.id %>">
+              Select
+            </button>
+
+            <div class="modal fade" id="otherActionModal<%= @player.id %>" tabindex="-1" aria-labelledby="otherActionModal<%= @player.id %>Label" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="otherActionModal<%= @player.id %>Label">Other Action: <%= @player.persisted? ? @player : "#{@volleyball_set.game.away_team} Player" %></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+                      <p class="m-0">Free Ball Receive:</p>
+                      <div class="d-flex flex-row gap-2 flex-nowrap">
+                        <input type="radio" class="btn-check" name="free-ball-receive-options-outlined-<%= @player.id %>" id="free-ball-receive-secondary-outlined-<%= @player.id %>-1" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="free_ball_receive" data-quality="1">
+                        <label class="btn btn-outline-secondary btn-sm" for="free-ball-receive-secondary-outlined-<%= @player.id %>-1">1</label>
+                        <input type="radio" class="btn-check" name="free-ball-receive-options-outlined-<%= @player.id %>" id="free-ball-receive-secondary-outlined-<%= @player.id %>-2" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="free_ball_receive" data-quality="2">
+                        <label class="btn btn-outline-secondary btn-sm" for="free-ball-receive-secondary-outlined-<%= @player.id %>-2">2</label>
+                        <input type="radio" class="btn-check" name="free-ball-receive-options-outlined-<%= @player.id %>" id="free-ball-receive-secondary-outlined-<%= @player.id %>-3" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="free_ball_receive" data-quality="3">
+                        <label class="btn btn-outline-secondary btn-sm" for="free-ball-receive-secondary-outlined-<%= @player.id %>-3">3</label>
+                        <input type="radio" class="btn-check" name="free-ball-receive-options-outlined-<%= @player.id %>" id="free-ball-receive-secondary-outlined-<%= @player.id %>-4" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="free_ball_receive" data-quality="4">
+                        <label class="btn btn-outline-secondary btn-sm" for="free-ball-receive-secondary-outlined-<%= @player.id %>-4">4</label>
+                        <input type="radio" class="btn-check" name="free-ball-receive-options-outlined-<%= @player.id %>" id="free-ball-receive-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="free_ball_receive">
+                        <label class="btn btn-outline-danger btn-sm" for="free-ball-receive-danger-outlined-<%= @player.id %>">E</label>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+                      <p class="m-0">Net:</p>
+                      <div class="d-flex flex-row gap-2 flex-nowrap">
+                        <input type="radio" class="btn-check" name="net-touch-outlined-<%= @player.id %>" id="net-touch-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="net">
+                        <label class="btn btn-outline-danger btn-sm" for="net-touch-danger-outlined-<%= @player.id %>">Touch</label>
+                        <input type="radio" class="btn-check" name="under-outlined-<%= @player.id %>" id="under-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="under">
+                        <label class="btn btn-outline-danger btn-sm" for="under-danger-outlined-<%= @player.id %>">Under</label>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
+                      <p class="m-0">Other:</p>
+                      <div class="d-flex flex-row gap-2 flex-nowrap">
+                        <input type="radio" class="btn-check" name="lift-outlined-<%= @player.id %>" id="lift-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="lift">
+                        <label class="btn btn-outline-danger btn-sm" for="lift-danger-outlined-<%= @player.id %>">Lift</label>
+                        <input type="radio" class="btn-check" name="second-contact-outlined-<%= @player.id %>" id="second-contact-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="double">
+                        <label class="btn btn-outline-danger btn-sm" for="second-contact-danger-outlined-<%= @player.id %>">Double</label>
+                        <input type="radio" class="btn-check" name="out-of-rotation-outlined-<%= @player.id %>" id="out-of-rotation-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="out_of_rotation">
+                        <label class="btn btn-outline-danger btn-sm" for="out-of-rotation-danger-outlined-<%= @player.id %>">Rotation</label>
+                        <input type="radio" class="btn-check" name="back-row-attack-outlined-<%= @player.id %>" id="back-row-attack-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="back_row_attack">
+                        <label class="btn btn-outline-danger btn-sm" for="back-row-attack-danger-outlined-<%= @player.id %>">Back Row Attack</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer d-flex flex-row justify-content-between bg-transparent">
+      <div>
+        <%= turbo_frame_tag dom_id(@player, :undo_button) do %>
+          <%= render(Events::UndoComponent.new(event: @most_recent_event)) %>
+        <% end %>
+      </div>
+      <%= render(Players::SubstitutionComponent.new(player: @player)) %>
+    </div>
+  </div>
+<% end %>

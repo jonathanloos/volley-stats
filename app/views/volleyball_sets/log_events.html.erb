@@ -2,172 +2,43 @@
   <%= @volleyball_set.game %> set <%= @volleyball_set.position %>
 <% end %>
 
-<div class="my-3">
-  <%= link_to "back to game", @volleyball_set.game %>
-</div>
-
-<div data-controller="game-events" data-point-type="<%= @volleyball_set.events.points.last&.category %>" data-game-events-receiving-value="<%= @volleyball_set.receiving_team == @volleyball_set.game.home_team %>">
+<div>
   <div class="row mt-4">
-    <div class="col-md-8 ps-0">
+    <div class="col-md-8">
       <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
       <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %></small>
     </div>
     <div class="col-md-4">
-      <div class="d-flex flex-row mt-3 m-md-0">
-        <div class="text-center w-100">
-          <small class="text-muted text-nowrap"><%= @volleyball_set.game.home_team %></small>
-          <h4 class="my-1" data-game-events-target="pointsFor"><%= @volleyball_set.home_score %></h4>
-          <small class="text-muted text-nowrap">TOL: 1</small>
-        </div>
-        <div class="text-center w-100">
-          <small class="text-muted text-nowrap"><%= @volleyball_set.game.away_team %></small>
-          <h4 class="my-1" data-game-events-target="pointsAgainst"><%= @volleyball_set.away_score %></h4>
-          <%# todo: time outs left %>
-          <small class="text-muted text-nowrap">TOL: 1</small>
-        </div>
-      </div>
+      <%= turbo_frame_tag dom_id(@volleyball_set, :score) do %>
+        <%= render(VolleyballSets::ScoreComponent.new(volleyball_set: @volleyball_set)) %>
+      <% end %>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-md-3 p-0">
-      <h4>Lineup</h4>
-      <%= turbo_frame_tag :players do %>
-        <%= render(Players::LineupComponent.new(volleyball_set: @volleyball_set)) %>
-      <% end %>
-      <%= turbo_frame_tag dom_id(Event.new) do %>
-        <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"game-events-target": "submissionForm"} do |form| %>
-          <%= form.hidden_field :player_id, value: 1, data: {"game-events-target": "playerSubmission"} %>
-          <%= form.hidden_field :category, value: nil, data: {"game-events-target": "categorySubmission"} %>
-          <%= form.hidden_field :rally_skill, value: nil, data: {"game-events-target": "rallySkillSubmission"} %>
-          <%= form.hidden_field :skill_point, value: nil, data: {"game-events-target": "skillPointSubmission"} %>
-          <%= form.hidden_field :skill_error, value: nil, data: {"game-events-target": "skillErrorSubmission"} %>
-          <%= form.hidden_field :quality, value: nil, data: {"game-events-target": "qualitySubmission"} %>
-        <% end %>
-      <% end %>
-
-      <div class="d-flex flex-row" style="gap: 5px">
-        <button data-game-events-target="submitButton" type="button" data-action="game-events#submitEvent" class="btn btn-success btn-sm d-none flex-grow-1 mb-3">save</button>
-        <button data-game-events-target="clearButton" type="button" data-action="game-events#clear" class="btn btn-light d-none flex-grow-1 mb-3">clear</button>
-        <%= turbo_frame_tag :undo_button, class: "flex-grow-1" do %>
-          <%= link_to "undo", @volleyball_set.events.last, id: "undoButton", class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} w-100 mb-3", data: {action: "game-events#undoAction", "game-events-target": "undoButton", turbo_method: :delete, turbo_stream: true} %>
-        <% end %>
-      </div>
-
-      <div class="border border-3"></div>
-      <div class="d-flex flex-row">
-        <div class="d-flex flex-column flex-grow-1">
-          <div class="border-bottom border-end p-1 text-center d-flex flex-column">
-            <h4 id="rotation4"  class="m-0"><%= @volleyball_set.players.find_by(rotation: 4).user.jersey_number %></h4>
-            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 4).rotation %></small>
-          </div>
-          <div class="border-top border-end p-1 text-center d-flex flex-column flex-grow-1">
-            <h4 id="rotation5" class="m-0"><%= @volleyball_set.players.find_by(rotation: 5).user.jersey_number %></h4>
-            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 5).rotation %></small>
-          </div>
-        </div>
-        <div class="d-flex flex-column flex-grow-1">
-          <div class="border-bottom border-end border-start p-1 text-center d-flex flex-column">
-            <h4 id="rotation3" class="m-0"><%= @volleyball_set.players.find_by(rotation: 3).user.jersey_number %></h4>
-            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 3).rotation %></small>
-          </div>
-          <div class="border-top border-end border-start p-1 text-center d-flex flex-column">
-            <h4 id="rotation6" class="m-0"><%= @volleyball_set.players.find_by(rotation: 6).user.jersey_number %></h4>
-            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 6).rotation %></small>
-          </div>
-        </div>
-        <div class="d-flex flex-column flex-grow-1">
-          <div class="border-bottom border-start p-1 text-center d-flex flex-column">
-            <h4 id="rotation2" class="m-0"><%= @volleyball_set.players.find_by(rotation: 2).user.jersey_number %></h4>
-            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 2).rotation %></small>
-          </div>
-          <div class="border-top border-start p-1 text-center d-flex flex-column">
-            <h4 id="rotation1" class="m-0"><%= @volleyball_set.players.find_by(rotation: 1).user.jersey_number %></h4>
-            <small class="text-muted"><%= @volleyball_set.players.find_by(rotation: 1).rotation %></small>
-          </div>
-        </div>
-      </div>
+  <%= turbo_frame_tag dom_id(@volleyball_set, :additional_information) do %>
+    <%= render(VolleyballSets::AddtionalInformationComponent.new(volleyball_set: @volleyball_set)) %>
+  <% end %>
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 4))) %>
     </div>
-    <div class="col-md-9">
-      <div class="d-flex flex-row justify-content-between">
-        <h4>Action</h4>
-        <div class="d-flex flex-row">
-          <h4 class="me-1" data-game-events-target="playerSelection"></h4>
-          <h4 class="me-1" data-game-events-target="actionSelection"></h4>
-          <h4 class="me-1" data-game-events-target="qualitySelection"></h4>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-2">
-              <h6 class="text-nowrap">In Rally</h6>
-              <div class="row">
-                <% Event.rally_skills.keys.each do |rally_skill| %>
-                  <div class="col-12 p-1">
-                    <button class="btn btn-sm btn-outline-secondary w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="rally_skill" data-enum-value="<%= rally_skill %>" data-quality-metric="<%= Event::QUALITY_CATEGORIES[rally_skill] %>" data-action-name="<%= rally_skill.humanize.downcase %>"><%= rally_skill.humanize %></button>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <h6 class="text-nowrap">Point Earned</h6>
-              <div class="row">
-                <% Event.skill_points.keys.each do |skill_point| %>
-                  <div class="col-md-12 p-1">
-                    <button class="btn btn-sm btn-outline-success w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="skill_point" data-enum-value="<%= skill_point %>" data-quality-metric="<%= Event::QUALITY_CATEGORIES[skill_point] %>" data-action-name="<%= skill_point.humanize.downcase %>"><%= skill_point.humanize %></button>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-            <div class="col-md-8">
-              <h6 class="text-nowrap">Point Given</h6>
-              <div class="row">
-                <% Event.skill_errors.keys.each do |skill_error| %>
-                  <div class="col-4 p-1">
-                    <button class="btn btn-sm btn-outline-danger w-100 h-100" data-game-events-target="actionButton" data-action="game-events#selectActionEvent" data-action-type="skill_error" data-enum-value="<%= skill_error %>" data-action-name="<%= skill_error.humanize.downcase %>"><%= skill_error.humanize %></button>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <h4 class="mt-4">Quality</h4>
-      <div class="card">
-        <div class="card-body">
-          <div data-game-events-target="qualityMeasure" class="d-none" data-quality-metric="passing">
-            <h6>Passing (low - high)</h6>
-            <div class="row">
-              <% 4.times do |i| %>
-                <div class="col-md-3 p-1">
-                  <button class="btn btn-sm btn-outline-secondary w-100 h-100" data-game-events-target="qualityButton" data-action="game-events#selectQualityMetric"><%= i + 1 %></button>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <div data-game-events-target="qualityMeasure" class="d-none" data-quality-metric="attacking">
-            <h6 class="mt-2">Attack Location</h6>
-            <div class="row">
-              <% 6.times do |i| %>
-                <div class="col-sm-2 p-1">
-                  <button class="btn btn-sm btn-outline-secondary w-100 h-100" data-game-events-target="qualityButton" data-action="game-events#selectQualityMetric"><%= i + 1 %></button>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <div data-game-events-target="qualityMeasure" class="d-none" data-quality-metric="serving">
-            <h6 class="mt-2">Pass off serve (high-low)</h6>
-            <div class="row">
-              <% 4.times do |i| %>
-                <div class="col-sm-3 p-1">
-                  <button class="btn btn-sm btn-outline-secondary w-100 h-100" data-game-events-target="qualityButton" data-action="game-events#selectQualityMetric"><%= i + 1 %></button>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="col-md-4">
+      <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 3))) %>
+    </div>
+    <div class="col-md-4">
+      <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 2))) %>
+    </div>
+    <div class="col-md-4 mt-md-4">
+      <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 5))) %>
+    </div>
+    <div class="col-md-4 mt-md-4">
+      <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 6))) %>
+    </div>
+     <div class="col-md-4 mt-md-4">
+      <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 1))) %>
+    </div>
+
+    <div class="col-md-4 mt-md-4">
+      <%= render(Players::CardComponent.new(player: @volleyball_set.away_team_player)) %>
     </div>
   </div>
 </div>

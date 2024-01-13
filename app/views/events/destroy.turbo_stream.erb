@@ -1,28 +1,25 @@
-<%= turbo_stream.replace dom_id(Event.new) do %>
-  <%= turbo_frame_tag dom_id(Event.new) do %>
-    <%= bootstrap_form_with model: [@volleyball_set, Event.new], data: {"game-events-target": "submissionForm"} do |form| %>
-      <%= form.hidden_field :player_id, value: 1, data: {"game-events-target": "playerSubmission"} %>
-      <%= form.hidden_field :category, value: nil, data: {"game-events-target": "categorySubmission"} %>
-      <%= form.hidden_field :rally_skill, value: nil, data: {"game-events-target": "rallySkillSubmission"} %>
-      <%= form.hidden_field :skill_point, value: nil, data: {"game-events-target": "skillPointSubmission"} %>
-      <%= form.hidden_field :skill_error, value: nil, data: {"game-events-target": "skillErrorSubmission"} %>
-      <%= form.hidden_field :quality, value: nil, data: {"game-events-target": "qualitySubmission"} %>
+<%= turbo_stream.replace dom_id(@event.player.present? ? @event.player : @event.team, :new_event) do %>
+  <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @event.player || Player.new))) %>
+<% end %>
+
+<%= turbo_stream.remove dom_id(@event) %>
+
+<% @volleyball_set.players.each do |player| %>
+  <%= turbo_stream.replace dom_id(player, :undo_button) do %>
+    <%= turbo_frame_tag dom_id(player, :undo_button) do %>
+      <%= render(Events::UndoComponent.new(event: player.events.last)) %>
     <% end %>
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace :events, class: "flex-grow-1" do %>
-  <%= render(Events::ListComponent.new(volleyball_set: @volleyball_set)) %>
-<% end %>
-
-<%= turbo_stream.replace :players do %>
-  <%= turbo_frame_tag :players do %>
-    <%= render(Players::LineupComponent.new(volleyball_set: @volleyball_set)) %>
+<%= turbo_stream.replace dom_id(@volleyball_set.game.away_team, :undo_button) do %>
+  <%= turbo_frame_tag dom_id(@volleyball_set.game.away_team, :undo_button) do %>
+    <%= render(Events::UndoComponent.new(event: @volleyball_set.events.where(team: @volleyball_set.game.away_team).last)) %>
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace :undo_button, class: "flex-grow-1" do %>
-  <%= turbo_frame_tag :undo_button, class: "flex-grow-1" do %>
-    <%= link_to "undo", @volleyball_set.events.last, id: "undoButton", class: "btn btn-light #{"d-none" if @volleyball_set.events.empty?} w-100 mb-3", data: {action: "game-events#undoAction", "game-events-target": "undoButton", turbo_method: :delete, turbo_stream: true} %>
+<%= turbo_stream.replace dom_id(@volleyball_set, :score) do %>
+  <%= turbo_frame_tag dom_id(@volleyball_set, :score) do %>
+    <%= render(VolleyballSets::ScoreComponent.new(volleyball_set: @volleyball_set)) %>
   <% end %>
 <% end %>

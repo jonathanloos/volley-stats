@@ -1,4 +1,4 @@
-# This class will create a crew member
+# This class will create a game
 class Games::CreateService < ApplicationService
   def initialize(game)
     @game = game

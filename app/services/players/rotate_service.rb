@@ -1,4 +1,4 @@
-# This class will create a crew member
+# This class will rotate players into their next position
 class Players::RotateService < ApplicationService
   def initialize(players:, most_recent_event:, undo_action: false)
     @players = players

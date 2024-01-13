@@ -5,7 +5,10 @@ Rails.application.routes.draw do
       resources :events, shallow: true
 
       get :log_events, on: :member
-      resources :players, shallow: true
+      put :set_lineup, on: :member
+      resources :players, shallow: true do
+        put :substitution, on: :member
+      end
     end
 
     get :stats, on: :member

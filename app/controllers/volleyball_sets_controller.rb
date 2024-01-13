@@ -1,5 +1,5 @@
 class VolleyballSetsController < ApplicationController
-  before_action :set_volleyball_set, only: %i[ show edit update destroy log_events ]
+  before_action :set_volleyball_set, only: %i[ show edit update destroy log_events set_lineup ]
   before_action :set_game, only: %i[ create ]
 
   # GET /volleyball_sets or /volleyball_sets.json
@@ -23,17 +23,13 @@ class VolleyballSetsController < ApplicationController
   # POST /volleyball_sets or /volleyball_sets.json
   def create
     @volleyball_set = VolleyballSet.new(volleyball_set_params)
-    @volleyball_set.game = @game
-    @volleyball_set.serving_team = @game.home_team
-    @volleyball_set.receiving_team = @game.home_team
-    @volleyball_set.setter_rotation = @volleyball_set.starting_setter_rotation
 
     respond_to do |format|
-      if @volleyball_set.save
-        format.html { redirect_to @volleyball_set.game, notice: "Volleyball set was successfully created." }
+      if VolleyballSets::CreateService.call(volleyball_set: @volleyball_set, game: @game)
+        format.html { redirect_to @game, notice: "Volleyball set was successfully created." }
         format.json { render :show, status: :created, location: @volleyball_set }
       else
-        format.html { redirect_to @volleyball_set.game, alert: "Could not create set.", status: :unprocessable_entity }
+        format.html { redirect_to @game, alert: "Could not create set.", status: :unprocessable_entity }
         format.json { render json: @volleyball_set.errors, status: :unprocessable_entity }
       end
     end
@@ -65,6 +61,14 @@ class VolleyballSetsController < ApplicationController
   # GET /volleyball_sets/1/log_events
   def log_events
     @events = @volleyball_set.events
+  end
+
+  def set_lineup
+    if VolleyballSets::LineupService.call(volleyball_set: @volleyball_set, rotation_one_id: params[:rotation_one_id], rotation_two_id: params[:rotation_two_id], rotation_three_id: params[:rotation_three_id], rotation_four_id: params[:rotation_four_id], rotation_five_id: params[:rotation_five_id], rotation_six_id: params[:rotation_six_id], libero_id: params[:libero_id])
+      redirect_to @volleyball_set.game, status: :see_other, notice: "Lineup Saved"
+    else
+      redirect_to @volleyball_set.game, status: :unprocessable_entity, notice: "Error setting lineup: #{@volleyball_set.errors.full_messages.join(", ")}"
+    end
   end
 
   private

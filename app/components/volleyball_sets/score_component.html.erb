@@ -1,0 +1,13 @@
+<div class="d-flex flex-row mt-3 m-md-0">
+  <div class="text-center w-100">
+    <small class="text-muted text-nowrap"><%= @volleyball_set.game.home_team %></small>
+    <h4 class="my-1"><%= @volleyball_set.home_score %></h4>
+    <small class="text-muted text-nowrap">TOL: 1</small>
+  </div>
+  <div class="text-center w-100">
+    <small class="text-muted text-nowrap"><%= @volleyball_set.game.away_team %></small>
+    <h4 class="my-1"><%= @volleyball_set.away_score %></h4>
+    <%# todo: time outs left %>
+    <small class="text-muted text-nowrap">TOL: 1</small>
+  </div>
+</div>

@@ -1,8 +1,14 @@
 <turbo-frame id="<%= dom_id(@player) %>" class="list-group-item list-group-item-action">
-  <%= link_to edit_player_path(@player), class: "d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark" do %>
-    <p class="m-0 flex-grow-1"><%= @player %></p>
+  <%= link_to edit_player_path(@player), class: "d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark stretched-link" do %>
+    <p class="m-0 flex-grow-1"><%= @player.jersey_number %> <%= @player %></p>
     <div>
-      <p class="m-0 text-muted"><%= @player.role.humanize %> | <%= @player.rotation %></p>
+      <% if @player.on_court? %>
+        <div class="badge text-bg-success">
+          <%= @player.role.humanize %> <%= "rotation #{@player.rotation}" if @player.rotation.present? %>
+        </div>
+      <% else %>
+        <div class="badge text-bg-light">Off</div>
+      <% end %>
     </div>
   <% end %>
 </turbo-frame>
