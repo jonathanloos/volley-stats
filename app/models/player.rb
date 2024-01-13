@@ -6,6 +6,8 @@ class Player < ApplicationRecord
   belongs_to :volleyball_set
 
   delegate :jersey_number, to: :user
+  delegate :first_name, to: :user
+  delegate :last_name, to: :user
   
   has_many :events, -> { order(:position) }, dependent: :destroy
 
@@ -20,7 +22,11 @@ class Player < ApplicationRecord
   }
 
   def to_s
-    "#{user.first_name} #{user.last_name[0]}"
+    "#{first_name} #{last_name[0]}"
+  end
+
+  def full_information
+    "#{jersey_number} - " + to_s + " (#{user.role.humanize})"
   end
 
   def serving?

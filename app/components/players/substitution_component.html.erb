@@ -13,7 +13,7 @@
         <div class="modal-body">
           <h4>Coming In:</h4>
           <%= bootstrap_form_with(model: @player, url: substitution_player_path(@player), method: :put, data: {"players--substitution-target": "form", turbo_stream: true}) do |form| %>
-            <%= form.collection_radio_buttons :substitution_id, @bench_players, :id, :to_s, required: true %>
+            <%= form.collection_radio_buttons :substitution_id, @bench_players, :id, :full_information, required: true %>
             <%= form.submit "Sub", class: "btn btn-primary btn-sm float-end", data: {"players--substitution-target": "submitButton"} %>
           <% end %>
         </div>

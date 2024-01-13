@@ -23,23 +23,23 @@ volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, sett
 VolleyballSets::CreateService.call(volleyball_set: volleyball_set, game: game)
 VolleyballSets::LineupService.call(
   volleyball_set: volleyball_set,
-  rotation_one_id: volleyball_set.players.find_by(user_id: setter.id),
-  rotation_two_id: volleyball_set.players.find_by(user_id: left_side_1.id),
-  rotation_three_id: volleyball_set.players.find_by(user_id: middle_1.id),
-  rotation_four_id: volleyball_set.players.find_by(user_id: right_side.id),
-  rotation_five_id: volleyball_set.players.find_by(user_id: left_side_2.id),
+  rotation_one_id: volleyball_set.players.find_by(user_id: setter.id).id,
+  rotation_two_id: volleyball_set.players.find_by(user_id: left_side_1.id).id,
+  rotation_three_id: volleyball_set.players.find_by(user_id: middle_1.id).id,
+  rotation_four_id: volleyball_set.players.find_by(user_id: right_side.id).id,
+  rotation_five_id: volleyball_set.players.find_by(user_id: left_side_2.id).id,
   rotation_six_id: volleyball_set.players.find_by(user_id: middle_2.id)
 )
 
 right_side = User.create(first_name: "Nick", last_name: "S", team: exo, jersey_number: 1, role: :setter)
 middle_1 = User.create(first_name: "Cyrus", last_name: "K", team: exo, jersey_number: 2, role: :left_side)
-User.create(first_name: "Nathan", last_name: "SB", team: exo, jersey_number: 4, role: :left_side)
+libero = User.create(first_name: "Nathan", last_name: "SB", team: exo, jersey_number: 4, role: :libero)
 User.create(first_name: "Elliott", last_name: "W", team: exo, jersey_number: 5, role: :left_side)
-User.create(first_name: "Grayson", last_name: "C", team: exo, jersey_number: 8, role: :left_side)
+User.create(first_name: "Grayson", last_name: "C", team: exo, jersey_number: 8, role: :setter)
 middle_2 = User.create(first_name: "Lucas", last_name: "A", team: exo, jersey_number: 11, role: :right_side)
 left_side_1 = User.create(first_name: "Reese", last_name: "RC", team: exo, jersey_number: 13, role: :right_side)
 User.create(first_name: "Danny", last_name: "S", team: exo, jersey_number: 14, role: :setter)
-User.create(first_name: "Mason", last_name: "K", team: exo, jersey_number: 15, role: :middle)
+User.create(first_name: "Mason", last_name: "K", team: exo, jersey_number: 15, role: :right_side)
 setter = User.create(first_name: "Aleksi", last_name: "E", team: exo, jersey_number: 17, role: :middle)
 left_side_2 = User.create(first_name: "Elliot", last_name: "W", team: exo, jersey_number: 25, role: :middle)
 
@@ -48,10 +48,11 @@ volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, sett
 VolleyballSets::CreateService.call(volleyball_set: volleyball_set, game: game)
 VolleyballSets::LineupService.call(
   volleyball_set: volleyball_set,
-  rotation_one_id: volleyball_set.players.find_by(user_id: setter.id),
-  rotation_two_id: volleyball_set.players.find_by(user_id: left_side_1.id),
-  rotation_three_id: volleyball_set.players.find_by(user_id: middle_1.id),
-  rotation_four_id: volleyball_set.players.find_by(user_id: right_side.id),
-  rotation_five_id: volleyball_set.players.find_by(user_id: left_side_2.id),
-  rotation_six_id: volleyball_set.players.find_by(user_id: middle_2.id)
+  rotation_one_id: volleyball_set.players.find_by(user_id: setter.id).id,
+  rotation_two_id: volleyball_set.players.find_by(user_id: left_side_1.id).id,
+  rotation_three_id: volleyball_set.players.find_by(user_id: middle_1.id).id,
+  rotation_four_id: volleyball_set.players.find_by(user_id: right_side.id).id,
+  rotation_five_id: volleyball_set.players.find_by(user_id: left_side_2.id).id,
+  rotation_six_id: volleyball_set.players.find_by(user_id: middle_2.id).id,
+  libero_id: volleyball_set.players.find_by(user_id: libero.id).id
 )
