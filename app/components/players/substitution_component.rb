@@ -5,4 +5,8 @@ class Players::SubstitutionComponent < ApplicationComponent
     @player = player
     @bench_players = @player.volleyball_set.players.bench
   end
+
+  def render?
+    @player.persisted?
+  end
 end

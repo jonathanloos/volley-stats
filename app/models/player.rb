@@ -7,7 +7,7 @@ class Player < ApplicationRecord
 
   delegate :jersey_number, to: :user
   
-  has_many :events, dependent: :destroy
+  has_many :events, -> { order(:position) }, dependent: :destroy
 
   validates :role, presence: true, if: -> { on_court? }
   validates :rotation, numericality: {in: 1..6}, uniqueness: {scope: :volleyball_set, message: "must not have two players in the same rotation"}, if: -> {rotation.present? && on_court?}
