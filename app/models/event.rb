@@ -7,6 +7,7 @@ class Event < ApplicationRecord
 
   belongs_to :game
   belongs_to :player, optional: true
+  belongs_to :incoming_player, class_name: "Player", optional: true
   belongs_to :team
   belongs_to :user, optional: true
   belongs_to :volleyball_set
@@ -18,6 +19,7 @@ class Event < ApplicationRecord
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }
+  validates :incoming_player, presence: true, if: -> {substitution?}
 
   scope :points, -> { where(category: [:point_earned, :point_given]) }
   scope :attack_attempts, -> { where(rally_skill: IN_RALLY_THIRD_CONTACTS).or(
@@ -100,12 +102,14 @@ class Event < ApplicationRecord
 
   def to_s
     text = "#{position}. #{category.humanize}: "
-    text += if category == "point_earned"
+    text += if point_earned?
       "#{skill_point.humanize.titleize} by #{user || team}"
-    elsif category == "point_given"
+    elsif point_given?
       "#{skill_error.humanize.titleize} by #{user || team}"
-    else
+    elsif rally_skill?
       "#{rally_skill.humanize.titleize} by #{user || team}"
+    elsif substitution?
+      "#{incoming_player} in for #{player}"
     end
 
     text += " - #{quality} quality" if quality.present?

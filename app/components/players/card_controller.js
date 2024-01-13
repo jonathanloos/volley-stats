@@ -12,13 +12,6 @@ export default class extends Controller {
     this.skillErrorSubmissionTarget.value = event.target.dataset.skillError ?? ""
     this.qualitySubmissionTarget.value = event.target.dataset.quality ?? ""
 
-    console.log("Submitting:")
-    console.log("Category: ", this.categorySubmissionTarget.value)
-    console.log("RallySkill: ", this.rallySkillSubmissionTarget.value)
-    console.log("SkillPoint: ", this.skillPointSubmissionTarget.value)
-    console.log("SkillError: ", this.skillErrorSubmissionTarget.value)
-    console.log("Quality: ", this.qualitySubmissionTarget.value)
-
     this.formTarget.requestSubmit()
 
     setTimeout(() => {

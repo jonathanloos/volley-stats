@@ -6,7 +6,9 @@ Rails.application.routes.draw do
 
       get :log_events, on: :member
       put :set_lineup, on: :member
-      resources :players, shallow: true
+      resources :players, shallow: true do
+        put :substitution, on: :member
+      end
     end
 
     get :stats, on: :member

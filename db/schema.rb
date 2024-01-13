@@ -17,6 +17,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
   create_table "events", force: :cascade do |t|
     t.bigint "volleyball_set_id", null: false
     t.bigint "player_id"
+    t.bigint "incoming_player_id"
     t.bigint "user_id"
     t.bigint "game_id", null: false
     t.bigint "team_id", null: false
@@ -34,6 +35,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_events_on_game_id"
+    t.index ["incoming_player_id"], name: "index_events_on_incoming_player_id"
     t.index ["player_id"], name: "index_events_on_player_id"
     t.index ["team_id"], name: "index_events_on_team_id"
     t.index ["user_id"], name: "index_events_on_user_id"
@@ -104,6 +106,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
 
   add_foreign_key "events", "games"
   add_foreign_key "events", "players"
+  add_foreign_key "events", "players", column: "incoming_player_id"
   add_foreign_key "events", "teams"
   add_foreign_key "events", "users"
   add_foreign_key "events", "volleyball_sets"

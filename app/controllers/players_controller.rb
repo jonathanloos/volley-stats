@@ -1,6 +1,8 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: %i[ show edit update destroy ]
+  before_action :set_player, only: %i[ show edit update destroy substitution ]
   before_action :set_volleyball_set, only: %i[create]
+
+  layout false
 
   # GET /players or /players.json
   def index
@@ -58,6 +60,17 @@ class PlayersController < ApplicationController
       format.turbo_stream
       format.json { head :no_content }
     end
+  end
+
+  def substitution
+    @incoming_player = @player.volleyball_set.players.find(params[:player][:substitution_id])
+    rotation = @player.rotation
+
+    @event = Event.new(category: :substitution, player: @player, incoming_player: @incoming_player, volleyball_set: @player.volleyball_set)
+    Events::CreateService.call(event: @event)
+
+    @player.update(status: :bench, rotation: nil)
+    @incoming_player.update(status: :on_court, rotation: rotation, role: @incoming_player.user.role)
   end
 
   private
