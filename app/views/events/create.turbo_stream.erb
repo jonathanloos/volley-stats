@@ -19,3 +19,9 @@
     <% end %>
   <% end %>
 <% end %>
+
+<%= turbo_stream.replace dom_id(@volleyball_set, :score) do %>
+  <%= turbo_frame_tag dom_id(@volleyball_set, :score) do %>
+    <%= render(VolleyballSets::ScoreComponent.new(volleyball_set: @volleyball_set)) %>
+  <% end %>
+<% end %>
