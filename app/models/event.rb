@@ -70,7 +70,7 @@ class Event < ApplicationRecord
     attack: 2,
     dig: 3,
     tip: 4,
-    set: 5,
+    double: 5,
     dump: 6,
     free_ball_receive: 7,
     downball: 8,
