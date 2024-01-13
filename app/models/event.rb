@@ -15,7 +15,7 @@ class Event < ApplicationRecord
   acts_as_list scope: :volleyball_set
 
   validates :category, presence: true
-  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? }
+  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? && team != game.away_team}
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }

@@ -40,6 +40,10 @@ class VolleyballSet < ApplicationRecord
     (ROTATIONS - active_players.pluck(:rotation)).empty?
   end
 
+  def away_team_player
+    Player.find_by(volleyball_set: self, team: game.away_team)
+  end
+
   private
 
   def set_serving_and_receiving_teams

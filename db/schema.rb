@@ -55,15 +55,17 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "game_id", null: false
     t.bigint "volleyball_set_id", null: false
+    t.bigint "team_id", null: false
     t.integer "status", default: 0
     t.integer "role"
     t.integer "rotation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_players_on_game_id"
+    t.index ["team_id"], name: "index_players_on_team_id"
     t.index ["user_id"], name: "index_players_on_user_id"
     t.index ["volleyball_set_id"], name: "index_players_on_volleyball_set_id"
   end
@@ -113,6 +115,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
   add_foreign_key "games", "teams", column: "away_team_id"
   add_foreign_key "games", "teams", column: "home_team_id"
   add_foreign_key "players", "games"
+  add_foreign_key "players", "teams"
   add_foreign_key "players", "users"
   add_foreign_key "players", "volleyball_sets"
   add_foreign_key "users", "teams"

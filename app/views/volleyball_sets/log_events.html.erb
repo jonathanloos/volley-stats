@@ -38,7 +38,7 @@
     </div>
 
     <div class="col-md-4 mt-md-4">
-      <%= render(Players::CardComponent.new(player: Player.new(volleyball_set: @volleyball_set))) %>
+      <%= render(Players::CardComponent.new(player: @volleyball_set.away_team_player)) %>
     </div>
   </div>
 </div>
