@@ -7,7 +7,7 @@
         </h4>
       </div>
       <hr/>
-      <%= turbo_frame_tag dom_id(@player, :new_event) do %>
+      <%= turbo_frame_tag dom_id(@player.persisted? ? @player : @volleyball_set.game.away_team, :new_event) do %>
         <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @player))) %>
       <% end %>
       <div class="d-flex flex-row align-items-center justify-content-between my-2 flex-wrap">
@@ -135,8 +135,8 @@
     </div>
     <div class="card-footer d-flex flex-row justify-content-between bg-transparent">
       <div>
-        <%= turbo_frame_tag dom_id(@player, :undo_button) do %>
-          <%= render(Events::UndoComponent.new(event: @player.events.last)) %>
+        <%= turbo_frame_tag dom_id(@player.persisted? ? @player : @volleyball_set.game.away_team, :undo_button) do %>
+          <%= render(Events::UndoComponent.new(event: @most_recent_event)) %>
         <% end %>
       </div>
       <%= render(Players::SubstitutionComponent.new(player: @player)) %>

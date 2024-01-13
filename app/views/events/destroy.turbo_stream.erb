@@ -1,5 +1,5 @@
-<%= turbo_stream.replace dom_id(@event.player, :new_event) do %>
-  <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @event.player))) %>
+<%= turbo_stream.replace dom_id(@event.player.present? ? @event.player : @event.team, :new_event) do %>
+  <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @event.player || Player.new))) %>
 <% end %>
 
 <%= turbo_stream.remove dom_id(@event) %>
@@ -9,6 +9,12 @@
     <%= turbo_frame_tag dom_id(player, :undo_button) do %>
       <%= render(Events::UndoComponent.new(event: player.events.last)) %>
     <% end %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace dom_id(@volleyball_set.game.away_team, :undo_button) do %>
+  <%= turbo_frame_tag dom_id(@volleyball_set.game.away_team, :undo_button) do %>
+    <%= render(Events::UndoComponent.new(event: @volleyball_set.events.where(team: @volleyball_set.game.away_team).last)) %>
   <% end %>
 <% end %>
 
