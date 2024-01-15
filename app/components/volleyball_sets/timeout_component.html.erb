@@ -1,0 +1,12 @@
+<%= bootstrap_form_with(model: [@volleyball_set, @event], method: :post) do |form| %>
+  <%= form.hidden_field :player_id, value: @player.id %>
+  <%= form.hidden_field :category, value: nil, data: {"players--card-target": "categorySubmission"} %>
+  <%= form.hidden_field :rally_skill, value: nil, data: {"players--card-target": "rallySkillSubmission"} %>
+  <%= form.hidden_field :skill_point, value: nil, data: {"players--card-target": "skillPointSubmission"} %>
+  <%= form.hidden_field :skill_error, value: nil, data: {"players--card-target": "skillErrorSubmission"} %>
+  <%= form.hidden_field :quality, value: nil, data: {"players--card-target": "qualitySubmission"} %>
+  <div class="btn-group">
+    <button type="button" class="btn btn-sm btn-light text-nowrap">TOL: <%= @home ? @volleyball_set.home_time_outs_left : @volleyball_set.away_time_outs_left %></button>
+    <%= form.submit "-", class: "btn btn-sm btn-light" %>
+  </div>
+<% end %>

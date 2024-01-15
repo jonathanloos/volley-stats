@@ -76,6 +76,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.string "club"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "head_coach_id"
+    t.bigint "assistant_coach_id"
+    t.index ["assistant_coach_id"], name: "index_teams_on_assistant_coach_id"
+    t.index ["head_coach_id"], name: "index_teams_on_head_coach_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -99,6 +103,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.integer "position"
     t.integer "home_score", default: 0
     t.integer "away_score", default: 0
+    t.integer "home_time_outs_left", default: 2
+    t.integer "away_time_outs_left", default: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_volleyball_sets_on_game_id"
@@ -118,6 +124,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
   add_foreign_key "players", "teams"
   add_foreign_key "players", "users"
   add_foreign_key "players", "volleyball_sets"
+  add_foreign_key "teams", "users", column: "assistant_coach_id"
+  add_foreign_key "teams", "users", column: "head_coach_id"
   add_foreign_key "users", "teams"
   add_foreign_key "volleyball_sets", "games"
   add_foreign_key "volleyball_sets", "teams", column: "receiving_team_id"

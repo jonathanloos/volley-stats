@@ -1,10 +1,15 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
-apex = Team.create(name: "Apex", year: 2023)
+apex = Team.create(name: "Apex", year: 2023, club: "Scorpions Volleyball Club")
+hc_apex = User.create(first_name: "Jonathan", last_name: "L", team: apex, jersey_number: 14)
+ac_apex = User.create(first_name: "Joel", last_name: "S", team: apex, jersey_number: 17)
+apex.update(head_coach: hc_apex, assistant_coach: ac_apex)
+
 exo = Team.create(name: "EXO", year: 2023)
-User.create(first_name: "Jonathan", last_name: "Loos", team: apex, jersey_number: 14)
-User.create(first_name: "Joel", last_name: "Semplonius", team: apex, jersey_number: 17)
+hc_exo = User.create(first_name: "Bryson", last_name: "M", team: exo, jersey_number: 5)
+hc_exo = User.create(first_name: "Rob", last_name: "W", team: exo, jersey_number: 99)
+exo.update(head_coach: hc_exo, assistant_coach: ac_apex)
 
 middle_1 = User.create(first_name: "Liam", last_name: "R", team: apex, jersey_number: 3, role: :middle)
 left_side_1 = User.create(first_name: "Rylan", last_name: "C", team: apex, jersey_number: 4, role: :left_side)
@@ -19,7 +24,7 @@ middle_2 = User.create(first_name: "Joe", last_name: "K", team: apex, jersey_num
 User.create(first_name: "Nathan", last_name: "D", team: apex, jersey_number: 19, role: :middle)
 
 game = Game.create(title: "APEX Finals", home_team: apex, away_team: exo, date: DateTime.now)
-volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team)
+volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team, head_coach: apex.head_coach, assistant_coach: apex.assistant_coach)
 VolleyballSets::CreateService.call(volleyball_set: volleyball_set, game: game)
 VolleyballSets::LineupService.call(
   volleyball_set: volleyball_set,
@@ -44,7 +49,7 @@ setter = User.create(first_name: "Aleksi", last_name: "E", team: exo, jersey_num
 left_side_2 = User.create(first_name: "Elliot", last_name: "W", team: exo, jersey_number: 25, role: :middle)
 
 game = Game.create(title: "EXO Finals", home_team: exo, away_team: apex, date: DateTime.now)
-volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team)
+volleyball_set = VolleyballSet.new(game: game, starting_setter_rotation: 1, setter_rotation: 1, serving_team: game.home_team, receiving_team: game.away_team, head_coach: exo.head_coach)
 VolleyballSets::CreateService.call(volleyball_set: volleyball_set, game: game)
 VolleyballSets::LineupService.call(
   volleyball_set: volleyball_set,

@@ -19,6 +19,16 @@ class Events::CreateService < ApplicationService
       # adjust points
       VolleyballSets::ScoreService.call(volleyball_set: @volleyball_set, most_recent_event: @event)
 
+      # log timeouts
+      if @event.timeout?
+        if @event.team == @volleyball_set.game.home_team
+          @volleyball_set.home_time_outs_left -= 1 if @volleyball_set.home_time_outs_left > 0
+        else
+          @volleyball_set.away_time_outs_left -= 1 if @volleyball_set.away_time_outs_left > 0
+        end
+        @volleyball_set.save!
+      end
+
       # update the event score cache
       @event.home_score = @volleyball_set.home_score
       @event.away_score = @volleyball_set.away_score

@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include Roleable
 
-  belongs_to :team
+  belongs_to :team, optional: true
 
   has_many :events
   has_many :players

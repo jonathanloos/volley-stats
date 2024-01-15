@@ -12,17 +12,22 @@
   <% end %>
 
   <div>
-    <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
   </div>
 
   <div>
-    <%= form.label :year, style: "display: block" %>
+    <%= form.collection_select :head_coach_id, @team.users, :id, :full_name %>
+  </div>
+
+  <div>
+    <%= form.collection_select :assistant_coach_id, @team.users, :id, :full_name %>
+  </div>
+
+  <div>
     <%= form.number_field :year %>
   </div>
 
   <div>
-    <%= form.label :club, style: "display: block" %>
     <%= form.text_field :club %>
   </div>
 
