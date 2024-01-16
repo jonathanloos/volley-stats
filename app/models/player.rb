@@ -31,7 +31,9 @@ class Player < ApplicationRecord
 
   def full_information
     if user.present?
-      "#{jersey_number} - " + to_s + " (#{user.role.humanize})"
+      text = "#{jersey_number} - " + to_s
+      text += " (#{user.role.humanize})" if user.role.present?
+      text
     else
       team.to_s
     end
