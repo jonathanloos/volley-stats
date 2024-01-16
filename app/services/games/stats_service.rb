@@ -10,7 +10,7 @@ class Games::StatsService
   end
 
   def self.passing_average(events:)
-    events.passing_events.where.not(quality: nil).average(:quality)
+    events.passing_events.where.not(quality: nil).average(:quality) || 0
   end
 
   def self.points_earned(events:)
