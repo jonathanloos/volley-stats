@@ -6,9 +6,10 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.integer :jersey_number
       t.references :team, null: false, foreign_key: true
       t.integer :role
+      t.integer :volleyball_position
 
       t.timestamps
-    end
+    end 
 
     add_reference :teams, :head_coach, null: true, foreign_key: {to_table: :users}
     add_reference :teams, :assistant_coach, null: true, foreign_key: {to_table: :users}
