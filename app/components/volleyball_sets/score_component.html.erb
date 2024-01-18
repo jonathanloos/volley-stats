@@ -2,11 +2,11 @@
   <div class="text-center w-100">
     <small class="text-muted text-nowrap"><%= @volleyball_set.game.home_team %></small>
     <h4 class="my-1"><%= @volleyball_set.home_score %></h4>
-    <%#= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: true)) %>
+    <%= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: true)) %>
   </div>
   <div class="text-center w-100">
     <small class="text-muted text-nowrap"><%= @volleyball_set.game.away_team %></small>
     <h4 class="my-1"><%= @volleyball_set.away_score %></h4>
-    <%#= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: false)) %>
+    <%= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: false)) %>
   </div>
 </div>

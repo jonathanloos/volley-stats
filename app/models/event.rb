@@ -15,7 +15,7 @@ class Event < ApplicationRecord
   acts_as_list scope: :volleyball_set
 
   validates :category, presence: true
-  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? && team != game.away_team}
+  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? && team != game.away_team && !user.coach?}
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }
@@ -110,6 +110,8 @@ class Event < ApplicationRecord
       "#{rally_skill.humanize.titleize} by #{user || team}"
     elsif substitution?
       "#{incoming_player} in for #{player}"
+    elsif timeout?
+      "Timeout called by #{user || team}"
     end
 
     text += " - #{quality} quality" if quality.present?

@@ -32,6 +32,7 @@ class Events::CreateService < ApplicationService
       # update the event score cache
       @event.home_score = @volleyball_set.home_score
       @event.away_score = @volleyball_set.away_score
+      debugger
       @event.save!
     end
   rescue => e
