@@ -9,7 +9,7 @@ class VolleyballSet < ApplicationRecord
 
   acts_as_list scope: :game
 
-  has_many :players, -> { joins(:user).order("users.jersey_number", role: :asc) }, dependent: :destroy
+  has_many :players, -> { joins(:user).where(users: {role: :player}).order("users.jersey_number", position: :asc) }, dependent: :destroy
   has_many :users, through: :players
   has_many :events, -> { order(:position) }, dependent: :destroy
 

@@ -17,11 +17,11 @@ class VolleyballSets::CreateService < ApplicationService
       @volleyball_set.players << Player.create!(status: :on_court, volleyball_set: @volleyball_set, game: @game, team: @game.away_team)
       
       # Create home team coach for timeouts
-      @volleyball_set.players << Player.create!(status: :on_court, volleyball_set: @volleyball_set, game: @game, team: @game.home_team, user: @game.home_team.head_coach)
+      @volleyball_set.players << Player.create!(status: :on_court, volleyball_set: @volleyball_set, game: @game, team: @game.home_team, user: @game.home_team.head_coach, role: :coach)
 
       # Import player list for home team
-      @game.home_team.users.each do |user|
-        @volleyball_set.players << Player.create!(user: user, status: :bench, volleyball_set: @volleyball_set, game: @game, team: @game.home_team)
+      @game.home_team.users.player.each do |user|
+        @volleyball_set.players << Player.create!(user: user, status: :bench, volleyball_set: @volleyball_set, game: @game, team: @game.home_team, role: :player)
       end
     end
   rescue => e

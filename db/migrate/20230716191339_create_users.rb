@@ -5,7 +5,8 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :last_name
       t.integer :jersey_number
       t.references :team, null: false, foreign_key: true
-      t.integer :role
+      t.integer :position
+      t.integer :role, default: 0
       t.integer :volleyball_position
 
       t.timestamps
