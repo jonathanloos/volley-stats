@@ -14,8 +14,8 @@ class VolleyballSet < ApplicationRecord
   has_many :events, -> { order(:position) }, dependent: :destroy
 
   validates :starting_setter_rotation, numericality: {in: 1..6}, if: -> { persisted? }
-  validates :home_time_outs_left, numericality: {greater_than: 0}
-  validates :away_time_outs_left, numericality: {greater_than: 0}
+  validates :home_time_outs_left, numericality: {greater_than_or_equal_to: 0}
+  validates :away_time_outs_left, numericality: {greater_than_or_equal_to: 0}
 
   before_save :set_serving_and_receiving_teams
 
