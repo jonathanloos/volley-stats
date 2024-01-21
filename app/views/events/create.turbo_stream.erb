@@ -2,27 +2,14 @@
   <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @event.player || Player.new))) %>
 <% end %>
 
-<% if @volleyball_set.events.excluding(@event).any? %>
-  <%= turbo_stream.before dom_id(@volleyball_set.events.excluding(@event).last) do %>
-    <li class="list-group-item" id="<%= dom_id(@event) %>"><%= @event %></li>
-  <% end %>
-<% else %>
-  <%= turbo_stream.replace :events do %>
-    <%= render(Events::ListComponent.new(volleyball_set: @volleyball_set)) %>
-  <% end %>
-<% end %>
-
 <% @volleyball_set.players.on_court.each do |player| %>
   <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
     <%= render(Players::CardComponent.new(player: player)) %>
   <% end %>
 <% end %>
 
-<% player = Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team) %>
-<%= turbo_stream.replace dom_id(player, :undo_button) do %>
-  <%= turbo_frame_tag dom_id(player, :undo_button) do %>
-    <%= render(Events::UndoComponent.new(event: Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team).events.not_timeout.last)) %>
-  <% end %>
+<%= turbo_stream.replace "player_rotation_#{@away_team_player.team.name.underscore}" do %>
+  <%= render(Players::CardComponent.new(player: @away_team_player)) %>
 <% end %>
 
 <%= turbo_stream.replace dom_id(@volleyball_set, :score) do %>

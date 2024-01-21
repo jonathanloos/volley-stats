@@ -1,12 +1,12 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[ show edit update destroy ]
-  before_action :set_volleyball_set, only: %i[create]
+  before_action :set_volleyball_set, only: %i[index create]
 
-  layout false
+  layout :choose_layout
 
   # GET /events or /events.json
   def index
-    @events = Event.all
+    @events = @volleyball_set.events.reverse
   end
 
   # GET /events/1 or /events/1.json
@@ -26,6 +26,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.volleyball_set = @volleyball_set
+    @away_team_player = Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team)
 
     respond_to do |format|
       if Events::CreateService.call(event: @event)
@@ -54,6 +55,7 @@ class EventsController < ApplicationController
   # DELETE /events/1 or /events/1.json
   def destroy
     @volleyball_set = @event.volleyball_set
+    @away_team_player = Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team)
 
     Events::DestroyService.call(event: @event)
 
@@ -76,5 +78,11 @@ class EventsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def event_params
       params.require(:event).permit(:player_id, :category, :rally_skill, :skill_point, :skill_error, :quality, :rotation)
+    end
+
+    def choose_layout
+      return false unless ["index"].include?(action_name)
+
+      "application"
     end
 end

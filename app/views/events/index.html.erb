@@ -1,14 +1,19 @@
-<p style="color: green"><%= notice %></p>
+<% content_for(:page_title) do %>
+  <%= @volleyball_set.game %> set <%= @volleyball_set.position %>
+<% end %>
 
-<h1>Events</h1>
-
-<div id="events">
-  <% @events.each do |event| %>
-    <%= render event %>
-    <p>
-      <%= link_to "Show this event", event %>
-    </p>
-  <% end %>
+<div>
+  <div class="row mt-4">
+    <div class="col-md-8">
+      <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
+      <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %></small>
+      <%= link_to "Back", log_events_volleyball_set_path(@volleyball_set), class: "btn btn-sm btn-light" %>
+    </div>
+    <div class="col-md-4">
+      <%= turbo_frame_tag dom_id(@volleyball_set, :score) do %>
+        <%= render(VolleyballSets::ScoreComponent.new(volleyball_set: @volleyball_set)) %>
+      <% end %>
+    </div>
+  </div>
+  <%= render(Events::ListComponent.new(events: @events)) %>
 </div>
-
-<%= link_to "New event", new_event_path %>
