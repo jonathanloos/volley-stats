@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "player_rotation_#{@player.rotation}" do %>
+<%= turbo_frame_tag "player_rotation_#{@player.rotation || @player.team.name.underscore}" do %>
   <div class="card" data-controller="players--card">
     <div class="card-body">
       <div class="d-flex flex-row align-items-center mb-2">
@@ -80,7 +80,7 @@
               Select
             </button>
 
-            <div class="modal fade" id="otherActionModal<%= @player.id %>" tabindex="-1" aria-labelledby="otherActionModal<%= @player.id %>Label" aria-hidden="true">
+            <div class="modal fade" id="otherActionModal<%= @player.id %>" tabindex="-1" aria-labelledby="otherActionModal<%= @player.id %>Label" aria-hidden="true" data-players--card-target="modal">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
