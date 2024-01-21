@@ -2,11 +2,11 @@
   <div class="card" data-controller="players--card">
     <div class="card-body">
       <div class="d-flex flex-row align-items-center mb-2">
-        <h4 class="flex-grow-1 m-0">
+        <h5 class="flex-grow-1 m-0">
           <%= @player %> <span class="text-muted"><%= @player.jersey_number if @player.persisted? %></span>
-        </h4>
+        </h5>
       </div>
-      <hr/>
+      <hr class="mt-0"/>
       <%= turbo_frame_tag dom_id(@player, :new_event) do %>
         <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @player))) %>
       <% end %>
