@@ -36,6 +36,11 @@ class Event < ApplicationRecord
     )
   }
 
+  scope :free_ball_passing_events, -> { where(rally_skill: :free_ball_receive).or(
+    where(skill_error: :free_ball_receive)
+  )
+}
+
   scope :kills, -> { where(skill_point: KILL_CATEGORIES) }
   scope :attack_errors, -> { where(skill_error: ATTACK_ERROR_CATEGORIES) }
 
