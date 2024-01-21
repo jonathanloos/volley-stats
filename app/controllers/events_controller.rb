@@ -26,6 +26,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.volleyball_set = @volleyball_set
+    @away_team_player = Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team)
 
     respond_to do |format|
       if Events::CreateService.call(event: @event)
@@ -54,6 +55,7 @@ class EventsController < ApplicationController
   # DELETE /events/1 or /events/1.json
   def destroy
     @volleyball_set = @event.volleyball_set
+    @away_team_player = Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team)
 
     Events::DestroyService.call(event: @event)
 
