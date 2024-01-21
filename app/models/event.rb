@@ -124,9 +124,25 @@ class Event < ApplicationRecord
     text
   end
 
+  def short_text
+    if rally_skill?
+      rally_skill.humanize
+    elsif skill_point?
+      skill_point.humanize
+    elsif skill_error
+      skill_error.humanize
+    end
+  end
+
   private
 
   def check_if_after_timeout
-    self.after_timeout = volleyball_set.events.any? && volleyball_set.events.last.timeout?
+    # self.after_timeout = volleyball_set.events.any? && volleyball_set.events.last.timeout?
+    # if there was a timeout
+    # and since that timeout no point has been won
+    most_recent_timout = volleyball_set.events.timeout.last
+    return unless most_recent_timout.present?
+
+    self.after_timeout = most_recent_timout.lower_items.where(category: [:point_given, :point_earned]).empty?
   end
 end

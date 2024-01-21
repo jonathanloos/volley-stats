@@ -20,9 +20,11 @@
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace dom_id(@volleyball_set.game.away_team, :undo_button) do %>
-  <%= turbo_frame_tag dom_id(@volleyball_set.game.away_team, :undo_button) do %>
-    <%= render(Events::UndoComponent.new(event: @volleyball_set.events.where(team: @volleyball_set.game.away_team).last)) %>
+HELLO
+<% player = Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team) %>
+<%= turbo_stream.replace dom_id(player, :undo_button) do %>
+  <%= turbo_frame_tag dom_id(player, :undo_button) do %>
+    <%= render(Events::UndoComponent.new(event: Player.find_by(volleyball_set: @volleyball_set, team: @volleyball_set.game.away_team).events.not_timeout.last)) %>
   <% end %>
 <% end %>
 

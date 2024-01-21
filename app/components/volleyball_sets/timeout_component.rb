@@ -14,7 +14,6 @@ class VolleyballSets::TimeoutComponent < ApplicationComponent
     end
 
     @event = Event.new
-    @most_recent_event = @player.events.last
+    @most_recent_event = @player.events.timeout.last
   end
-
 end
