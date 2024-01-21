@@ -10,6 +10,8 @@ class CreateVolleyballSets < ActiveRecord::Migration[7.0]
       t.integer :position
       t.integer :home_score, default: 0
       t.integer :away_score, default: 0
+      t.integer :home_time_outs_left, default: 2
+      t.integer :away_time_outs_left, default: 2
 
       t.timestamps
     end

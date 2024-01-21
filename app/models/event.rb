@@ -14,8 +14,10 @@ class Event < ApplicationRecord
 
   acts_as_list scope: :volleyball_set
 
+  before_save :check_if_after_timeout
+
   validates :category, presence: true
-  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? && team != game.away_team}
+  validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? && team != game.away_team && !user.coach?}
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }
@@ -110,12 +112,37 @@ class Event < ApplicationRecord
       "#{rally_skill.humanize.titleize} by #{user || team}"
     elsif substitution?
       "#{incoming_player} in for #{player}"
+    elsif timeout?
+      "Timeout called by #{user || team}"
     end
 
     text += " - #{quality} quality" if quality.present?
     text += " - player rotation: #{player_rotation}" if player_rotation.present?
     text += " - setter rotation: #{setter_rotation}"
     text += " - #{home_score} | #{away_score}"
+    text += "AFTER TIMEOUT" if after_timeout?
     text
+  end
+
+  def short_text
+    if rally_skill?
+      rally_skill.humanize
+    elsif skill_point?
+      skill_point.humanize
+    elsif skill_error
+      skill_error.humanize
+    end
+  end
+
+  private
+
+  def check_if_after_timeout
+    # self.after_timeout = volleyball_set.events.any? && volleyball_set.events.last.timeout?
+    # if there was a timeout
+    # and since that timeout no point has been won
+    most_recent_timout = volleyball_set.events.timeout.last
+    return unless most_recent_timout.present?
+
+    self.after_timeout = most_recent_timout.lower_items.where(category: [:point_given, :point_earned]).empty?
   end
 end

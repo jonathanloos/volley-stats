@@ -69,7 +69,7 @@
             </div>
           </div>
         </div>
-        <h4 class="m-0"><%= form.collection_select :libero_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(role: :libero)&.id, required: false, include_blank: true, wrapper_class: "m-0 form-control-sm" %></h4>
+        <h4 class="m-0"><%= form.collection_select :libero_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(position: :libero)&.id, required: false, include_blank: true, wrapper_class: "m-0 form-control-sm" %></h4>
         <%= form.submit "Save Lineup", class: "btn btn-primary btn-sm w-100 mt-3" %>
       <% end %>
     </div>

@@ -10,6 +10,12 @@ class Events::DestroyService < ApplicationService
       # update the event score cache
       @event.destroy
 
+      # undo timeouts
+      VolleyballSets::TimeoutService.call(event: @event, volleyball_set: @volleyball_set, undo_action: true)
+
+      # undo substitution
+      Players::SubstitutionService.call(incoming_player: @event.player, player: @event.incoming_player, undo_action: true) if @event.substitution?
+
       # rotate players
       Players::RotateService.call(players: @volleyball_set.active_players, most_recent_event: @event, undo_action: true)
 

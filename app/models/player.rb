@@ -1,5 +1,6 @@
 class Player < ApplicationRecord
   include Roleable
+  include Positionable
 
   belongs_to :user, optional: true
   belongs_to :game
@@ -11,8 +12,8 @@ class Player < ApplicationRecord
   
   has_many :events, -> { order(:position) }, dependent: :destroy
 
-  validates :role, presence: true, if: -> { on_court? }
-  validates :rotation, numericality: {in: 1..6}, uniqueness: {scope: :volleyball_set, message: "must not have two players in the same rotation"}, if: -> {rotation.present? && on_court? && team != game.away_team}
+  validates :position, presence: true, if: -> { on_court? }
+  validates :rotation, numericality: {in: 1..6}, uniqueness: {scope: :volleyball_set, message: "must not have two players in the same rotation"}, if: :check_rotation
   validates :user, presence: true, if: -> { game.home_team == team }
   before_validation :set_status
 
@@ -31,7 +32,9 @@ class Player < ApplicationRecord
 
   def full_information
     if user.present?
-      "#{jersey_number} - " + to_s + " (#{user.role.humanize})"
+      text = "#{jersey_number} - " + to_s
+      text += " (#{user.position.humanize})" if user.role.present?
+      text
     else
       team.to_s
     end
@@ -51,5 +54,9 @@ class Player < ApplicationRecord
 
   def set_status
     self.status = rotation.present? ? :on_court : :bench
+  end
+
+  def check_rotation
+    rotation.present? && on_court? && team != game.away_team && !user.coach?
   end
 end

@@ -6,7 +6,8 @@ class CreatePlayers < ActiveRecord::Migration[7.0]
       t.references :volleyball_set, null: false, foreign_key: true
       t.references :team, null: false, foreign_key: true
       t.integer :status, default: 0
-      t.integer :role
+      t.integer :position
+      t.integer :role, default: 0
       t.integer :rotation
 
       t.timestamps

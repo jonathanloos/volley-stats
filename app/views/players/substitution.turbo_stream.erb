@@ -1,4 +1,4 @@
-<%= turbo_stream.replace dom_id(@player) do %>
+<%= turbo_stream.replace "player_rotation_#{@incoming_player.rotation}" do %>
   <%= render(Players::CardComponent.new(player: @incoming_player)) %>
 <% end %>
 

@@ -1,0 +1,12 @@
+<%= bootstrap_form_with(model: [@volleyball_set, @event], method: :post) do |form| %>
+  <%= form.hidden_field :player_id, value: @player.id %>
+  <%= form.hidden_field :category, value: :timeout %>
+  <%= turbo_frame_tag dom_id(@player, :timeout_undo_button) do %>
+    <%= render(Events::UndoComponent.new(event: @most_recent_event)) %>
+  <% end %>
+  <% if @timeouts_left > 0 %>
+    <%= form.submit "TOL #{@timeouts_left}", class: "btn btn-sm btn-light" %>
+  <% else %>
+    <button class="btn btn-sm btn-light disabled" type="button">TOL 0</button>
+  <% end %>
+<% end %>

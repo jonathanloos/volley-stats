@@ -9,11 +9,13 @@ class VolleyballSet < ApplicationRecord
 
   acts_as_list scope: :game
 
-  has_many :players, -> { joins(:user).order("users.jersey_number", role: :asc) }, dependent: :destroy
+  has_many :players, -> { joins(:user).where(users: {role: :player}).order("users.jersey_number", position: :asc) }, dependent: :destroy
   has_many :users, through: :players
   has_many :events, -> { order(:position) }, dependent: :destroy
 
   validates :starting_setter_rotation, numericality: {in: 1..6}, if: -> { persisted? }
+  validates :home_time_outs_left, numericality: {greater_than_or_equal_to: 0}
+  validates :away_time_outs_left, numericality: {greater_than_or_equal_to: 0}
 
   before_save :set_serving_and_receiving_teams
 

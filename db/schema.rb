@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.integer "category"
     t.integer "home_score"
     t.integer "away_score"
+    t.boolean "after_timeout"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_events_on_game_id"
@@ -60,7 +61,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.bigint "volleyball_set_id", null: false
     t.bigint "team_id", null: false
     t.integer "status", default: 0
-    t.integer "role"
+    t.integer "position"
+    t.integer "role", default: 0
     t.integer "rotation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -76,6 +78,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.string "club"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "head_coach_id"
+    t.bigint "assistant_coach_id"
+    t.index ["assistant_coach_id"], name: "index_teams_on_assistant_coach_id"
+    t.index ["head_coach_id"], name: "index_teams_on_head_coach_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -83,7 +89,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.string "last_name"
     t.integer "jersey_number"
     t.bigint "team_id", null: false
-    t.integer "role"
+    t.integer "position"
+    t.integer "role", default: 0
+    t.integer "volleyball_position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_users_on_team_id"
@@ -99,6 +107,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.integer "position"
     t.integer "home_score", default: 0
     t.integer "away_score", default: 0
+    t.integer "home_time_outs_left", default: 2
+    t.integer "away_time_outs_left", default: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_volleyball_sets_on_game_id"
@@ -118,6 +128,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
   add_foreign_key "players", "teams"
   add_foreign_key "players", "users"
   add_foreign_key "players", "volleyball_sets"
+  add_foreign_key "teams", "users", column: "assistant_coach_id"
+  add_foreign_key "teams", "users", column: "head_coach_id"
   add_foreign_key "users", "teams"
   add_foreign_key "volleyball_sets", "games"
   add_foreign_key "volleyball_sets", "teams", column: "receiving_team_id"

@@ -14,10 +14,13 @@ class Events::CreateService < ApplicationService
   def call
     Event.transaction do
       # rotate players
-      Players::RotateService.call(players: @volleyball_set.active_players, most_recent_event: @event)
+      raise unless Players::RotateService.call(players: @volleyball_set.active_players, most_recent_event: @event)
 
       # adjust points
-      VolleyballSets::ScoreService.call(volleyball_set: @volleyball_set, most_recent_event: @event)
+      raise unless VolleyballSets::ScoreService.call(volleyball_set: @volleyball_set, most_recent_event: @event)
+
+      # log timeouts
+      raise unless VolleyballSets::TimeoutService.call(event: @event, volleyball_set: @volleyball_set)
 
       # update the event score cache
       @event.home_score = @volleyball_set.home_score

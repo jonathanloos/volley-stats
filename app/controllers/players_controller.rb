@@ -64,13 +64,8 @@ class PlayersController < ApplicationController
 
   def substitution
     @incoming_player = @player.volleyball_set.players.find(params[:player][:substitution_id])
-    rotation = @player.rotation
-
-    @event = Event.new(category: :substitution, player: @player, incoming_player: @incoming_player, volleyball_set: @player.volleyball_set)
-    Events::CreateService.call(event: @event)
-
-    @player.update(status: :bench, rotation: nil)
-    @incoming_player.update(status: :on_court, rotation: rotation, role: @incoming_player.user.role)
+    Players::SubstitutionService.call(incoming_player: @incoming_player, player: @player)
+    @event = @player.volleyball_set.events.last
   end
 
   private
