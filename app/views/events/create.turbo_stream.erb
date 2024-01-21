@@ -2,16 +2,6 @@
   <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @event.player || Player.new))) %>
 <% end %>
 
-<% if @volleyball_set.events.excluding(@event).any? %>
-  <%= turbo_stream.before dom_id(@volleyball_set.events.excluding(@event).last) do %>
-    <li class="list-group-item" id="<%= dom_id(@event) %>"><%= @event %></li>
-  <% end %>
-<% else %>
-  <%= turbo_stream.replace :events do %>
-    <%= render(Events::ListComponent.new(volleyball_set: @volleyball_set)) %>
-  <% end %>
-<% end %>
-
 <% @volleyball_set.players.on_court.each do |player| %>
   <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
     <%= render(Players::CardComponent.new(player: player)) %>
