@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_07_16_192351) do
     t.integer "category"
     t.integer "home_score"
     t.integer "away_score"
+    t.boolean "after_timeout"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_events_on_game_id"

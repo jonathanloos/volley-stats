@@ -14,6 +14,8 @@ class Event < ApplicationRecord
 
   acts_as_list scope: :volleyball_set
 
+  before_save :check_if_after_timeout
+
   validates :category, presence: true
   validates :player_rotation, numericality: { only_integer: true, in: 1..6 }, if: -> { player.present? && team != game.away_team && !user.coach?}
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
@@ -118,6 +120,13 @@ class Event < ApplicationRecord
     text += " - player rotation: #{player_rotation}" if player_rotation.present?
     text += " - setter rotation: #{setter_rotation}"
     text += " - #{home_score} | #{away_score}"
+    text += "AFTER TIMEOUT" if after_timeout?
     text
+  end
+
+  private
+
+  def check_if_after_timeout
+    self.after_timeout = volleyball_set.events.any? && volleyball_set.events.last.timeout?
   end
 end

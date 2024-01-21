@@ -18,6 +18,7 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.integer :category
       t.integer :home_score
       t.integer :away_score
+      t.boolean :after_timeout
 
       t.timestamps
     end
