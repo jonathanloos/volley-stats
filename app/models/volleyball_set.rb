@@ -38,6 +38,17 @@ class VolleyballSet < ApplicationRecord
     false
   end
 
+  def away_team_serving?
+    points = events.points
+    return true if points.empty? && serving_team == game.away_team
+
+    return false if points.empty?
+    return true if points.last.point_earned? && points.last.team == game.away_team
+    return true if points.last.point_given? && points.last.team == game.home_team
+
+    false
+  end
+
   def has_full_starting_lineup?
     (ROTATIONS - active_players.pluck(:rotation)).empty?
   end

@@ -41,6 +41,7 @@ class Player < ApplicationRecord
   end
 
   def serving?
+    return true if team == volleyball_set.game.away_team && volleyball_set.away_team_serving?
     return false unless rotation == 1
 
     volleyball_set.home_team_serving?
