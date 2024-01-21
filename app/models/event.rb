@@ -31,6 +31,13 @@ class Event < ApplicationRecord
     )
   }
 
+  scope :serve_attempts, -> { where(rally_skill: :serve).or(
+    where(skill_point: :ace)
+  ).or(
+    where(skill_error: :serve)
+  )
+}
+
   scope :passing_events, -> { where(rally_skill: :serve_receive).or(
       where(skill_error: :serve_receive)
     )
