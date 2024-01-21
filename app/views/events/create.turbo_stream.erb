@@ -12,7 +12,7 @@
   <% end %>
 <% end %>
 
-<% @volleyball_set.players.each do |player| %>
+<% @volleyball_set.players.on_court.each do |player| %>
   <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
     <%= render(Players::CardComponent.new(player: player)) %>
   <% end %>
