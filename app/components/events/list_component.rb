@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Events::ListComponent < ApplicationComponent
-  def initialize(volleyball_set:)
-    @volleyball_set = volleyball_set
+  def initialize(events:)
+    @events = events
   end
 end
