@@ -31,10 +31,22 @@ class Event < ApplicationRecord
     )
   }
 
+  scope :serve_attempts, -> { where(rally_skill: :serve).or(
+    where(skill_point: :ace)
+  ).or(
+    where(skill_error: :serve)
+  )
+}
+
   scope :passing_events, -> { where(rally_skill: :serve_receive).or(
       where(skill_error: :serve_receive)
     )
   }
+
+  scope :free_ball_passing_events, -> { where(rally_skill: :free_ball_receive).or(
+    where(skill_error: :free_ball_receive)
+  )
+}
 
   scope :kills, -> { where(skill_point: KILL_CATEGORIES) }
   scope :attack_errors, -> { where(skill_error: ATTACK_ERROR_CATEGORIES) }

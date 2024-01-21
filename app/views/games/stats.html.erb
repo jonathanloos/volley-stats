@@ -2,114 +2,277 @@
   <%= @game %> - Stats
 <% end %>
 
-<div class="my-3">
-  <%= link_to "back to set", @game %>
-</div>
-
 <div class="d-flex justify-content-between mt-4">
   <div>
-    <h1 class="mb-0"><%= @game %> <%= @game.home_team %> vs <%= @game.away_team %> Stats</h1>
+    <h1 class="mb-0"><%= @volleyball_sets.count == 1 ?  @volleyball_sets.first.to_s : @game %> Stats</h1>
     <small class="text-muted"><%= @game.date.strftime("%Y-%m-%d") %>
   </div>
 </div>
 <div class="row mt-4">
-  <div class="col-sm-6 col-lg-3">
-    <div class="card w-100" style="width: 18rem;">
+  <div class="col-lg-6">
+    <div class="card">
       <div class="card-body">
-        <h6 class="card-subtitle text-body-secondary">HIT PERCENTAGE</h6>
-        <h4 class="card-title mb-3"><%= Games::StatsService.attack_percentage(events: @events).round(3) %></h4>
-        <div class="row mt-3">
-          <div class="col-4 d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.skill_point_attack.count %></p>
-            <small class="text-muted m-0">KILL</small>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th class="col text-start"><%= @game.home_team %></th>
+              <th class="col text-center">Statistic</th>
+              <th class="col text-end"><%= @game.away_team %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-start"><%= Games::StatsService.points_earned(events: @home_team_events) %></td>
+              <td class="text-center">Points Earned</td>
+              <td class="text-end"><%= Games::StatsService.points_earned(events: @away_team_events) %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= Games::StatsService.points_given(events: @home_team_events) %></td>
+              <td class="text-center">Points Given</td>
+              <td class="text-end"><%= Games::StatsService.points_given(events: @away_team_events) %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= @home_team_events.kills.count %></td>
+              <td class="text-center">Kills</td>
+              <td class="text-end"><%= @away_team_events.kills.count %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= @home_team_events.skill_error_attack.count %></td>
+              <td class="text-center">Attacking Errors</td>
+              <td class="text-end"><%= @away_team_events.skill_error_attack.count %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= Games::StatsService.aces(events: @home_team_events).round(3) %></td>
+              <td class="text-center">Aces</td>
+              <td class="text-end"><%= Games::StatsService.aces(events: @away_team_events).round(3) %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= @home_team_events.skill_point_block.count %></td>
+              <td class="text-center">Blocks</td>
+              <td class="text-end"><%= @away_team_events.skill_point_block.count %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= @home_team_events.rally_skill_dig.count %></td>
+              <td class="text-center">Digs</td>
+              <td class="text-end">-<%#= @away_team_events.rally_skill_dig.count %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= Games::StatsService.passing_average(events: @home_team_events).round(3) %></td>
+              <td class="text-center">Passing %</td>
+              <td class="text-end">-<%#= Games::StatsService.passing_average(events: @away_team_events).round(3) %></td>
+            </tr>
+            <tr>
+              <td class="text-start"><%= Games::StatsService.free_ball_passing_average(events: @home_team_events).round(3) %></td>
+              <td class="text-center">FB Passing %</td>
+              <td class="text-end">-<%#= Games::StatsService.free_ball_passing_average(events: @away_team_events).round(3) %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card w-100">
+          <div class="card-body">
+            <h6 class="card-subtitle text-body-secondary">HIT PERCENTAGE</h6>
+            <h4 class="card-title mb-3"><%= Games::StatsService.attack_percentage(events: @home_team_events).round(3) %></h4>
+            <div class="row mt-3">
+              <div class="col-4 d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.skill_point_attack.count %></p>
+                <small class="text-muted m-0">KILL</small>
+              </div>
+              <div class="col-4 d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.skill_error_attack.count %></p>
+                <small class="text-muted m-0">ERR</small>
+              </div>
+              <div class="col-4 d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.attack_attempts.count %></p>
+                <small class="text-muted m-0">TOT</small>
+              </div>
+            </div>
           </div>
-          <div class="col-4 d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.skill_error_attack.count %></p>
-            <small class="text-muted m-0">ERR</small>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="card w-100">
+          <div class="card-body">
+            <h6 class="card-subtitle text-body-secondary">PASS PERCENTAGE</h6>
+            <h4 class="card-title mb-3"><%= Games::StatsService.passing_average(events: @home_team_events).round(3) %></h4>
+            <div class="row mt-3">
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.skill_error_serve_receive.count %></p>
+                <small class="text-muted m-0">ERR</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.rally_skill_serve_receive.where(quality: 1).count %></p>
+                <small class="text-muted m-0">1</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.rally_skill_serve_receive.where(quality: 2).count %></p>
+                <small class="text-muted m-0">2</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.rally_skill_serve_receive.where(quality: 3).count %></p>
+                <small class="text-muted m-0">3</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.rally_skill_serve_receive.where(quality: 4).count %></p>
+                <small class="text-muted m-0">4</small>
+              </div>
+            </div>
           </div>
-          <div class="col-4 d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.attack_attempts.count %></p>
-            <small class="text-muted m-0">TOT</small>
+        </div>
+      </div>
+
+      <div class="col-sm-6 mt-4">
+        <div class="card w-100">
+          <div class="card-body">
+            <h6 class="card-subtitle text-body-secondary">POINTS EARNED</h6>
+            <h4 class="card-title mb-3 text-success"><%= Games::StatsService.points_earned(events: @home_team_events).round(3) %></h4>
+            <div class="row mt-3">
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.kills.count %></p>
+                <small class="text-muted m-0">KILL</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.skill_point_block.count %></p>
+                <small class="text-muted m-0">BLOCK</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.skill_point_ace.count %></p>
+                <small class="text-muted m-0">ACE</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 mt-4">
+        <div class="card w-100">
+          <div class="card-body">
+            <h6 class="card-subtitle text-body-secondary">POINTS GIVEN</h6>
+            <h4 class="card-title mb-3 text-danger"><%= Games::StatsService.points_given(events: @home_team_events).round(3) %></h4>
+            <div class="row mt-3">
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.skill_error_serve.count %></p>
+                <small class="text-muted m-0">SRVE</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.attack_errors.count %></p>
+                <small class="text-muted m-0">ATT</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.skill_error_serve_receive.count %></p>
+                <small class="text-muted m-0">PASS</small>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <p class="mb-0"><%= @home_team_events.where.not(skill_error: [nil] + Event::ATTACK_ERROR_CATEGORIES + [:serve_receive, :serve, :under]).count %></p>
+                <small class="text-muted m-0">+</small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="col-sm-6 col-lg-3">
-    <div class="card w-100" style="width: 18rem;">
-      <div class="card-body">
-        <h6 class="card-subtitle text-body-secondary">PASS PERCENTAGE</h6>
-        <h4 class="card-title mb-3"><%= Games::StatsService.passing_average(events: @events).round(3) %></h4>
-        <div class="row mt-3">
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.skill_error_serve_receive.count %></p>
-            <small class="text-muted m-0">ERR</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 1).count %></p>
-            <small class="text-muted m-0">1</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 2).count %></p>
-            <small class="text-muted m-0">2</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 3).count %></p>
-            <small class="text-muted m-0">3</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.rally_skill_serve_receive.where(quality: 4).count %></p>
-            <small class="text-muted m-0">4</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-6 col-lg-3">
-    <div class="card w-100" style="width: 18rem;">
-      <div class="card-body">
-        <h6 class="card-subtitle text-body-secondary">POINTS EARNED</h6>
-        <h4 class="card-title mb-3 text-success"><%= Games::StatsService.points_earned(events: @events).round(3) %></h4>
-        <div class="row mt-3">
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.kills.count %></p>
-            <small class="text-muted m-0">KILL</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.skill_point_block.count %></p>
-            <small class="text-muted m-0">BLOCK</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.skill_point_ace.count %></p>
-            <small class="text-muted m-0">ACE</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-6 col-lg-3">
-    <div class="card w-100" style="width: 18rem;">
-      <div class="card-body">
-        <h6 class="card-subtitle text-body-secondary">POINTS GIVEN</h6>
-        <h4 class="card-title mb-3 text-danger"><%= Games::StatsService.points_lost(events: @events).round(3) %></h4>
-        <div class="row mt-3">
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.skill_error_serve.count %></p>
-            <small class="text-muted m-0">SERVE</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.attack_errors.count %></p>
-            <small class="text-muted m-0">ATT</small>
-          </div>
-          <div class="col d-flex flex-column align-items-center">
-            <p class="mb-0"><%= @events.skill_error_serve_receive.count %></p>
-            <small class="text-muted m-0">PASS</small>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="card my-4">
+  <div class="card-body p-0">
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th colspan="3"></th>
+          <th colspan="4" class="text-center bg-light">Attack</th>
+          <th colspan="3" class="text-center">Serve</th>
+          <th colspan="5" class="text-center">Serve Receive</th>
+          <th colspan="2" class="text-center bg-light">Block</th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Player</th>
+          <th class="text-center">SP</th>
+          <%# Attack %>
+            <th class="text-center">K</th>
+            <th class="text-center">E</th>
+            <th class="text-center">TA</th>
+            <th class="text-center">%</th>
+          <%# Serve %>
+            <th class="text-center">SA</th>
+            <th class="text-center">SE</th>
+            <th class="text-center">TA</th>
+          <%# Serve %>
+            <th class="text-center">4</th>
+            <th class="text-center">3</th>
+            <th class="text-center">2</th>
+            <th class="text-center">1</th>
+            <th class="text-center">RE</th>
+          <%# Block %>
+            <th class="text-center">BS / BA</th>
+            <th class="text-center">BE</th>
+          <th class="text-center">Dig</th>
+          <th class="text-center">Other</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% User.where(id: Player.player.where(volleyball_set: @volleyball_sets).pluck(:user_id)).order(:jersey_number).each do |user| %>
+          <% players = @game.players.where(user: user, volleyball_set: @volleyball_sets) %>
+          <tr>
+            <td><%= user.jersey_number %></td>
+            <td><%= user %></td>
+            <td><%= @game.volleyball_sets.joins(:events).where(events: {user: user}).distinct.count %></td>
+            <%# Attack %>
+              <td class="text-center"><%= @events.where(player: players).skill_point_attack.count %></td>
+              <td class="text-center"><%= @events.where(player: players).skill_error_attack.count %></td>
+              <td class="text-center"><%= @events.where(player: players).attack_attempts.count %></td>
+              <td class="text-center"><%= Games::StatsService.attack_percentage(events: @events.where(player: players)).round(3) %></td>
+            <%# Serve %>
+              <td class="text-center"><%= @events.where(player: players).skill_point_ace.count %></td>
+              <td class="text-center"><%= @events.where(player: players).skill_error_serve.count %></td>
+              <td class="text-center"><%= @events.where(player: players).serve_attempts.count %></td>
+            <%# Serve Receive %>
+              <td class="text-center"><%= @events.where(player: players).rally_skill_serve_receive.where(quality: 4).count %></td>
+              <td class="text-center"><%= @events.where(player: players).rally_skill_serve_receive.where(quality: 3).count %></td>
+              <td class="text-center"><%= @events.where(player: players).rally_skill_serve_receive.where(quality: 2).count %></td>
+              <td class="text-center"><%= @events.where(player: players).rally_skill_serve_receive.where(quality: 1).count %></td>
+              <td class="text-center"><%= @events.where(player: players).skill_error_serve_receive.count %></td>
+            <%# Block %>
+              <td class="text-center"><%= @events.where(player: players).skill_point_block.count %></td>
+              <td class="text-center"><%= @events.where(player: players).skill_error_block.count %></td>
+            <td class="text-center"><%= @events.where(player: players).rally_skill_dig.count %></td>
+            <td class="text-center"><%= @events.where(player: players).where.not(skill_error: [nil] + Event::ATTACK_ERROR_CATEGORIES + [:serve_receive, :serve, :under]).count %></td>
+          </tr>
+        <% end %>
+        <tr class="fw-bold">
+          <td colspan="2">Totals:</td>
+          <td><%= @game.volleyball_sets.count %></td>
+          <%# Attack %>
+            <td class="text-center"><%= @home_team_events.skill_point_attack.count %></td>
+            <td class="text-center"><%= @home_team_events.skill_error_attack.count %></td>
+            <td class="text-center"><%= @home_team_events.attack_attempts.count %></td>
+            <td class="text-center"><%= Games::StatsService.attack_percentage(events: @home_team_events).round(3) %></td>
+          <%# Serve %>
+            <td class="text-center"><%= @home_team_events.skill_point_ace.count %></td>
+            <td class="text-center"><%= @home_team_events.skill_error_serve.count %></td>
+            <td class="text-center"><%= @home_team_events.serve_attempts.count %></td>
+          <%# Serve Receive %>
+            <td class="text-center"><%= @home_team_events.rally_skill_serve_receive.where(quality: 4).count %></td>
+            <td class="text-center"><%= @home_team_events.rally_skill_serve_receive.where(quality: 3).count %></td>
+            <td class="text-center"><%= @home_team_events.rally_skill_serve_receive.where(quality: 2).count %></td>
+            <td class="text-center"><%= @home_team_events.rally_skill_serve_receive.where(quality: 1).count %></td>
+            <td class="text-center"><%= @home_team_events.skill_error_serve_receive.count %></td>
+          <%# Block %>
+            <td class="text-center"><%= @home_team_events.skill_point_block.count %></td>
+            <td class="text-center"><%= @home_team_events.skill_error_block.count %></td>
+          <td class="text-center"><%= @home_team_events.rally_skill_dig.count %></td>
+          <td class="text-center"><%= @home_team_events.where.not(skill_error: [nil] + Event::ATTACK_ERROR_CATEGORIES + [:serve_receive, :serve, :under]).count %></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

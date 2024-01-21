@@ -19,6 +19,10 @@ class VolleyballSet < ApplicationRecord
 
   before_save :set_serving_and_receiving_teams
 
+  def to_s
+    "#{game} - Set #{position}"
+  end
+
   def all_rotations_covered?
     players.where.not(rotation: nil).count == 6
   end

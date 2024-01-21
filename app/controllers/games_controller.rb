@@ -59,7 +59,10 @@ class GamesController < ApplicationController
 
   # GET /games/1/stats
   def stats
-    @events = @game.events
+    @volleyball_sets = params[:volleyball_set_id].present? ? [@game.volleyball_sets.find(params[:volleyball_set_id])] : @game.volleyball_sets
+    @events = @game.events.where(volleyball_set: @volleyball_sets)
+    @home_team_events = @events.where(team: @game.home_team)
+    @away_team_events = @events.where(team: @game.away_team)
   end
 
   private
