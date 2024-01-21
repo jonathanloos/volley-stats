@@ -6,7 +6,7 @@ class EventsController < ApplicationController
 
   # GET /events or /events.json
   def index
-    @events = @volleyball_set.events
+    @events = @volleyball_set.events.reverse
   end
 
   # GET /events/1 or /events/1.json
