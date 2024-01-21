@@ -13,6 +13,9 @@ class Events::DestroyService < ApplicationService
       # undo timeouts
       VolleyballSets::TimeoutService.call(event: @event, volleyball_set: @volleyball_set, undo_action: true)
 
+      # undo substitution
+      Players::SubstitutionService.call(incoming_player: @event.player, player: @event.incoming_player, undo_action: true)
+
       # rotate players
       Players::RotateService.call(players: @volleyball_set.active_players, most_recent_event: @event, undo_action: true)
 
