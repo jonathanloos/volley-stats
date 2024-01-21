@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(@player) do %>
+<%= turbo_frame_tag "player_rotation_#{@player.rotation}" do %>
   <div class="card" data-controller="players--card">
     <div class="card-body">
       <div class="d-flex flex-row align-items-center mb-2">

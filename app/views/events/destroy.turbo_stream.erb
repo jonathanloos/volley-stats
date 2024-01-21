@@ -5,10 +5,8 @@
 <%= turbo_stream.remove dom_id(@event) %>
 
 <% @volleyball_set.players.each do |player| %>
-  <%= turbo_stream.replace dom_id(player, :undo_button) do %>
-    <%= turbo_frame_tag dom_id(player, :undo_button) do %>
-      <%= render(Events::UndoComponent.new(event: player.events.last)) %>
-    <% end %>
+  <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
+    <%= render(Players::CardComponent.new(player: player)) %>
   <% end %>
 <% end %>
 

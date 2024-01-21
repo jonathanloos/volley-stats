@@ -24,9 +24,9 @@ class Players::RotateService < ApplicationService
         # iterate through players and update their rotation
         @players.each do |player|
           if player.rotation == 6
-            player.update(rotation: 1)
+            player.update_column(:rotation, 1)
           else
-            player.update(rotation: player.rotation + 1)
+            player.update_column(:rotation, player.rotation + 1)
           end
         end
       else
@@ -40,9 +40,9 @@ class Players::RotateService < ApplicationService
         # iterate through players and update their rotation
         @players.each do |player|
           if player.rotation == 1
-            player.update(rotation: 6)
+            player.update_column(:rotation, 6)
           else
-            player.update(rotation: player.rotation - 1)
+            player.update_column(:rotation, player.rotation - 1)
           end
         end
       end
