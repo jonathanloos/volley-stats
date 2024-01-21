@@ -1,37 +1,13 @@
-<%= form_with(model: team) do |form| %>
-  <% if team.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(team.errors.count, "error") %> prohibited this team from being saved:</h2>
+<%= bootstrap_form_with(model: team) do |form| %>
+  <%= form.text_field :name %>
 
-      <ul>
-        <% team.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form.collection_select :head_coach_id, @team.users, :id, :full_name %>
 
-  <div>
-    <%= form.text_field :name %>
-  </div>
+  <%= form.collection_select :assistant_coach_id, @team.users, :id, :full_name %>
 
-  <div>
-    <%= form.collection_select :head_coach_id, @team.users, :id, :full_name %>
-  </div>
+  <%= form.number_field :year %>
 
-  <div>
-    <%= form.collection_select :assistant_coach_id, @team.users, :id, :full_name %>
-  </div>
+  <%= form.text_field :club %>
 
-  <div>
-    <%= form.number_field :year %>
-  </div>
-
-  <div>
-    <%= form.text_field :club %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= form.submit %>
 <% end %>
