@@ -3,7 +3,11 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ['statButton', 'form', 'categorySubmission', 'rallySkillSubmission', 'skillPointSubmission', 'skillErrorSubmission', 'qualitySubmission', 'modal']
 
-  connect() { }
+  connect() {
+    // reinitialize tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  }
 
   submit (event) {
     this.categorySubmissionTarget.value = event.target.dataset.category ?? ""

@@ -25,7 +25,12 @@ class Games::StatsService
     events.where.not(skill_error: nil).count
   end
 
-  def self.aces(events:)
-    events.skill_point_ace.count
+  def self.aces(events:, home_team:)
+    # away team can't have reception errors or aces, everything is logged on the home team
+    if home_team
+      events.skill_point_ace.count
+    else
+      events.skill_error_serve_receive.count
+    end
   end
 end
