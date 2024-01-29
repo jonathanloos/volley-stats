@@ -42,9 +42,9 @@
               <td class="text-end"><%= @away_team_events.skill_error_attack.count %></td>
             </tr>
             <tr>
-              <td class="text-start"><%= Games::StatsService.aces(events: @home_team_events).round(3) %></td>
+              <td class="text-start"><%= Games::StatsService.aces(events: @home_team_events, home_team: true).round(3) %></td>
               <td class="text-center">Aces</td>
-              <td class="text-end"><%= Games::StatsService.aces(events: @away_team_events).round(3) %></td>
+              <td class="text-end"><%= Games::StatsService.aces(events: @home_team_events, home_team: false).round(3) %></td>
             </tr>
             <tr>
               <td class="text-start"><%= @home_team_events.skill_point_block.count %></td>

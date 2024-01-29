@@ -30,8 +30,12 @@
         <div class="d-flex flex-row gap-2 flex-nowrap">
           <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-secondary-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton"  data-category="continuation" data-rally-skill="serve">
           <label class="btn btn-outline-secondary btn-sm" for="serve-secondary-outlined-<%= @player.id %>">C</label>
-          <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-success-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_earned" data-skill-point="ace">
-          <label class="btn btn-outline-success btn-sm" for="serve-success-outlined-<%= @player.id %>">A</label>
+          <% if @player.team == @player.game.home_team %>
+            <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-success-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_earned" data-skill-point="ace">
+            <label class="btn btn-outline-success btn-sm" for="serve-success-outlined-<%= @player.id %>">A</label>
+          <% else %>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="Log reception error for home team.">A</button>
+          <% end %>
           <input type="radio" class="btn-check" name="serve-options-outlined-<%= @player.id %>" id="serve-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="serve">
           <label class="btn btn-outline-danger btn-sm" for="serve-danger-outlined-<%= @player.id %>">E</label>
         </div>
@@ -48,8 +52,12 @@
           <label class="btn btn-outline-secondary btn-sm" for="serve-receive-secondary-outlined-<%= @player.id %>-3">3</label>
           <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-secondary-outlined-<%= @player.id %>-4" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="continuation" data-rally-skill="serve_receive" data-quality="4">
           <label class="btn btn-outline-secondary btn-sm" for="serve-receive-secondary-outlined-<%= @player.id %>-4">4</label>
-          <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="serve_receive">
-          <label class="btn btn-outline-danger btn-sm" for="serve-receive-danger-outlined-<%= @player.id %>">E</label>
+          <% if @player.team == @player.game.home_team %>
+            <input type="radio" class="btn-check" name="serve-receive-options-outlined-<%= @player.id %>" id="serve-receive-danger-outlined-<%= @player.id %>" autocomplete="off" data-action="players--card#submit" data-players--card-target="statButton" data-category="point_given" data-skill-error="serve_receive">
+            <label class="btn btn-outline-danger btn-sm" for="serve-receive-danger-outlined-<%= @player.id %>">E</label>
+          <% else %>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-title="Log ace for home team.">E</button>
+          <% end %>
         </div>
       </div>
 
