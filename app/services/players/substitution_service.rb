@@ -16,8 +16,8 @@ class Players::SubstitutionService < ApplicationService
         raise unless Events::CreateService.call(event: @event)
       end
 
-      @player.update(status: :bench, rotation: nil)
-      @incoming_player.update(status: :on_court, rotation: rotation, role: @incoming_player.user.role)
+      @player.update!(status: :bench, rotation: nil)
+      @incoming_player.update!(status: :on_court, rotation: rotation, position: @incoming_player.user.position)
 
       true
     end
