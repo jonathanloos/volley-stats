@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   resources :users
   resources :teams
 
+  # load balancer health check
+  get :up, to: "application#up"
+
   # Defines the root path route ("/")
-  root "teams#index"
+  root "games#index"
 end
