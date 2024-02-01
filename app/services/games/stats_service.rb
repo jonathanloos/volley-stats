@@ -17,12 +17,14 @@ class Games::StatsService
     events.free_ball_passing_events.where.not(quality: nil).average(:quality) || 0
   end
 
-  def self.points_earned(events:)
-    events.where.not(skill_point: nil).count
+  def self.points_earned(events:, team:)
+    events.where(team: team).where.not(skill_point: nil).or(
+      events.where.not(team: team).skill_error_serve_receive
+    ).count
   end
 
-  def self.points_given(events:)
-    events.where.not(skill_error: nil).count
+  def self.points_given(events:, team:)
+    events.where(team: team).where.not(skill_error: [nil, :serve_receive]).count
   end
 
   def self.aces(events:, home_team:)
