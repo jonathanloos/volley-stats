@@ -6,7 +6,7 @@ image: jloos/volley_stats
 
 # Deploy to these servers.
 servers:
-  - 138.197.170.210
+  - 143.110.214.141
 
 # Credentials for your image host.
 registry:
@@ -22,7 +22,7 @@ registry:
 # Remember to run `kamal env push` after making changes!
 env:
   clear:
-    DB_HOST: 137.184.161.215
+    DB_HOST: 143.198.33.250
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -39,13 +39,13 @@ env:
 #     - GITHUB_TOKEN
 #   remote:
 #     arch: amd64
-#     host: ssh://app@138.197.170.210
+#     host: ssh://app@143.110.214.141
 
 # Use accessory services (secrets come from .env).
 accessories:
   db:
     image: postgres:11.6-alpine
-    host: 137.184.161.215
+    host: 143.198.33.250
     port: 5432
     env:
       clear:
