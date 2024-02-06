@@ -36,55 +36,55 @@ RUN apk update \
 # RUN cp /app/.certs/GOC-GDC-ROOT-A.crt /usr/local/share/ca-certificates/GOC-GDC-ROOT-A.crt \
 #     && update-ca-certificates
 
-################################################################
-## Development
-################################################################
-FROM base as development
+# ################################################################
+# ## Development
+# ################################################################
+# FROM base as development
 
-ARG USERNAME=hangardev
-ARG GROUPNAME=$USERNAME
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# ARG USERNAME=hangardev
+# ARG GROUPNAME=$USERNAME
+# ARG USER_UID=1000
+# ARG USER_GID=$USER_UID
 
-# add ssh for development / git access and sudo for root commands
-RUN apk update \
-    && apk add --no-cache openssh \
-    sudo
+# # add ssh for development / git access and sudo for root commands
+# RUN apk update \
+#     && apk add --no-cache openssh \
+#     sudo
 
-WORKDIR /app
-ENV RAILS_ENV=development
-ENV SECRET_KEY_BASE=1
+# WORKDIR /app
+# ENV RAILS_ENV=development
+# ENV SECRET_KEY_BASE=1
 
-# add user hangar
-RUN addgroup --gid $USER_GID -S $GROUPNAME  \
-    && adduser -G $GROUPNAME --shell /bin/bash --disabled-password --uid $USER_GID $USERNAME
+# # add user hangar
+# RUN addgroup --gid $USER_GID -S $GROUPNAME  \
+#     && adduser -G $GROUPNAME --shell /bin/bash --disabled-password --uid $USER_GID $USERNAME
 
-# add default sudo role for permissive access in dev
-RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
+# # add default sudo role for permissive access in dev
+# RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+#     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# copy over development scripts to profile / load on login
-COPY dx.sh /etc/profile.d/dx.sh
+# # copy over development scripts to profile / load on login
+# COPY dx.sh /etc/profile.d/dx.sh
 
-# copy over our custom bashrc that loads dx.sh
-COPY ./docker/bashrc /home/hangardev/.bashrc
+# # copy over our custom bashrc that loads dx.sh
+# COPY ./docker/bashrc /home/hangardev/.bashrc
 
-# create a volume mount point with the right permissions for node packages, storage and tmp files
-RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/node_modules
-RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/storage
-RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/tmp
+# # create a volume mount point with the right permissions for node packages, storage and tmp files
+# RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/node_modules
+# RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/storage
+# RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/tmp
 
-# log the image build date
-RUN echo "hangar-app="$(date +"%Y-%m-%d %H:%M %Z") >> /DOCKER_IMAGE_BUILD_HISTORY
+# # log the image build date
+# RUN echo "hangar-app="$(date +"%Y-%m-%d %H:%M %Z") >> /DOCKER_IMAGE_BUILD_HISTORY
 
-# Expose Puma port
-EXPOSE 3000
+# # Expose Puma port
+# EXPOSE 3000
 
-# user 1000 for WSL types
-USER 1000
+# # user 1000 for WSL types
+# USER 1000
 
-# use bash
-ENV SHELL /bin/bash
+# # use bash
+# ENV SHELL /bin/bash
 
 ################################################################
 ### Builder
