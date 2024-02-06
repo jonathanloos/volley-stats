@@ -1,64 +1,151 @@
-# syntax = docker/dockerfile:1
+################################################################
+### Base
+################################################################
+FROM ruby:3.2.2-alpine3.18 as base
+WORKDIR /app
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.2.2
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+# Install required alpine packages
+RUN apk update \
+    && apk add --no-cache \
+    bash \
+    build-base \
+    ca-certificates \
+    coreutils \
+    curl \
+    gcompat \
+    ghostscript \
+    git \
+    gnupg \
+    imagemagick \
+    libffi-dev \
+    libpq-dev \
+    libxml2 \
+    libxslt \
+    make \
+    nodejs \
+    openssl1.1-compat \
+    postgresql-client \
+    shared-mime-info \
+    tzdata \
+    npm \
+    vips \
+    yarn
 
-# Rails app lives here
-WORKDIR /rails
+# ADD GOC-GDC TLSi gateway crt to ca-certificates
+# COPY ./.certs/GOC-GDC-ROOT-A.crt /app/.certs/GOC-GDC-ROOT-A.crt
+# RUN cp /app/.certs/GOC-GDC-ROOT-A.crt /usr/local/share/ca-certificates/GOC-GDC-ROOT-A.crt \
+#     && update-ca-certificates
 
-# Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+################################################################
+## Development
+################################################################
+FROM base as development
 
+ARG USERNAME=hangardev
+ARG GROUPNAME=$USERNAME
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+# add ssh for development / git access and sudo for root commands
+RUN apk update \
+    && apk add --no-cache openssh \
+    sudo
 
-# Install packages needed to build gems
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config nodejs bash
+WORKDIR /app
+ENV RAILS_ENV=development
+ENV SECRET_KEY_BASE=1
 
-# Install application gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+# add user hangar
+RUN addgroup --gid $USER_GID -S $GROUPNAME  \
+    && adduser -G $GROUPNAME --shell /bin/bash --disabled-password --uid $USER_GID $USERNAME
 
-# Copy application code
-COPY . .
+# add default sudo role for permissive access in dev
+RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
+# copy over development scripts to profile / load on login
+COPY dx.sh /etc/profile.d/dx.sh
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# copy over our custom bashrc that loads dx.sh
+COPY ./docker/bashrc /home/hangardev/.bashrc
 
+# create a volume mount point with the right permissions for node packages, storage and tmp files
+RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/node_modules
+RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/storage
+RUN install -d -m 0755 -o $USERNAME -g $GROUPNAME /app/tmp
 
-# Final stage for app image
-FROM base
+# log the image build date
+RUN echo "hangar-app="$(date +"%Y-%m-%d %H:%M %Z") >> /DOCKER_IMAGE_BUILD_HISTORY
 
-# Install packages needed for deployment
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libvips postgresql-client && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Copy built artifacts: gems, application
-COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /rails /rails
-
-# Run and own only the runtime files as a non-root user for security
-RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
-USER rails:rails
-
-# Entrypoint prepares the database.
-ENTRYPOINT ["sh", "/rails/bin/docker-entrypoint"]
-
-# Start the server by default, this can be overwritten at runtime
+# Expose Puma port
 EXPOSE 3000
-EXPOSE 1234
-EXPOSE 26162
-CMD ["./bin/rails", "server"]
+
+# user 1000 for WSL types
+USER 1000
+
+# use bash
+ENV SHELL /bin/bash
+
+################################################################
+### Builder
+################################################################
+FROM base as builder
+WORKDIR /app
+
+ENV RAILS_ENV=production
+ENV SECRET_KEY_BASE=1
+
+# Copy the application files, will be owned by the root user!
+COPY . /app/
+
+# Don't need to ship the docker files with the image
+RUN rm -rf /app/docker
+
+# install yarn
+RUN yarn install
+
+# exclude development and test packages
+RUN gem install bundler \
+    && bundle config --local frozen 1 \
+    && bundle config --local deployment true \
+    && bundle config --local without "development test" \
+    && bundle config set path /app/vendor/bundle \
+    && bundle install -j4 --retry 3 \
+    && bundle exec rails assets:precompile \
+    && bundle exec rails assets:clean \
+    && bundle clean
+
+# remove node_modules that were only needed for assets:precompile
+RUN rm -rf /app/node_modules
+
+################################################################
+### Production
+################################################################
+FROM base
+WORKDIR /app
+
+# default option to disable the creation of a home directory, can be null'd out to support
+# a scenario where the home directory needs to exist and be writable (i.e. vs code remote container)
+ARG HOME_DIRECTORY_OPT=-H
+
+# Set environment as production
+ENV RAILS_ENV production
+
+# copy files from builder (app and gems)
+COPY --from=builder /app/. /app/
+COPY --from=builder /usr/local/bundle/. /usr/local/bundle
+
+# add user hangar
+RUN addgroup --gid 1001 -S hangar  \
+    && adduser -G hangar --shell /bin/false --disabled-password $HOME_DIRECTORY_OPT --uid 1001 hangar
+
+# tmp must be writable by the app user
+RUN chown -R hangar:hangar /app/tmp
+
+# log the image build date
+RUN echo "hangar-app="$(date +"%Y-%m-%d %H:%M %Z") >> /DOCKER_IMAGE_BUILD_HISTORY
+
+EXPOSE 3000
+
+USER 1001
+ENTRYPOINT ["/bin/bash", "/app/boot-app.sh"]
