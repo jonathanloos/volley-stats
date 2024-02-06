@@ -17,9 +17,9 @@ services:
     container_name: volley_stats_app
     build:
       context: ../
-      dockerfile: docker/app/Dockerfile
+      dockerfile: ./docker/app/Dockerfile
     image: volley_stats:dev
-    working_dir: /app
+    working_dir: /rails
     depends_on:
       - volley_stats_db
     links:
@@ -31,11 +31,11 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ..:/app:cached
-      - rails_cache:/app/tmp/cache
+      - ..:/rails:cached
+      - rails_cache:/rails/tmp/cache
       - bundle:/usr/local/bundle
-      - node_modules:/app/node_modules
-      - public:/app/public/vite
+      - node_modules:/rails/node_modules
+      - public:/rails/public/vite
       - ~/.ssh:/root/.ssh:ro
     tmpfs:
       - /tmp
@@ -48,6 +48,5 @@ services:
       - ../docker/db/certs/server.crt:/var/lib/postgresql/server.crt
       - ../docker/db/certs/server.key:/var/lib/postgresql/server.key
       - postgres_data:/var/lib/postgresql/data
-      # - ../docker/db/digitalaf-role.sql:/docker-entrypoint-initdb.d/digitalaf-role.sql
     networks:
       - flt-sim-net

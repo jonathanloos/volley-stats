@@ -7,7 +7,7 @@
         "docker-compose.yml"
     ],
 	"service": "volley_stats_app",
-	"workspaceFolder": "/app",
+	"workspaceFolder": "/rails",
 
 	// Set *default* container specific settings.json values on container create.
 	"customizations": {
@@ -26,8 +26,6 @@
                 "editor.tabSize": 2
             },
             "extensions": [
-                "rebornix.Ruby",
-                "kaiwood.endwise",
                 "eamodio.gitlens"
             ]
         }

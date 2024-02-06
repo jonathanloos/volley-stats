@@ -59,4 +59,6 @@ ENTRYPOINT ["sh", "/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
+EXPOSE 1234
+EXPOSE 26162
 CMD ["./bin/rails", "server"]

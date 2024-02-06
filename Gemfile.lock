@@ -180,6 +180,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.0-aarch64-linux)
       racc (~> 1.4)
+    nokogiri (1.16.0-x86_64-linux)
+      racc (~> 1.4)
     pg (1.5.4)
     popper_js (2.11.8)
     psych (5.1.2)
@@ -291,6 +293,7 @@ GEM
 PLATFORMS
   aarch64-linux
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   acts_as_list (~> 1.1.0)
