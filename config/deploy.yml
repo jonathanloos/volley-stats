@@ -49,7 +49,7 @@ accessories:
     port: 5432
     env:
       clear:
-        POSTGRES_USER: 'volley_stats'
+        POSTGRES_USER: 'postgres'
         POSTGRES_DB: 'volley_stats_production'
       secret:
         - POSTGRES_PASSWORD
