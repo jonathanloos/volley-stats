@@ -231,7 +231,7 @@
           <tr>
             <td><%= user.jersey_number %></td>
             <td><%= user %></td>
-            <td><%= @game.volleyball_sets.joins(:events).where(events: {user: user}).distinct.count %></td>
+            <td><%= @game.volleyball_sets.joins(:events).where(events: {user: user}).or(@game.volleyball_sets.joins(:events).where(events: {incoming_player: players})).distinct.count %></td>
             <%# Attack %>
               <td class="text-center bg-light"><%= @events.where(player: players).skill_point_attack.count %></td>
               <td class="text-center bg-light"><%= @events.where(player: players).skill_error_attack.count %></td>
