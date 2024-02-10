@@ -16,7 +16,7 @@ gem "pg"
 gem 'acts_as_list', '~> 1.1.0'
 
 # Use bootstrap as our css framework
-gem 'bootstrap', '~> 5.2', '>= 5.2.2'
+# gem 'bootstrap', '~> 5.2', '>= 5.2.2'
 gem "bootstrap_form", "~> 5.1"
 gem "view_component"
 gem "chartkick"
