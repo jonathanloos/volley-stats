@@ -36,8 +36,8 @@ elif [ "$RAILS_ENV" = "test" ]; then
   bundle check || bundle install
 
   # install node packages
-  echo "[DX] Installing node packages"
-  yarn install --check-files
+  # echo "[DX] Installing node packages"
+  # yarn install --check-files
 
   # If database exists, migrate. Otherwise setup (restore from prod)
   echo "[DX] Migrating the database"
