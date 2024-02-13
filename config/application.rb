@@ -18,5 +18,12 @@ module App
     #
     config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    initializer "app_assets", after: "importmap.assets" do
+      Rails.application.config.assets.paths << Rails.root.join('app') # for component sidecar js
+    end
+    
+    # Sweep importmap cache for components
+    config.importmap.cache_sweepers << Rails.root.join('app/components')
   end
 end
