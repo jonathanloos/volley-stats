@@ -27,8 +27,7 @@ RUN apk update \
     shared-mime-info \
     tzdata \
     npm \
-    vips \
-    yarn
+    vips
 
 # Expose Puma port
 EXPOSE 3000
