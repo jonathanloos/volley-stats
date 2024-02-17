@@ -23,12 +23,12 @@
     <tbody>
       <% @users.each do |user| %>
         <tr>
-          <th><%= user.first_name %></th>
-          <th><%= user.last_name %></th>
-          <th><%= link_to user.team %></th>
-          <th><%= user.role.humanize %></th>
-          <th><%= user.position&.humanize %></th>
-          <th><%= link_to "edit", edit_user_path(user) %></th>
+          <td><%= user.first_name %></td>
+          <td><%= user.last_name %></td>
+          <td><%= link_to user.team %></td>
+          <td><%= user.role.humanize %></td>
+          <td><%= user.position&.humanize %></td>
+          <td><%= link_to "edit", edit_user_path(user) %></td>
         </tr>
       <% end %>
     </tbody>

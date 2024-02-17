@@ -1,9 +1,9 @@
 <%= bootstrap_form_with(model: team) do |form| %>
   <%= form.text_field :name %>
 
-  <%= form.collection_select :head_coach_id, @team.users, :id, :full_name, label: "Head Coach (optional)" %>
+  <%= form.collection_select :head_coach_id, team.users, :id, :full_name, label: "Head Coach (optional)" %>
 
-  <%= form.collection_select :assistant_coach_id, @team.users, :id, :full_name, label: "Assistant Coach (optional)" %>
+  <%= form.collection_select :assistant_coach_id, team.users, :id, :full_name, label: "Assistant Coach (optional)" %>
 
   <%= form.number_field :year %>
 
@@ -11,6 +11,9 @@
 
   <div class="d-flex flex-row justify-content-between">
     <%= link_to "Cancel", teams_path, class: "btn btn-light" %>
-    <%= form.submit %>
+    <div class="d-flex flex-row justify-content-between">
+      <%= link_to "Delete", team, class: "btn btn-danger me-1", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
   </div>
 <% end %>

@@ -9,25 +9,21 @@
   <table class="table table-sm table-hover">
     <thead>
       <tr>
-        <th>Title</th>
+        <th>Game</th>
         <th>Home Team</th>
         <th>Away Team</th>
         <th>Date</th>
-        <th>Show</th>
         <th>Edit</th>
-        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
       <% @games.each do |game| %>
         <tr>
-          <th><%= game.title %></th>
-          <th><%= link_to game.home_team %></th>
-          <th><%= link_to game.away_team %></th>
-          <th><%= game.date %></th>
-          <th><%= link_to "show", game_path(game) %></th>
-          <th><%= link_to "edit", edit_game_path(game) %></th>
-          <th><%= link_to "delete", game, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></th>
+          <td><%= link_to game.title, game_path(game) %></td>
+          <td><%= game.home_team %></td>
+          <td><%= game.away_team %></td>
+          <td class="text-nowrap"><%= game.date.strftime("%b %d, %Y") %></td>
+          <td><%= link_to "edit", edit_game_path(game) %></td>
         </tr>
       <% end %>
     </tbody>

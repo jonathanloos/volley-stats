@@ -1,33 +1,40 @@
 <%= bootstrap_form_with(model: game) do |form| %>
-  <% if game.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(game.errors.count, "error") %> prohibited this game from being saved:</h2>
-
-      <ul>
-        <% game.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <% if game.new_record? %>
+    <%= form.collection_select :home_team_id, Team.all, :id, :name, label: "Home Team", required: true %>
+    <%= form.collection_select :away_team_id, Team.all, :id, :name, label: "Away Team", required: true %>
+  <% else %>
+    <div class="row mb-4">
+      <div class="col-sm-5">
+        <div class="card m-0">
+          <div class="card-body text-center">
+            <h4 class="mt-4"><%= game.home_team %></h4>
+            <p class="mb-4 text-muted"><%= game.home_team.club %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="d-flex flex-row justify-content-center align-items-center h-100">
+          <h4 class="my-3">vs</h4>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="card m-0">
+          <div class="card-body text-center">
+            <h4 class="mt-4"><%= game.away_team %></h4>
+            <p class="mb-4 text-muted"><%= game.away_team.club %></p>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
+  <%= form.text_field :title, required: true %>
+  <%= form.datetime_field :date, required: true %>
 
-  <div>
-    <%= form.collection_select :home_team_id, Team.all, :id, :name, label: "Home Team" %>
-  </div>
-
-  <div>
-    <%= form.collection_select :away_team_id, Team.all, :id, :name, label: "Away Team" %>
-  </div>
-
-  <div>
-    <%= form.text_field :title %>
-  </div>
-
-  <div>
-    <%= form.datetime_field :date %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="d-flex flex-row justify-content-between">
+    <%= link_to "Cancel", games_path, class: "btn btn-light" %>
+    <div>
+      <%= link_to "Delete", game, class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure? This will delete all data for the game and is irreversible."} %>
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
   </div>
 <% end %>

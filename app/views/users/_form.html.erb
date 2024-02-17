@@ -7,6 +7,9 @@
 
   <div class="d-flex flex-row justify-content-between">
     <%= link_to "Cancel", users_path, class: "btn btn-light" %>
-    <%= form.submit %>
+    <div>
+      <%= link_to "Delete", user, class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
   </div>
 <% end %>
