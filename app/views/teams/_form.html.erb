@@ -5,9 +5,9 @@
 
   <%= form.collection_select :assistant_coach_id, team.users, :id, :full_name, label: "Assistant Coach (optional)" %>
 
-  <%= form.number_field :year %>
+  <%= form.collection_select :organization_id, Organization.all, :id, :title, include_blank: true %>
 
-  <%= form.text_field :club %>
+  <%= form.number_field :year %>
 
   <div class="d-flex flex-row justify-content-between">
     <%= link_to "Cancel", teams_path, class: "btn btn-light" %>

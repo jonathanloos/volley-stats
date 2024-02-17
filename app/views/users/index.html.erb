@@ -13,6 +13,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Organization</th>
         <th>Team</th>
         <th>Role</th>
         <th>Position</th>
@@ -23,6 +24,7 @@
       <% @users.each do |user| %>
         <tr>
           <td><%= link_to user.full_name, user %></td>
+          <td><%= link_to user.organization if user.organization %></td>
           <td><%= link_to user.team %></td>
           <td><%= user.role.humanize %></td>
           <td><%= user.position&.humanize %></td>

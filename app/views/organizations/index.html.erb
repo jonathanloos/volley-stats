@@ -1,0 +1,34 @@
+<div class="d-flex justify-content-between mt-4">
+  <h1>Organizations</h1>
+  <div>
+    <% if @organizations.count != Organization.all.count %>
+      <%= link_to "All Organizations", organizations_path, class: "btn btn-light" %>
+    <% end %>
+    <%= link_to "New Organization", new_organization_path, class: "btn btn-primary", data: {"bs-toggle": "tooltip"} %>
+  </div>
+</div>
+
+<div id="organizations">
+  <table class="table table-sm table-hover mt-4">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Website</th>
+        <th>Teams</th>
+        <th>Manager</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @organizations.each do |organization| %>
+        <tr>
+          <td><%= link_to organization.title, organization %></td>
+          <td><%= organization.category.humanize %></td>
+          <td><%= organization.website %></td>
+          <td><%= link_to organization.teams.count, teams_path({organization_id: organization.id}) %></td>
+          <td><%= link_to organization.user, organization.user %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

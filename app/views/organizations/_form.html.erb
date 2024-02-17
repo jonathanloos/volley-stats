@@ -1,0 +1,14 @@
+<%= bootstrap_form_with(model: organization) do |form| %>
+  <%= form.text_field :title, required: true %>
+  <%= form.text_field :website %>
+  <%= form.select :category, Organization.categories.keys.map{|category| [category.humanize, category]}, required: true %>
+  <%= form.collection_select :user_id, User.all, :id, :full_name %>
+
+  <div class="d-flex flex-row justify-content-between">
+    <%= link_to "Cancel", organizations_path, class: "btn btn-light" %>
+    <div>
+      <%= link_to "Delete", organization, class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
