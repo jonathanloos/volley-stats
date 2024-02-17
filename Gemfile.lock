@@ -174,9 +174,9 @@ GEM
       net-protocol
     net-ssh (7.2.1)
     nio4r (2.7.0)
-    nokogiri (1.16.0-aarch64-linux)
+    nokogiri (1.16.2-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.16.0-x86_64-linux)
+    nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
     pg (1.5.4)
     popper_js (2.11.8)
