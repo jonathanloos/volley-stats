@@ -3,7 +3,8 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users = User.all.order(:first_name)
+    @users = @users.where(team: params[:team_id]) if params[:team_id]
   end
 
   # GET /users/1 or /users/1.json

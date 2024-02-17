@@ -1,42 +1,15 @@
-<%= form_with(model: user) do |form| %>
-  <% if user.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<%= bootstrap_form_with(model: user) do |form| %>
+  <%= form.text_field :first_name, required: true %>
+  <%= form.text_field :last_name, required: true %>
+  <%= form.number_field :jersey_number %>
+  <%= form.collection_select :team_id, Team.all, :id, :name %>
+  <%= form.select :role, User.roles.keys.map{|role| [role.humanize, role]}, required: true %>
 
-      <ul>
-        <% user.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <div class="d-flex flex-row justify-content-between">
+    <%= link_to "Cancel", users_path, class: "btn btn-light" %>
+    <div>
+      <%= link_to "Delete", user, class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+      <%= form.submit class: "btn btn-primary" %>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :first_name, style: "display: block" %>
-    <%= form.text_field :first_name %>
-  </div>
-
-  <div>
-    <%= form.label :last_name, style: "display: block" %>
-    <%= form.text_field :last_name %>
-  </div>
-
-  <div>
-    <%= form.label :jersey_number, style: "display: block" %>
-    <%= form.number_field :jersey_number %>
-  </div>
-
-  <div>
-    <%= form.label :team_id, style: "display: block" %>
-    <%= form.text_field :team_id %>
-  </div>
-
-  <div>
-    <%= form.label :role, style: "display: block" %>
-    <%= form.number_field :role %>
-  </div>
-
-  <div>
-    <%= form.submit %>
   </div>
 <% end %>

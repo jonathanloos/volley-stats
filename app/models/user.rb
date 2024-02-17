@@ -2,7 +2,7 @@ class User < ApplicationRecord
   include Roleable
   include Positionable
 
-  belongs_to :team, optional: true
+  belongs_to :team
 
   has_many :events
   has_many :players

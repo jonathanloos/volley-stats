@@ -7,6 +7,9 @@ class Game < ApplicationRecord
   has_many :users, through: :players
   has_many :events, through: :volleyball_sets
 
+  validates :title, presence: true
+  validates :date, presence: true
+
   def to_s
     title
   end

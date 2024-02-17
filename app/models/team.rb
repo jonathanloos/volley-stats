@@ -6,6 +6,8 @@ class Team < ApplicationRecord
   belongs_to :assistant_coach, class_name: "User", optional: true
 
   def to_s
-    "#{name} - #{year}"
+    text = "#{name}"
+    text += " - #{year}" if year.present?
+    text
   end
 end
