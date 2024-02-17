@@ -1,6 +1,9 @@
 <div class="d-flex justify-content-between mt-4">
   <h1>Teams</h1>
   <div>
+    <% if @teams.count != Team.all.count %>
+      <%= link_to "All Teams", teams_path, class: "btn btn-light" %>
+    <% end %>
     <%= link_to "New Team", new_team_path, class: "btn btn-primary" %>
   </div>
 </div>
@@ -10,7 +13,7 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Club</th>
+        <th>Organization</th>
         <th>Players</th>
       </tr>
     </thead>
@@ -18,7 +21,7 @@
       <% @teams.each do |team| %>
         <tr>
           <td><%= link_to team.name, team %></td>
-          <td><%= team.club %></td>
+          <td><%= team.organization %></td>
           <td><%= link_to team.users.count, users_path({team_id: team.id}) %></td>
         </tr>
       <% end %>

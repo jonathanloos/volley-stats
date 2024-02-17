@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all.order(:first_name)
     @users = @users.where(team: params[:team_id]) if params[:team_id]
+    @users = @users.where(team: params[:organization_id]) if params[:organization_id]
   end
 
   # GET /users/1 or /users/1.json
@@ -66,6 +67,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :jersey_number, :team_id, :role)
+      params.require(:user).permit(:first_name, :last_name, :jersey_number, :team_id, :role, :organization_id)
     end
 end

@@ -3,7 +3,8 @@ class TeamsController < ApplicationController
 
   # GET /teams or /teams.json
   def index
-    @teams = Team.all
+    @teams = Team.all.order(:name)
+    @teams = @teams.where(organization_id: params[:organization_id]) if params[:organization_id].present?
   end
 
   # GET /teams/1 or /teams/1.json
@@ -65,6 +66,6 @@ class TeamsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def team_params
-      params.require(:team).permit(:name, :year, :club, :head_coach_id, :assistant_coach_id)
+      params.require(:team).permit(:name, :year, :club, :head_coach_id, :assistant_coach_id, :organization_id)
     end
 end

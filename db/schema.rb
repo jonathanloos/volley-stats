@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_17_043023) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_17_052416) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_17_043023) do
     t.index ["tournament_id"], name: "index_games_on_tournament_id"
   end
 
+  create_table "organizations", force: :cascade do |t|
+    t.string "title"
+    t.string "website"
+    t.bigint "user_id", null: false
+    t.integer "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_organizations_on_user_id"
+  end
+
   create_table "players", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "game_id", null: false
@@ -82,8 +92,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_17_043023) do
     t.datetime "updated_at", null: false
     t.bigint "head_coach_id"
     t.bigint "assistant_coach_id"
+    t.bigint "organization_id"
     t.index ["assistant_coach_id"], name: "index_teams_on_assistant_coach_id"
     t.index ["head_coach_id"], name: "index_teams_on_head_coach_id"
+    t.index ["organization_id"], name: "index_teams_on_organization_id"
   end
 
   create_table "tournaments", force: :cascade do |t|
@@ -105,6 +117,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_17_043023) do
     t.integer "volleyball_position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "organization_id"
+    t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["team_id"], name: "index_users_on_team_id"
   end
 
@@ -136,13 +150,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_17_043023) do
   add_foreign_key "games", "teams", column: "away_team_id"
   add_foreign_key "games", "teams", column: "home_team_id"
   add_foreign_key "games", "tournaments"
+  add_foreign_key "organizations", "users"
   add_foreign_key "players", "games"
   add_foreign_key "players", "teams"
   add_foreign_key "players", "users"
   add_foreign_key "players", "volleyball_sets"
+  add_foreign_key "teams", "organizations"
   add_foreign_key "teams", "users", column: "assistant_coach_id"
   add_foreign_key "teams", "users", column: "head_coach_id"
   add_foreign_key "tournaments", "teams"
+  add_foreign_key "users", "organizations"
   add_foreign_key "users", "teams"
   add_foreign_key "volleyball_sets", "games"
   add_foreign_key "volleyball_sets", "teams", column: "receiving_team_id"
