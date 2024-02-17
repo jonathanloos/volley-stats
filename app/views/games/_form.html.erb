@@ -29,6 +29,7 @@
   <% end %>
   <%= form.text_field :title, required: true %>
   <%= form.datetime_field :date, required: true %>
+  <%= form.collection_select :tournament_id, Tournament.all, :id, :title, include_blank: true %>
 
   <div class="d-flex flex-row justify-content-between">
     <%= link_to "Cancel", games_path, class: "btn btn-light" %>

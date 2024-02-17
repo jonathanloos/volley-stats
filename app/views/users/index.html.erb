@@ -4,12 +4,12 @@
     <% if @users.count != User.all.count %>
       <%= link_to "All Users", users_path, class: "btn btn-light" %>
     <% end %>
-    <%= link_to "New user", new_user_path, class: "btn btn-primary", title: "Hey", data: {"bs-toggle": "tooltip"} %>
+    <%= link_to "New user", new_user_path, class: "btn btn-primary", data: {"bs-toggle": "tooltip"} %>
   </div>
 </div>
 
 <div id="users">
-  <table class="table table-sm table-hover">
+  <table class="table table-sm table-hover mt-4">
     <thead>
       <tr>
         <th>Name</th>

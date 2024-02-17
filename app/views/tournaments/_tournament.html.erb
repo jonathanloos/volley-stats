@@ -1,0 +1,11 @@
+<div class="card mt-4">
+  <div class="card-body">
+    <p class="mt-0 text-muted"><%= tournament.date.strftime("%b %d, %Y") %></p>
+    <h3 class="mb-2"><%= tournament.title %></h3>
+    <p>Home Team: <%= tournament.team %></p>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <%= link_to "Edit", edit_tournament_path(tournament), class: "btn btn-secondary" %>
+    <%= link_to "Delete", tournament, class: "btn btn-danger", data: {turbo_method: :delete} %>
+  </div>
+</div>

@@ -6,24 +6,20 @@
 </div>
 
 <div id="users">
-  <table class="table table-sm table-hover">
+  <table class="table table-sm table-hover mt-4">
     <thead>
       <tr>
         <th>Name</th>
         <th>Club</th>
         <th>Players</th>
-        <th>Edit</th>
-        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
       <% @teams.each do |team| %>
         <tr>
-          <td><%= team.name %></td>
+          <td><%= link_to team.name, team %></td>
           <td><%= team.club %></td>
           <td><%= link_to team.users.count, users_path({team_id: team.id}) %></td>
-          <td><%= link_to "edit", edit_team_path(team) %></td>
-          <td><%= link_to "delete", team, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></td>
         </tr>
       <% end %>
     </tbody>

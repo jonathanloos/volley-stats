@@ -1,0 +1,34 @@
+<div class="d-flex justify-content-between mt-4">
+  <h1>Tournaments</h1>
+  <div>
+    <% if @tournaments.count != Tournament.all.count %>
+      <%= link_to "All Tournaments", tournaments_path, class: "btn btn-light" %>
+    <% end %>
+    <%= link_to "New Tournament", new_tournament_path, class: "btn btn-primary", data: {"bs-toggle": "tooltip"} %>
+  </div>
+</div>
+
+<div id="tournaments">
+  <table class="table table-sm table-hover mt-4">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Home Team</th>
+        <th>Games</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tournaments.each do |tournament| %>
+        <tr>
+          <td><%= link_to tournament.title, tournament %></td>
+          <td><%= link_to tournament.date.strftime("%b %d, %Y") %></td>
+          <td><%= tournament.team %></td>
+          <td><%= link_to tournament.games.count, games_path({tournament_id: tournament.id}) %></td>
+          <td><%= link_to "edit", edit_tournament_path(tournament) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

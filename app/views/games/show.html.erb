@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-between mt-4">
   <div>
     <h1 class="mb-0"><%= @game %> <%= @game.home_team %> vs <%= @game.away_team %></h1>
-    <small class="text-muted"><%= @game.date.strftime("%Y-%m-%d") %>
+    <small class="text-muted"><%= @game.tournament %> <%= @game.date.strftime("%Y-%m-%d") %></small>
   </div>
   <div>
     <%= link_to "Edit", edit_game_path(@game), class: "btn btn-sm btn-outline-light text-dark border-0" %>
