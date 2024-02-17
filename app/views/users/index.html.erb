@@ -12,8 +12,7 @@
   <table class="table table-sm table-hover">
     <thead>
       <tr>
-        <th>First</th>
-        <th>Last</th>
+        <th>Name</th>
         <th>Team</th>
         <th>Role</th>
         <th>Position</th>
@@ -23,8 +22,7 @@
     <tbody>
       <% @users.each do |user| %>
         <tr>
-          <td><%= user.first_name %></td>
-          <td><%= user.last_name %></td>
+          <td><%= link_to user.full_name, user %></td>
           <td><%= link_to user.team %></td>
           <td><%= user.role.humanize %></td>
           <td><%= user.position&.humanize %></td>
