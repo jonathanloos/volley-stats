@@ -1,7 +1,22 @@
 <div class="card mt-4">
   <div class="card-body">
-    <p class="mt-0 text-muted"><%= team.club %></p>
-    <h3 class="mb-2"><%= team.name %> - <%= team.year %></h3>
+    <p class="m-0 text-muted"><%= team.club %></p>
+    <h3 class=" mt-0 mb-4"><%= team.name %> - <%= team.year %></h3>
+
+    <div class="row mb-4">
+      <div class="col-4 text-center">
+        <h4><%= team.users.count %></h4>
+        <p>members</p>
+      </div>
+      <div class="col-4 text-center">
+        <h4><%= team.games.count %></h4>
+        <p>games</p>
+      </div>
+      <div class="col-4 text-center">
+        <h4><%= team.tournaments.count %></h4>
+        <p>tournaments</p>
+      </div>
+    </div>
     <p>Head Coach: <%= team.head_coach || "None" %></p>
     <p>Assistant Coach: <%= team.assistant_coach || "None" %></p>
   </div>

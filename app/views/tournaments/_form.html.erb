@@ -1,0 +1,13 @@
+<%= bootstrap_form_with(model: tournament) do |form| %>
+  <%= form.text_field :title, required: true %>
+  <%= form.datetime_field :date, required: true %>
+  <%= form.collection_select :team_id, Team.all, :id, :name %>
+
+  <div class="d-flex flex-row justify-content-between">
+    <%= link_to "Cancel", tournaments_path, class: "btn btn-light" %>
+    <div>
+      <%= link_to "Delete", tournament, class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

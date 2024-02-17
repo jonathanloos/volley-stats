@@ -1,19 +1,21 @@
 <div class="d-flex justify-content-between mt-4">
   <h1>Games</h1>
   <div>
-    <%= link_to "New Game", new_game_path, class: "btn btn-primary" %>
+    <% if @games.count != Game.all.count %>
+      <%= link_to "All Games", games_path, class: "btn btn-light" %>
+    <% end %>
+    <%= link_to "New Game", new_game_path, class: "btn btn-primary", data: {"bs-toggle": "tooltip"} %>
   </div>
 </div>
 
 <div id="games">
-  <table class="table table-sm table-hover">
+  <table class="table table-sm table-hover mt-4">
     <thead>
       <tr>
         <th>Game</th>
         <th>Home Team</th>
         <th>Away Team</th>
         <th>Date</th>
-        <th>Edit</th>
       </tr>
     </thead>
     <tbody>
@@ -23,7 +25,6 @@
           <td><%= game.home_team %></td>
           <td><%= game.away_team %></td>
           <td class="text-nowrap"><%= game.date.strftime("%b %d, %Y") %></td>
-          <td><%= link_to "edit", edit_game_path(game) %></td>
         </tr>
       <% end %>
     </tbody>

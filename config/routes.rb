@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tournaments
   resources :games do
     
     resources :volleyball_sets, shallow: true do
