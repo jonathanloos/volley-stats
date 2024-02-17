@@ -1,6 +1,9 @@
 <div class="d-flex justify-content-between mt-4">
   <h1>Users</h1>
   <div>
+    <% if @users.count != User.all.count %>
+      <%= link_to "All Users", users_path, class: "btn btn-light" %>
+    <% end %>
     <%= link_to "New user", new_user_path, class: "btn btn-primary", title: "Hey", data: {"bs-toggle": "tooltip"} %>
   </div>
 </div>

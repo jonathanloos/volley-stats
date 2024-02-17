@@ -21,7 +21,7 @@
         <tr>
           <th><%= team.name %></th>
           <th><%= team.club %></th>
-          <th><%= team.users.count %></th>
+          <th><%= link_to team.users.count, users_path({team_id: team.id}) %></th>
           <th><%= link_to "edit", edit_team_path(team) %></th>
           <th><%= link_to "delete", team, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></th>
         </tr>
