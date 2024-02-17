@@ -1,27 +1,11 @@
-<div id="<%= dom_id user %>">
-  <p>
-    <strong>First name:</strong>
-    <%= user.first_name %>
-  </p>
-
-  <p>
-    <strong>Last name:</strong>
-    <%= user.last_name %>
-  </p>
-
-  <p>
-    <strong>Jersey number:</strong>
-    <%= user.jersey_number %>
-  </p>
-
-  <p>
-    <strong>Team:</strong>
-    <%= user.team_id %>
-  </p>
-
-  <p>
-    <strong>Role:</strong>
-    <%= user.role %>
-  </p>
-
+<div class="card mt-4">
+  <div class="card-body">
+    <p class="mt-0 text-muted"><%= user.role %></p>
+    <h3 class="mb-2"><%= user.full_name %> - <%= user.team %></h3>
+    <p>Jersey: <%= user.jersey_number %></p>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <%= link_to "Edit", edit_user_path(user), class: "btn btn-secondary" %>
+    <%= link_to "Delete", user, class: "btn btn-danger", data: {turbo_method: :delete} %>
+  </div>
 </div>

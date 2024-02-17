@@ -15,7 +15,6 @@
         <th>Role</th>
         <th>Position</th>
         <th>Edit</th>
-        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -27,7 +26,6 @@
           <th><%= user.role.humanize %></th>
           <th><%= user.position&.humanize %></th>
           <th><%= link_to "edit", edit_user_path(user) %></th>
-          <th><%= link_to "delete", user, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></th>
         </tr>
       <% end %>
     </tbody>
