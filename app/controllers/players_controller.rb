@@ -27,6 +27,7 @@ class PlayersController < ApplicationController
     @player = Player.new(player_params)
     @player.volleyball_set = @volleyball_set
     @player.game = @volleyball_set.game
+    @player.team = @volleyball_set.game.home_team
 
     respond_to do |format|
       if @player.save
@@ -75,7 +76,7 @@ class PlayersController < ApplicationController
     end
 
     def set_volleyball_set
-      @player = VolleyballSet.find(params[:id])
+      @volleyball_set = VolleyballSet.find(params[:volleyball_set_id])
     end
 
     # Only allow a list of trusted parameters through.

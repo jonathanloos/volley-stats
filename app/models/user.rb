@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :games, through: :players
 
   validates :role, presence: true
+  validates :position, presence: true, if: -> { !coach? }
 
   def to_s
     full_name

@@ -9,9 +9,6 @@
 
     <div class="d-flex flex-row">
       <%= form.submit "save", class: "btn btn-primary btn-sm" %>
-      <% if @player.persisted? %>
-        <%= link_to "x", player_path(@player), class: "text-danger fs-4 ms-2 text-decoration-none", data: {turbo_method: :delete, turbo_stream: true} %>
-      <% end %>
     </div>
   <% end %>
 <% end %>
