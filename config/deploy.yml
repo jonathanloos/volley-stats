@@ -6,7 +6,15 @@ image: jloos/volley_stats
 
 # Deploy to these servers.
 servers:
-  - 143.110.214.141
+  web:
+    hosts:
+      - 143.110.214.141
+    labels:
+      traefik.http.routers.volley_stats.rule: Host(`volley.jonathanloos.ca`)
+      traefik.http.routers.volley_stats_secure.entrypoints: websecure
+      traefik.http.routers.volley_stats_secure.rule: Host(`volley.jonathanloos.ca`)
+      traefik.http.routers.volley_stats_secure.tls: true
+      traefik.http.routers.volley_stats_secure.tls.certresolver: letsencrypt
 
 # Credentials for your image host.
 registry:
@@ -63,10 +71,19 @@ accessories:
 #       - data:/data
 
 # Configure custom arguments for Traefik
-# traefik:
-#   args:
-#     accesslog: true
-#     accesslog.format: json
+traefik:
+  options:
+    publish:
+      - "443:443"
+    volume:
+      - "/letsencrypt/acme.json:/letsencrypt/acme.json"
+  args:
+    entryPoints.web.address: ":80"
+    entryPoints.websecure.address: ":443"
+    certificatesResolvers.letsencrypt.acme.email: "jonathanloos97@gmail.com"
+    certificatesResolvers.letsencrypt.acme.storage: "/letsencrypt/acme.json"
+    certificatesResolvers.letsencrypt.acme.httpchallenge: true
+    certificatesResolvers.letsencrypt.acme.httpchallenge.entrypoint: web
 
 # Configure a custom healthcheck (default is /up on port 3000)
 # healthcheck:
