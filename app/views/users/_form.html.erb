@@ -4,6 +4,7 @@
   <%= form.number_field :jersey_number %>
   <%= form.collection_select :team_id, Team.all, :id, :name %>
   <%= form.select :role, User.roles.keys.map{|role| [role.humanize, role]}, required: true %>
+  <%= form.select :position, User.positions.keys.map{|position| [position.humanize, position]}, required: true %>
   <%= form.collection_select :organization_id, Organization.all, :id, :title, include_blank: true %>
 
   <div class="d-flex flex-row justify-content-between">
