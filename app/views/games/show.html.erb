@@ -41,37 +41,7 @@
     </div>
     <div class="col-lg-6">
       <h4 class="mt-4">Starting Lineup</h4>
-      <%= bootstrap_form_with url: set_lineup_volleyball_set_path(volleyball_set), method: :put do |form| %>
-        <div class="border border-3 mt-4 mt-lg-0"></div>
-        <div class="d-flex flex-row">
-          <div class="d-flex flex-column flex-grow-1">
-            <div class="border-bottom border-end p-1 text-center d-flex flex-column">
-              <h4 class="m-0"><%= form.collection_select :rotation_four_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 4)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
-            </div>
-            <div class="border-top border-end p-1 text-center d-flex flex-column flex-grow-1">
-              <h4 class="m-0"><%= form.collection_select :rotation_five_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 5)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
-            </div>
-          </div>
-          <div class="d-flex flex-column flex-grow-1">
-            <div class="border-bottom border-end border-start p-1 text-center d-flex flex-column">
-              <h4 class="m-0"><%= form.collection_select :rotation_three_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 3)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
-            </div>
-            <div class="border-top border-end border-start p-1 text-center d-flex flex-column">
-              <h4 class="m-0"><%= form.collection_select :rotation_six_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 6)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
-            </div>
-          </div>
-          <div class="d-flex flex-column flex-grow-1">
-            <div class="border-bottom border-start p-1 text-center d-flex flex-column">
-              <h4 class="m-0"><%= form.collection_select :rotation_two_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 2)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
-            </div>
-            <div class="border-top border-start p-1 text-center d-flex flex-column">
-              <h4 class="m-0"><%= form.collection_select :rotation_one_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(rotation: 1)&.id, required: true, include_blank: true, hide_label: true, wrapper_class: "m-0 form-control-sm" %></h4>
-            </div>
-          </div>
-        </div>
-        <h4 class="m-0"><%= form.collection_select :libero_id, volleyball_set.players, :id, :jersey_number, selected: volleyball_set.players.find_by(position: :libero)&.id, required: false, include_blank: true, wrapper_class: "m-0 form-control-sm" %></h4>
-        <%= form.submit "Save Lineup", class: "btn btn-primary btn-sm w-100 mt-3" %>
-      <% end %>
+      <%= render(VolleyballSets::StartingLineupComponent.new(volleyball_set: volleyball_set)) %>
     </div>
   </div>
 <% end %>
