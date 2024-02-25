@@ -41,7 +41,7 @@
     </div>
     <div class="col-lg-6">
       <h4 class="mt-4">Starting Lineup</h4>
-      <%= bootstrap_form_with url: set_lineup_volleyball_set_path(volleyball_set), data: {turbo_method: :put} do |form| %>
+      <%= bootstrap_form_with url: set_lineup_volleyball_set_path(volleyball_set), method: :put do |form| %>
         <div class="border border-3 mt-4 mt-lg-0"></div>
         <div class="d-flex flex-row">
           <div class="d-flex flex-column flex-grow-1">
