@@ -61,8 +61,8 @@ class VolleyballSet < ApplicationRecord
     Player.find_by(volleyball_set: self, team: game.away_team)
   end
 
-  def players
-    super.joins(:user).where(users: {role: :player}).order("users.jersey_number", position: :asc)
+  def ordered_players
+    players.joins(:user).where(users: {role: :player}).order("users.jersey_number", position: :asc)
   end
 
   private

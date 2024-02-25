@@ -3,7 +3,7 @@
 class Players::SubstitutionComponent < ApplicationComponent
   def initialize(player:)
     @player = player
-    @bench_players = @player.volleyball_set.players.bench
+    @bench_players = @player.volleyball_set.ordered_players.bench
   end
 
   def render?
