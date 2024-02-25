@@ -16,7 +16,7 @@ class Game < ApplicationRecord
     title
   end
 
-  def players
-    super.joins(:user).order("users.jersey_number", position: :asc)
+  def ordered_players
+    players.joins(:user).order("users.jersey_number", position: :asc)
   end
 end
