@@ -227,7 +227,7 @@
       </thead>
       <tbody>
         <% User.where(id: Player.player.where(volleyball_set: @volleyball_sets).pluck(:user_id)).order(:jersey_number).each do |user| %>
-          <% players = @game.players.where(user: user, volleyball_set: @volleyball_sets) %>
+          <% players = @game.players.joins(:user).where(user: user, volleyball_set: @volleyball_sets).order("users.jersey_number", position: :asc) %>
           <tr>
             <td><%= user.jersey_number %></td>
             <td><%= user %></td>

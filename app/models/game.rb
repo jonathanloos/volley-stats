@@ -3,8 +3,8 @@ class Game < ApplicationRecord
   belongs_to :away_team, class_name: "Team"
   belongs_to :tournament, optional: true
 
+  has_many :players, dependent: :destroy
   has_many :volleyball_sets, -> {order(position: :asc)}, dependent: :destroy
-  has_many :players, -> {joins(:user).order("users.jersey_number", position: :asc)}, dependent: :destroy
   has_many :users, through: :players
   has_many :events, through: :volleyball_sets
   has_many :teams, through: :home_team
@@ -14,5 +14,9 @@ class Game < ApplicationRecord
 
   def to_s
     title
+  end
+
+  def players
+    super.joins(:user).order("users.jersey_number", position: :asc)
   end
 end

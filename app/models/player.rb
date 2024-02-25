@@ -10,7 +10,7 @@ class Player < ApplicationRecord
   delegate :first_name, to: :user
   delegate :last_name, to: :user
   
-  has_many :events, -> { order(:position) }, dependent: :destroy
+  has_many :events, -> { order(:position) }
 
   validates :position, presence: true, if: -> { on_court? }
   validates :rotation, numericality: {in: 1..6}, uniqueness: {scope: :volleyball_set, message: "must not have two players in the same rotation"}, if: :check_rotation

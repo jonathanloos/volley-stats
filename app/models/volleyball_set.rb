@@ -9,7 +9,7 @@ class VolleyballSet < ApplicationRecord
 
   acts_as_list scope: :game
 
-  has_many :players, -> { joins(:user).where(users: {role: :player}).order("users.jersey_number", position: :asc) }, dependent: :destroy
+  has_many :players, dependent: :destroy
   has_many :users, through: :players
   has_many :events, -> { order(:position) }, dependent: :destroy
 
@@ -59,6 +59,10 @@ class VolleyballSet < ApplicationRecord
 
   def away_team_player
     Player.find_by(volleyball_set: self, team: game.away_team)
+  end
+
+  def players
+    super.joins(:user).where(users: {role: :player}).order("users.jersey_number", position: :asc)
   end
 
   private
