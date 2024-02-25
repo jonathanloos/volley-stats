@@ -4,7 +4,11 @@
     <div>
       <% if @player.on_court? %>
         <div class="badge text-bg-success">
-          <%= @player.role.humanize %> <%= "rotation #{@player.rotation}" if @player.rotation.present? %>
+          <%= @player.position.humanize %> <%= "rotation #{@player.rotation}" if @player.rotation.present? %>
+        </div>
+      <% elsif @player.starting_libero? %>
+        <div class="badge text-bg-success">
+          <%= @player.position.humanize %>
         </div>
       <% else %>
         <div class="badge text-bg-light">Off</div>
