@@ -7,6 +7,6 @@ class Players::SubstitutionComponent < ApplicationComponent
   end
 
   def render?
-    @player.persisted?
+    @player.persisted? && @player.team == @player.game.home_team
   end
 end
