@@ -18,7 +18,13 @@
 <% @game.volleyball_sets.each do |volleyball_set| %>
   <div class="d-flex flex-row justify-content-between align-items-center mt-4 mb-2">
     <div>
-      <h3 class="m-0">Set <%= volleyball_set.position %></h3>
+      <h3 class="m-0">
+        Set <%= volleyball_set.position %>
+
+        <% if volleyball_set.events.any? %>
+          : <%= volleyball_set.home_score %> - <%= volleyball_set.away_score %>
+        <% end %>
+      </h3>
     </div>
     <div class="d-flex flex-row align-items-center">
       <%= bootstrap_form_with model: volleyball_set do |form| %>
