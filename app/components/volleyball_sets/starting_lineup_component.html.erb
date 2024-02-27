@@ -64,9 +64,11 @@
       </div>
     </div>
   </div>
-  <h4 class="m-0 mt-4">Libero:</h4>
-  <div class="border p-1 text-center d-flex flex-column w-100">
-    <h4 class="m-0 mt-2"><%= @players.find_by(starting_libero: true).jersey_number %></h4>
-    <p class="m-0 mb-2 text-muted"><%= @players.find_by(starting_libero: true) %></p>
-  </div>
+  <% if @players.find_by(starting_libero: true) %>
+    <h4 class="m-0 mt-4">Libero:</h4>
+    <div class="border p-1 text-center d-flex flex-column w-100">
+      <h4 class="m-0 mt-2"><%= @players.find_by(starting_libero: true).jersey_number %></h4>
+      <p class="m-0 mb-2 text-muted"><%= @players.find_by(starting_libero: true) %></p>
+    </div>
+  <% end %>
 <% end %>
