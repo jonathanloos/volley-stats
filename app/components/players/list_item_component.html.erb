@@ -1,18 +1,65 @@
-<turbo-frame id="<%= dom_id(@player) %>" class="list-group-item list-group-item-action">
-  <%= link_to edit_player_path(@player), class: "d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark stretched-link" do %>
-    <p class="m-0 flex-grow-1"><%= @player.jersey_number %> <%= @player %></p>
-    <div>
-      <% if @player.on_court? %>
-        <div class="badge text-bg-success">
-          <%= @player.position.humanize %> <%= "rotation #{@player.rotation}" if @player.rotation.present? %>
-        </div>
-      <% elsif @player.starting_libero? %>
-        <div class="badge text-bg-success">
-          <%= @player.position.humanize %>
-        </div>
-      <% else %>
-        <div class="badge text-bg-light">Off</div>
-      <% end %>
+<% if @player.volleyball_set.events.empty? %>
+  <div class="list-group-item list-group-item-actie">
+    <a href="#" class="d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark stretched-link" data-bs-toggle="modal" data-bs-target="#playerModal<%= @player.id %>">
+      <p class="m-0 flex-grow-1"><%= @player.jersey_number %> <%= @player %></p>
+      <div>
+        <% if @player.on_court? %>
+          <div class="badge text-bg-success">
+            <%= @player.position.humanize %> <%= "rotation #{@player.rotation}" if @player.rotation.present? %>
+          </div>
+        <% elsif @player.starting_libero? %>
+          <div class="badge text-bg-success">
+            <%= @player.position.humanize %>
+          </div>
+        <% else %>
+          <div class="badge text-bg-light">Off</div>
+        <% end %>
+      </div>
+    </a>
+
+    <div class="modal fade" id="playerModal<%= @player.id %>" tabindex="-1" aria-labelledby="playerModal<%= @player.id %>Label" aria-hidden="true">
+      <div class="modal-dialog">
+        <%= bootstrap_form_with(model: @player) do |form| %>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="playerModal<%= @player.id %>Label"><%= @player %></h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <%= form.select :position, Player.positions.keys.map {|position| [position.humanize, position]} %>
+              <%= form.select :back_row_position, Player.back_row_positions.keys.map {|position| [position.humanize, position]}, selected: @player.back_row_position %>
+              <%= form.select :front_row_position, Player.front_row_positions.keys.map {|position| [position.humanize, position]}, selected: @player.front_row_position %>
+            </div>
+            <div class="modal-footer d-flex flex-row justify-content-between">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+              <div>
+                <%= link_to "Remove", player_path(@player), class: "btn btn-danger me-2", data: {turbo_method: :delete} %>
+                <%= form.submit class: "btn btn-primary" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-</turbo-frame>
+  </div>
+<% else %>
+  <div class="list-group-item list-group-item-actie">
+    <div class="d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark stretched-link" data-bs-toggle="modal" data-bs-target="#playerModal<%= @player.id %>">
+      <p class="m-0 flex-grow-1"><%= @player.jersey_number %> <%= @player %></p>
+      <div>
+        <% if @player.on_court? %>
+          <div class="badge text-bg-success">
+            <%= @player.position.humanize %> <%= "rotation #{@player.rotation}" if @player.rotation.present? %>
+          </div>
+        <% elsif @player.starting_libero? %>
+          <div class="badge text-bg-success">
+            <%= @player.position.humanize %>
+          </div>
+        <% else %>
+          <div class="badge text-bg-light">Off</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

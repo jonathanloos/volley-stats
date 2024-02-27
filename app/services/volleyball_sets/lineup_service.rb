@@ -14,7 +14,7 @@ class VolleyballSets::LineupService < ApplicationService
   def call
     VolleyballSet.transaction do
       # wipe all rotations to avoid validator
-      @volleyball_set.players.update_all(rotation: nil, starting_rotation: nil)
+      @volleyball_set.players.update_all(rotation: nil, starting_rotation: nil, status: :bench)
 
       # set each rotation manually
       player_1 = @volleyball_set.players.find(@rotation_one_id)

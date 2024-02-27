@@ -53,8 +53,30 @@ class VolleyballSet < ApplicationRecord
     false
   end
 
-  def has_full_starting_lineup?
-    (ROTATIONS - active_players.pluck(:rotation)).empty?
+  def has_valid_starting_lineup?
+    return false unless (ROTATIONS - active_players.pluck(:rotation)).empty?
+
+    valid_starting_lineup = true
+
+    # check front/back row positions
+    players.where(rotation: [1,2,3]).on_court.each do |player|
+      next if player.rotation.nil?
+
+      opposite_rotation = if player.rotation == 1
+        4
+      elsif player.rotation == 2
+        5
+      elsif player.rotation == 3
+        6
+      end
+
+      # if all rotations other than the opposite rotation play front/back in different places it is valid (no double up)
+      valid_starting_lineup &&= players.excluding(player).where.not(rotation: [opposite_rotation, nil]).where(back_row_position: player.back_row_position).or(
+        players.excluding(player).where.not(rotation: [opposite_rotation, nil]).where(front_row_position: player.front_row_position)
+      ).empty?
+    end
+
+    return valid_starting_lineup
   end
 
   def away_team_player

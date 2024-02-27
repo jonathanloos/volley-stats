@@ -17,10 +17,26 @@ class Player < ApplicationRecord
   validates :user, presence: true, if: -> { game.home_team == team }
   before_validation :set_status
 
+  before_create :set_positions
+
   enum status: {
     on_court: 0,
     bench: 1
   }
+
+  enum back_row_position: {
+    left: 0,
+    center: 1,
+    right: 2,
+    not_applicable: 3
+  }, _prefix: true
+
+  enum front_row_position: {
+    left: 0,
+    center: 1,
+    right: 2,
+    not_applicable: 3
+  }, _prefix: true
 
   def to_s
     if user.present?
@@ -59,5 +75,24 @@ class Player < ApplicationRecord
 
   def check_rotation
     rotation.present? && on_court? && team != game.away_team && !user.coach?
+  end
+
+  def set_positions
+    if volleyball_middle?
+      self.back_row_position = :left
+      self.front_row_position = :center
+    elsif volleyball_setter?
+      self.back_row_position = :right
+      self.front_row_position = :right
+    elsif volleyball_right_side?
+      self.back_row_position = :right
+      self.front_row_position = :right
+    elsif volleyball_left_side
+      self.back_row_position = :center
+      self.front_row_position = :left
+    elsif volleyball_libero
+      self.back_row_position = :left
+      self.front_row_position = :not_applicable
+    end
   end
 end

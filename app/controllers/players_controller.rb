@@ -44,7 +44,7 @@ class PlayersController < ApplicationController
   def update
     respond_to do |format|
       if @player.update(player_params)
-        format.html
+        format.html {redirect_to @player.game, notice: "Player Saved"}
         format.json { render :show, status: :ok, location: @player }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -81,6 +81,6 @@ class PlayersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def player_params
-      params.require(:player).permit(:user_id, :game_id, :volleyball_set_id, :role, :rotation)
+      params.require(:player).permit(:user_id, :game_id, :volleyball_set_id, :role, :rotation, :position, :back_row_position, :front_row_position)
     end
 end
