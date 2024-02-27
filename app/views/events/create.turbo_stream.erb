@@ -2,9 +2,43 @@
   <%= render(Events::FormComponent.new(event: Event.new(volleyball_set: @volleyball_set, player: @event.player || Player.new))) %>
 <% end %>
 
-<% @volleyball_set.players.on_court.each do |player| %>
-  <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
-    <%= render(Players::CardComponent.new(player: player)) %>
+<% if @volleyball_set.in_rally? %>
+  <% @volleyball_set.players.front_row.each do |player| %>
+    <% if player.front_row_position_left? %>
+      <%= turbo_stream.replace "player_rotation_4" do %>
+        <%= render(Players::CardComponent.new(player: player)) %>
+      <% end %>
+    <% elsif player.front_row_position_center? %>
+      <%= turbo_stream.replace "player_rotation_3" do %>
+        <%= render(Players::CardComponent.new(player: player)) %>
+      <% end %>
+    <% elsif player.front_row_position_right? %>
+      <%= turbo_stream.replace "player_rotation_2" do %>
+        <%= render(Players::CardComponent.new(player: player)) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% @volleyball_set.players.back_row.each do |player| %>
+    <% if player.back_row_position_left? %>
+      <%= turbo_stream.replace "player_rotation_5" do %>
+        <%= render(Players::CardComponent.new(player: player)) %>
+      <% end %>
+    <% elsif player.back_row_position_center? %>
+      <%= turbo_stream.replace "player_rotation_6" do %>
+        <%= render(Players::CardComponent.new(player: player)) %>
+      <% end %>
+    <% elsif player.back_row_position_right? %>
+      <%= turbo_stream.replace "player_rotation_1" do %>
+        <%= render(Players::CardComponent.new(player: player)) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% @volleyball_set.players.on_court.each do |player| %>
+    <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
+      <%= render(Players::CardComponent.new(player: player)) %>
+    <% end %>
   <% end %>
 <% end %>
 

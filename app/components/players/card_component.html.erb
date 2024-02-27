@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "player_rotation_#{@player.rotation || @player.team.name.underscore}" do %>
+<%= turbo_frame_tag "player_rotation_#{rotation_number}" do %>
   <div class="card" data-controller="players-card">
     <div class="card-body">
       <div class="d-flex flex-row align-items-center mb-2">

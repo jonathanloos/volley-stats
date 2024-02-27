@@ -19,6 +19,9 @@ class Player < ApplicationRecord
 
   before_create :set_positions
 
+  scope :front_row, -> { on_court.where(rotation: [4,3,2]) }
+  scope :back_row, -> { on_court.where(rotation: [5,6,1]) }
+
   enum status: {
     on_court: 0,
     bench: 1
@@ -65,6 +68,14 @@ class Player < ApplicationRecord
 
   def jersey_number
     user.jersey_number if user.present?
+  end
+
+  def back_row?
+    [5,6,1].include?(rotation)
+  end
+
+  def front_row?
+    [4,3,2].include?(rotation)
   end
 
   private

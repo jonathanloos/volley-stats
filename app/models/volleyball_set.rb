@@ -79,6 +79,10 @@ class VolleyballSet < ApplicationRecord
     return valid_starting_lineup
   end
 
+  def in_rally?
+    events.last.continuation?
+  end
+
   def away_team_player
     Player.find_by(volleyball_set: self, team: game.away_team)
   end
