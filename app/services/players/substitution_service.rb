@@ -17,7 +17,7 @@ class Players::SubstitutionService < ApplicationService
       end
 
       @player.update!(status: :bench, rotation: nil)
-      @incoming_player.update!(status: :on_court, rotation: rotation, position: @incoming_player.user.position)
+      @incoming_player.update!(status: :on_court, rotation: rotation)
 
       true
     end
