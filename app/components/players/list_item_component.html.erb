@@ -1,4 +1,4 @@
-<% if @player.volleyball_set.events.empty? %>
+<% if true || @player.volleyball_set.events.empty? %>
   <div class="list-group-item list-group-item-actie">
     <a href="#" class="d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark stretched-link" data-bs-toggle="modal" data-bs-target="#playerModal<%= @player.id %>">
       <p class="m-0 flex-grow-1"><%= @player.jersey_number %> <%= @player %></p>
@@ -27,8 +27,8 @@
             </div>
             <div class="modal-body">
               <%= form.select :position, Player.positions.keys.map {|position| [position.humanize, position]} %>
-              <%= form.select :back_row_position, Player.back_row_positions.keys.map {|position| [position.humanize, position]}, selected: @player.back_row_position %>
-              <%= form.select :front_row_position, Player.front_row_positions.keys.map {|position| [position.humanize, position]}, selected: @player.front_row_position %>
+              <%= form.select :front_row_position, Player::FRONT_ROW_POSITIONS, selected: @player.front_row_position %>
+              <%= form.select :back_row_position, Player::BACK_ROW_POSITIONS, selected: @player.back_row_position, include_blank: true %>
             </div>
             <div class="modal-footer d-flex flex-row justify-content-between">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -45,7 +45,7 @@
   </div>
 <% else %>
   <div class="list-group-item list-group-item-actie">
-    <div class="d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark stretched-link" data-bs-toggle="modal" data-bs-target="#playerModal<%= @player.id %>">
+    <div class="d-flex flex-row justify-content-between text-decoration-none text-decoration-none text-dark">
       <p class="m-0 flex-grow-1"><%= @player.jersey_number %> <%= @player %></p>
       <div>
         <% if @player.on_court? %>

@@ -80,6 +80,8 @@ class VolleyballSet < ApplicationRecord
   end
 
   def in_rally?
+    return false unless events.any?
+
     events.last.continuation?
   end
 

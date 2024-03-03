@@ -4,9 +4,23 @@
 
 <%= turbo_stream.remove dom_id(@event) %>
 
-<% @volleyball_set.players.on_court.each do |player| %>
-  <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
-    <%= render(Players::CardComponent.new(player: player)) %>
+<% if @volleyball_set.in_rally? %>
+  <% @volleyball_set.players.front_row.each do |player| %>
+    <%= turbo_stream.replace "player_rotation_#{player.front_row_position}" do %>
+      <%= render(Players::CardComponent.new(player: player)) %>
+    <% end %>
+  <% end %>
+
+  <% @volleyball_set.players.back_row.each do |player| %>
+    <%= turbo_stream.replace "player_rotation_#{player.back_row_position}" do %>
+      <%= render(Players::CardComponent.new(player: player)) %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% @volleyball_set.players.on_court.each do |player| %>
+    <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
+      <%= render(Players::CardComponent.new(player: player)) %>
+    <% end %>
   <% end %>
 <% end %>
 

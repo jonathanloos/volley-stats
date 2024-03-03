@@ -35,6 +35,11 @@
           <%= link_to "Gameplay", log_events_volleyball_set_path(volleyball_set), class: "me-2 btn btn-light border-0", data: {turbo_frame: "_top"} %>
         </div>
       <% end %>
+      <% if volleyball_set.events.any? %>
+        <div>
+          <%= link_to "Stats", stats_game_path({volleyball_set_id: volleyball_set.id}), class: "me-2 btn btn-light border-0", data: {turbo_frame: "_top"} %>
+        </div>
+      <% end %>
       <div>
         <%= link_to "remove", volleyball_set_path(volleyball_set), class: "text-danger btn btn-light border-0", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
       </div>

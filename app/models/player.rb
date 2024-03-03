@@ -2,6 +2,9 @@ class Player < ApplicationRecord
   include Roleable
   include Positionable
 
+  FRONT_ROW_POSITIONS = [4, 3, 2]
+  BACK_ROW_POSITIONS = [5, 6, 1]
+
   belongs_to :user, optional: true
   belongs_to :game
   belongs_to :volleyball_set
@@ -15,9 +18,11 @@ class Player < ApplicationRecord
   validates :position, presence: true, if: -> { on_court? }
   validates :rotation, numericality: {in: 1..6}, uniqueness: {scope: :volleyball_set, message: "must not have two players in the same rotation"}, if: :check_rotation
   validates :user, presence: true, if: -> { game.home_team == team }
+  validates :front_row_position, inclusion: {in: [nil, 2, 3, 4]}
+  validates :back_row_position, inclusion: {in: [nil, 1, 6, 5]}
   before_validation :set_status
-
-  before_create :set_positions
+  before_validation :set_volleyball_position, on: :create
+  before_validation :set_positions, on: :create
 
   scope :front_row, -> { on_court.where(rotation: [4,3,2]) }
   scope :back_row, -> { on_court.where(rotation: [5,6,1]) }
@@ -26,20 +31,6 @@ class Player < ApplicationRecord
     on_court: 0,
     bench: 1
   }
-
-  enum back_row_position: {
-    left: 0,
-    center: 1,
-    right: 2,
-    not_applicable: 3
-  }, _prefix: true
-
-  enum front_row_position: {
-    left: 0,
-    center: 1,
-    right: 2,
-    not_applicable: 3
-  }, _prefix: true
 
   def to_s
     if user.present?
@@ -62,6 +53,7 @@ class Player < ApplicationRecord
   def serving?
     return true if team == volleyball_set.game.away_team && volleyball_set.away_team_serving?
     return false unless rotation == 1
+    return false if volleyball_set.in_rally?
 
     volleyball_set.home_team_serving?
   end
@@ -88,22 +80,29 @@ class Player < ApplicationRecord
     rotation.present? && on_court? && team != game.away_team && !user.coach?
   end
 
+  def set_volleyball_position
+    self.position = user.position if user.present?
+  end
+
   def set_positions
     if volleyball_middle?
-      self.back_row_position = :left
-      self.front_row_position = :center
+      self.back_row_position = 5
+      self.front_row_position = 3
     elsif volleyball_setter?
-      self.back_row_position = :right
-      self.front_row_position = :right
+      self.back_row_position = 1
+      self.front_row_position = 2
     elsif volleyball_right_side?
-      self.back_row_position = :right
-      self.front_row_position = :right
-    elsif volleyball_left_side
-      self.back_row_position = :center
-      self.front_row_position = :left
-    elsif volleyball_libero
-      self.back_row_position = :left
-      self.front_row_position = :not_applicable
+      self.back_row_position = 1
+      self.front_row_position = 2
+    elsif volleyball_left_side?
+      self.back_row_position = 6
+      self.front_row_position = 4
+    elsif volleyball_libero?
+      self.back_row_position = 5
+      self.front_row_position = nil
+    else
+      self.back_row_position = nil
+      self.front_row_position = nil
     end
   end
 end
