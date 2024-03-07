@@ -4,6 +4,7 @@ class Event < ApplicationRecord
   KILL_CATEGORIES = [:attack, :tip, :dump, :downball]
   ATTACK_ERROR_CATEGORIES = [:attack, :tip, :dump, :downball, :third_contact]
   IN_RALLY_THIRD_CONTACTS = [:hit_in_play, :free_ball]
+  BALL_HANDLING_ERRORS = [:double, :lift, :second_contact]
 
   belongs_to :game
   belongs_to :player, optional: true
@@ -50,6 +51,7 @@ class Event < ApplicationRecord
 
   scope :kills, -> { where(skill_point: KILL_CATEGORIES) }
   scope :attack_errors, -> { where(skill_error: ATTACK_ERROR_CATEGORIES) }
+  scope :ball_handling_errors, -> { where(skill_error: BALL_HANDLING_ERRORS) }
 
   enum category: {
     point_earned: 0,
@@ -67,7 +69,8 @@ class Event < ApplicationRecord
     serve_receive: 3,
     free_ball_receive: 4,
     dig: 5,
-    serve: 6
+    serve: 6,
+    assist: 7
   }, _prefix: true
 
   enum skill_point: {
