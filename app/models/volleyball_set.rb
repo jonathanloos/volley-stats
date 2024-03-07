@@ -90,7 +90,7 @@ class VolleyballSet < ApplicationRecord
   end
 
   def ordered_players
-    players.joins(:user).where(users: {role: :player}).order("users.jersey_number", position: :asc)
+    players.joins(:user).where(role: :player).order("users.jersey_number", position: :asc)
   end
 
   private

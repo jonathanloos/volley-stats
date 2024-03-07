@@ -58,7 +58,7 @@ class PlayersController < ApplicationController
     @player.destroy
 
     respond_to do |format|
-      format.turbo_stream
+      format.html {redirect_to @player.game, notice: "#{@player.full_name} removed from roster."}
       format.json { head :no_content }
     end
   end

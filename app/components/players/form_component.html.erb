@@ -1,14 +1,10 @@
 <%= turbo_frame_tag dom_id(@player) do %>
-  <%= bootstrap_form_with model: form_model, class: "d-flex flex-row w-100", data: {turbo_stream: true} do |form| %>
-    <% if @player.new_record? %>
-      <%= form.collection_select :user_id, @player.game.home_team.users.excluding(@player.volleyball_set.users), :id, :full_name, required: true, hide_label: true, wrapper_class: "flex-grow-1 m-0 me-2", placeholder: "Player" %>
-    <% else %>
-      <p class="m-0 flex-grow-1"><%= @player %></p>
-    <% end %>
+  <%= bootstrap_form_with model: [@volleyball_set, @player], class: "d-flex flex-row w-100", data: {turbo_stream: true} do |form| %>
+    <%= form.collection_select :user_id, @player.game.home_team.users.excluding(@player.volleyball_set.users), :id, :full_name, required: true, hide_label: true, wrapper_class: "flex-grow-1 m-0 me-2", placeholder: "Player" %>
     <%= form.select :role, Player.roles.keys.map { |role, _| [role.humanize.titleize, role] }, hide_label: true, wrapper_class: "m-0 me-2" %>
 
     <div class="d-flex flex-row">
-      <%= form.submit "save", class: "btn btn-primary btn-sm" %>
+      <%= form.submit "Add To Roster", class: "btn btn-primary btn-sm" %>
     </div>
   <% end %>
 <% end %>

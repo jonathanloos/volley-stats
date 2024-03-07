@@ -1,5 +1,0 @@
-<%= turbo_stream.remove dom_id(@player) %>
-
-<%= turbo_stream.replace dom_id(Player.new) do %>
-  <%= render Players::FormComponent.new(player: Player.new(game: @player.game, volleyball_set: @player.volleyball_set)) %>
-<% end %>

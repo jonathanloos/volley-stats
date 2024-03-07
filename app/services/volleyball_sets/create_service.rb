@@ -19,6 +19,11 @@ class VolleyballSets::CreateService < ApplicationService
       # Create home team coach for timeouts
       @volleyball_set.players << Player.create!(status: :on_court, volleyball_set: @volleyball_set, game: @game, team: @game.home_team, user: @game.home_team.head_coach, role: :coach)
 
+      # Add other coaches
+      @game.home_team.users.coach.excluding(@game.home_team.head_coach).each do |user|
+        @volleyball_set.players << Player.create!(user: user, status: :on_court, volleyball_set: @volleyball_set, game: @game, team: @game.home_team, role: :coach)
+      end
+
       # Import player list for home team
       @game.home_team.users.player.each do |user|
         @volleyball_set.players << Player.create!(user: user, status: :bench, volleyball_set: @volleyball_set, game: @game, team: @game.home_team, role: :player)

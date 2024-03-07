@@ -12,6 +12,7 @@ class Player < ApplicationRecord
 
   delegate :first_name, to: :user
   delegate :last_name, to: :user
+  delegate :full_name, to: :user
   
   has_many :events, -> { order(:position) }
 
@@ -26,6 +27,7 @@ class Player < ApplicationRecord
 
   scope :front_row, -> { on_court.where(rotation: [4,3,2]) }
   scope :back_row, -> { on_court.where(rotation: [5,6,1]) }
+  scope :starting_lineup, -> { where.not(starting_rotation: nil) }
 
   enum status: {
     on_court: 0,
