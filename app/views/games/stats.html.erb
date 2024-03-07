@@ -191,6 +191,7 @@
         <tr>
           <th colspan="3"></th>
           <th colspan="4" class="text-center bg-light">Attack</th>
+          <th colspan="2" class="text-center bg-light">Set</th>
           <th colspan="3" class="text-center">Serve</th>
           <th colspan="5" class="text-center bg-light">Serve Receive</th>
           <th colspan="2" class="text-center">Block</th>
@@ -206,6 +207,9 @@
             <th class="text-center bg-light">E</th>
             <th class="text-center bg-light">TA</th>
             <th class="text-center bg-light">K%</th>
+          <%# Set %>
+            <th class="text-center bg-light">AST</th>
+            <th class="text-center bg-light">E</th>
           <%# Serve %>
             <th class="text-center">SA</th>
             <th class="text-center">SE</th>
@@ -237,6 +241,9 @@
               <td class="text-center bg-light"><%= @events.where(player: players).skill_error_attack.count %></td>
               <td class="text-center bg-light"><%= @events.where(player: players).attack_attempts.count %></td>
               <td class="text-center bg-light"><%= Games::StatsService.attack_percentage(events: @events.where(player: players)).round(3) %></td>
+            <%# Set %>
+              <td class="text-center bg-light"><%= @events.where(player: players).rally_skill_assist.count %></td>
+              <td class="text-center bg-light"><%= @events.where(player: players).ball_handling_errors.count %></td>
             <%# Serve %>
               <td class="text-center"><%= @events.where(player: players).skill_point_ace.count %></td>
               <td class="text-center"><%= @events.where(player: players).skill_error_serve.count %></td>
@@ -259,13 +266,16 @@
           </tr>
         <% end %>
         <tr class="fw-bold">
-          <td colspan="2">Totals:</td>
+          <td colspan="2" class="text-end">Totals:</td>
           <td><%= @game.volleyball_sets.count %></td>
           <%# Attack %>
             <td class="text-center bg-light"><%= @home_team_events.skill_point_attack.count %></td>
             <td class="text-center bg-light"><%= @home_team_events.skill_error_attack.count %></td>
             <td class="text-center bg-light"><%= @home_team_events.attack_attempts.count %></td>
             <td class="text-center bg-light"><%= Games::StatsService.attack_percentage(events: @home_team_events).round(3) %></td>
+          <%# Set %>
+            <td class="text-center bg-light"><%= @home_team_events.rally_skill_assist.count %></td>
+            <td class="text-center bg-light"><%= @home_team_events.ball_handling_errors.count %></td>
           <%# Serve %>
             <td class="text-center"><%= @home_team_events.skill_point_ace.count %></td>
             <td class="text-center"><%= @home_team_events.skill_error_serve.count %></td>
