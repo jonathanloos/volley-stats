@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: %i[ show edit update destroy substitution ]
+  before_action :set_player, only: %i[ show edit update destroy substitution libero_substitution]
   before_action :set_volleyball_set, only: %i[create]
 
   layout false
@@ -44,7 +44,7 @@ class PlayersController < ApplicationController
   def update
     respond_to do |format|
       if @player.update(player_params)
-        format.html
+        format.html {redirect_to @player.game, notice: "Player Saved"}
         format.json { render :show, status: :ok, location: @player }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,13 +58,26 @@ class PlayersController < ApplicationController
     @player.destroy
 
     respond_to do |format|
-      format.turbo_stream
+      format.html {redirect_to @player.game, notice: "#{@player.full_name} removed from roster."}
       format.json { head :no_content }
     end
   end
 
   def substitution
     @incoming_player = @player.volleyball_set.players.find(params[:player][:substitution_id])
+    Players::SubstitutionService.call(incoming_player: @incoming_player, player: @player)
+    @event = @player.volleyball_set.events.last
+  end
+
+  def libero_substitution
+    @libero = @player.volleyball_set.players.find_by(starting_libero: true)
+
+    @incoming_player = if @player == @libero
+      @player.volleyball_set.events.libero_substitution.last.player
+    else
+      @player.volleyball_set.players.find_by(starting_libero: true)
+    end
+
     Players::SubstitutionService.call(incoming_player: @incoming_player, player: @player)
     @event = @player.volleyball_set.events.last
   end
@@ -81,6 +94,6 @@ class PlayersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def player_params
-      params.require(:player).permit(:user_id, :game_id, :volleyball_set_id, :role, :rotation)
+      params.require(:player).permit(:user_id, :game_id, :volleyball_set_id, :role, :rotation, :position, :back_row_position, :front_row_position)
     end
 end

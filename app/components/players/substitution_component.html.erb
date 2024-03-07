@@ -1,9 +1,9 @@
-<div data-controller="players-substitution">
+<div data-controller="dismiss-modal-on-submit">
   <button type="button" class="btn btn-outline-light border-0 text-dark btn-sm" data-bs-toggle="modal" data-bs-target="#substitutionModal<%= @player.id %>">
     Substitution
   </button>
 
-  <div class="modal fade" id="substitutionModal<%= @player.id %>" tabindex="-1" aria-labelledby="substitutionModal<%= @player.id %>Label" aria-hidden="true" data-players-substitution-target="modal">
+  <div class="modal fade" id="substitutionModal<%= @player.id %>" tabindex="-1" aria-labelledby="substitutionModal<%= @player.id %>Label" aria-hidden="true" data-dismiss-modal-on-submit-target="modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -12,10 +12,31 @@
         </div>
         <div class="modal-body">
           <h4>Coming In:</h4>
-          <%= bootstrap_form_with(model: @player, url: substitution_player_path(@player), method: :put, data: {"players-substitution-target": "form", turbo_stream: true}) do |form| %>
-            <%= form.collection_radio_buttons :substitution_id, @bench_players, :id, :full_information, required: true %>
-            <%= form.submit "Sub", class: "btn btn-primary btn-sm float-end", data: {"players-substitution-target": "submitButton"} %>
+          <% if @previous_substitution.present? %>
+            <div class="alert alert-info d-flex flex-row justify-content-between align-items-center">
+              <%= @previous_substitution.full_information %>
+              <div>
+                <%= bootstrap_form_with(model: @player, url: substitution_player_path(@player), method: :put, data: {"dismiss-modal-on-submit-target": "form", turbo_stream: true}) do |form| %>
+                  <%= form.hidden_field :substitution_id, value: @previous_substitution.id %>
+                  <%= form.submit "Sub", class: "btn btn-info" %>
+                <% end %>
+              </div>
+            </div>
           <% end %>
+
+          <ul class="list-group">
+            <% @bench_players.each do |player| %>
+              <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
+                <%= player.full_information %>
+                <div>
+                  <%= bootstrap_form_with(model: @player, url: substitution_player_path(@player), method: :put, data: {"dismiss-modal-on-submit-target": "form", turbo_stream: true}) do |form| %>
+                    <%= form.hidden_field :substitution_id, value: player.id %>
+                    <%= form.submit "Sub", class: "btn btn-light" %>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
         </div>
       </div>
     </div>

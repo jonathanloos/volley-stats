@@ -1,0 +1,11 @@
+<% @player.volleyball_set.players.on_court.each do |player| %>
+  <%= turbo_stream.replace "player_rotation_#{player.rotation}" do %>
+    <%= render(Players::CardComponent.new(player: player)) %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace dom_id(@player.volleyball_set, :additional_information) do %>
+  <%= turbo_frame_tag dom_id(@player.volleyball_set, :additional_information) do %>
+    <%= render(VolleyballSets::AddtionalInformationComponent.new(volleyball_set: @player.volleyball_set)) %>
+  <% end %>
+<% end %>

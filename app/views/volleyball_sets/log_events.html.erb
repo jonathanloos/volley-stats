@@ -7,6 +7,7 @@
     <div class="col-md-8">
       <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
       <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %></small>
+      <%= link_to "Game", game_path(@volleyball_set.game), class: "btn btn-sm btn-light" %>
       <%= link_to "Events", volleyball_set_events_path(@volleyball_set), class: "btn btn-sm btn-light", target: "_blank" %>
       <%= link_to "Stats", stats_game_path(@volleyball_set.game, {volleyball_set_id: @volleyball_set.id}), class: "btn btn-sm btn-light", target: "_blank" %>
     </div>

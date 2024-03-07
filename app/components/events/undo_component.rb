@@ -11,7 +11,7 @@ class Events::UndoComponent < ApplicationComponent
     last_event =  @event.volleyball_set.events.last
     return true if last_event == @event
 
-    return false unless last_event.substitution? && last_event.incoming_player == @event.player
+    return false unless (last_event.substitution? || last_event.libero_substitution?) && last_event.incoming_player == @event.player
 
     @event = last_event
     true
