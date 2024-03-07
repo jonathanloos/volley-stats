@@ -21,7 +21,7 @@ class Event < ApplicationRecord
   validates :setter_rotation, numericality: { only_integer: true, in: 1..6 }
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }
-  validates :incoming_player, presence: true, if: -> {substitution?}
+  validates :incoming_player, presence: true, if: -> {substitution? || libero_substitution?}
 
   scope :points, -> { where(category: [:point_earned, :point_given]) }
   scope :attack_attempts, -> { where(rally_skill: IN_RALLY_THIRD_CONTACTS).or(
@@ -57,7 +57,7 @@ class Event < ApplicationRecord
     continuation: 2,
     substitution: 3,
     timeout: 4,
-    rotation: 5
+    libero_substitution: 5
   }
 
   enum rally_skill: {
@@ -122,7 +122,7 @@ class Event < ApplicationRecord
       "#{skill_error.humanize.titleize} by #{user || team}"
     elsif rally_skill?
       "#{rally_skill.humanize.titleize} by #{user || team}"
-    elsif substitution?
+    elsif substitution? || libero_substitution?
       "#{incoming_player} in for #{player}"
     elsif timeout?
       "Timeout called by #{user || team}"

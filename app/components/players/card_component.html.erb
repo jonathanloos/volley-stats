@@ -156,7 +156,10 @@
           <%= render(Events::UndoComponent.new(event: @most_recent_event)) %>
         <% end %>
       </div>
-      <%= render(Players::SubstitutionComponent.new(player: @player)) %>
+      <div class="d-flex flex-row flex-nowrap">
+        <%= render(Players::LiberoSubstitutionComponent.new(player: @player)) %>
+        <%= render(Players::SubstitutionComponent.new(player: @player)) %>
+      </div>
     </div>
   </div>
 <% end %>

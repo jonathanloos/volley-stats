@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       put :set_lineup, on: :member
       resources :players, shallow: true do
         put :substitution, on: :member
+        put :libero_substitution, on: :member
       end
     end
 

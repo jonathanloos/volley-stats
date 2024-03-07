@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: %i[ show edit update destroy substitution ]
+  before_action :set_player, only: %i[ show edit update destroy substitution libero_substitution]
   before_action :set_volleyball_set, only: %i[create]
 
   layout false
@@ -65,6 +65,19 @@ class PlayersController < ApplicationController
 
   def substitution
     @incoming_player = @player.volleyball_set.players.find(params[:player][:substitution_id])
+    Players::SubstitutionService.call(incoming_player: @incoming_player, player: @player)
+    @event = @player.volleyball_set.events.last
+  end
+
+  def libero_substitution
+    @libero = @player.volleyball_set.players.find_by(starting_libero: true)
+
+    @incoming_player = if @player == @libero
+      @player.volleyball_set.events.libero_substitution.last.player
+    else
+      @player.volleyball_set.players.find_by(starting_libero: true)
+    end
+
     Players::SubstitutionService.call(incoming_player: @incoming_player, player: @player)
     @event = @player.volleyball_set.events.last
   end

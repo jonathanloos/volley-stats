@@ -12,7 +12,11 @@ class Players::SubstitutionService < ApplicationService
 
       unless @undo_action
         # create a substitution event
-        @event = Event.new(category: :substitution, player: @player, incoming_player: @incoming_player, volleyball_set: @player.volleyball_set)
+        if @player.volleyball_libero? || @incoming_player.volleyball_libero?
+          @event = Event.new(category: :libero_substitution, player: @player, incoming_player: @incoming_player, volleyball_set: @player.volleyball_set)
+        else
+          @event = Event.new(category: :substitution, player: @player, incoming_player: @incoming_player, volleyball_set: @player.volleyball_set)
+        end
         raise unless Events::CreateService.call(event: @event)
       end
 

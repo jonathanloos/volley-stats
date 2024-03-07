@@ -43,7 +43,7 @@ class Player < ApplicationRecord
   def full_information
     if user.present?
       text = "#{jersey_number} - " + to_s
-      text += " (#{user.position.humanize})" if user.position.present?
+      text += " (#{position.humanize})" if position.present?
       text
     else
       team.to_s
@@ -99,7 +99,7 @@ class Player < ApplicationRecord
       self.front_row_position = 4
     elsif volleyball_libero?
       self.back_row_position = 5
-      self.front_row_position = nil
+      self.front_row_position = 3
     else
       self.back_row_position = nil
       self.front_row_position = nil
