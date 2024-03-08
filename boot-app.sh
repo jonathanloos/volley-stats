@@ -4,7 +4,7 @@ echo "Starting app in $RAILS_ENV"
 # check for environment variables
 env | grep RAILS | sort| grep -v KEY
 echo
-env | sort | grep HANGAR | grep -v KEY | grep -v PASSWORD | grep -v TOKEN | grep -v SECRET
+env | sort | grep -v KEY | grep -v PASSWORD | grep -v TOKEN | grep -v SECRET
 echo
 echo
 
@@ -17,16 +17,6 @@ rm -f /app/tmp/pids/server.pid
 # If database exists, migrate. Otherwise, fail.
 if [ "$RAILS_ENV" = "production" ]; then
   bundle exec rails db:migrate --trace
-
-  # Sync geocoding library in the background
-  # sh /app/maxmind.sh &
-
-  # # Notify slack (do not fail if we have an issue sending it)
-  # set +e
-  # curl -X POST -H 'Content-type: application/json' \
-  # --data '{"text":"'"[LIFT:$HANGAR_DEPLOYMENT]"' :rocket: Lift booting on '"$HOSTNAME"'"}'  \
-  # $HANGAR_LIFT_SLACK_DEV_WEBHOOK
-  # set -e
 
   # start puma
   bundle exec puma -C config/puma.rb
