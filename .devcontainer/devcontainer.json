@@ -2,6 +2,7 @@
 // <https://github.com/microsoft/vscode-dev-containers/tree/v0.217.4/containers/docker-from-docker-compose>
 {
 	"name": "VolleyStats",
+    "remoteUser": "volleydev",
 	"dockerComposeFile": [
         "../docker/docker-compose.dev.yml",
         "docker-compose.yml"

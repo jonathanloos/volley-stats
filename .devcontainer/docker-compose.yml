@@ -4,7 +4,6 @@ version: '3.9'
   ## Rails Volume
   # bundle:
   # node_modules:
-  # rails_cache:
   ## Postgres Volumes
   # postgres_data:
 

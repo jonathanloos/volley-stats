@@ -5,8 +5,9 @@ volumes:
   postgres_data:
   bundle:
   node_modules:
-  rails_cache:
   public:
+  tmp:
+    name: volley_stats_tmp
 
 networks:
   flt-sim-net:
@@ -17,7 +18,8 @@ services:
     container_name: volley_stats_app
     build:
       context: ../
-      dockerfile: ./docker/app/Dockerfile
+      dockerfile: ./Dockerfile
+      target: development
     image: volley_stats:dev
     working_dir: /rails
     depends_on:
@@ -32,11 +34,11 @@ services:
     tty: true
     volumes:
       - ..:/rails:cached
-      - rails_cache:/rails/tmp/cache
+      - ~/.ssh:/home/volleydev/.ssh:ro
       - bundle:/usr/local/bundle
       - node_modules:/rails/node_modules
       - public:/rails/public/vite
-      - ~/.ssh:/root/.ssh:ro
+      - tmp:/rails/tmp
     tmpfs:
       - /tmp
     networks:
