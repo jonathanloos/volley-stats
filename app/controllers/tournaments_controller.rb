@@ -8,6 +8,10 @@ class TournamentsController < ApplicationController
 
   # GET /tournaments/1 or /tournaments/1.json
   def show
+    @events = Event.where(game: @tournament.games)
+    @volleyball_sets = VolleyballSet.where(game: @tournament.games)
+    @home_team_events = @events.where(team: @tournament.team)
+    @away_team_events = @events.where(team: Team.where(id: @tournament.games.pluck(:away_team_id)))
   end
 
   # GET /tournaments/new
