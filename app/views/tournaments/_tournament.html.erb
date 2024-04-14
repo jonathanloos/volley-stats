@@ -122,7 +122,7 @@
 
     <h4 class="mb-2">Game Breakdown</h4>
     <% @tournament.games.each do |game| %>
-      <h5 class="mt-4 mb-1"><%= game %></h5>
+      <h5 class="mt-4 mb-1"><%= game %> vs. <%= game.away_team %></h5>
       <table class="table table-sm table-hover border">
         <thead>
           <tr>
