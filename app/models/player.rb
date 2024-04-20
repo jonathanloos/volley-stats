@@ -81,10 +81,14 @@ class Player < ApplicationRecord
   end
 
   def serve_receive_rotation_one?
-    volleyball_set.setter_rotation == 1 && (
-      volleyball_set.events.points.last.point_given? && volleyball_set.events.points.last.team == volleyball_set.game.home_team ||
-        volleyball_set.events.points.last.point_earned? && volleyball_set.events.points.last.team == volleyball_set.game.away_team
-    )
+    return false unless volleyball_set.setter_rotation == 1
+
+    points = volleyball_set.events.points
+    return true if points.empty? && volleyball_set.receiving_team == volleyball_set.game.home_team
+    return false if points.empty?
+
+    points.last.point_given? && points.last.team == volleyball_set.game.home_team ||
+      points.last.point_earned? && points.last.team == volleyball_set.game.away_team
   end
 
   private
