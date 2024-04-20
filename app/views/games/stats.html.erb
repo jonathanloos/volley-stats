@@ -4,10 +4,23 @@
 
 <div class="d-flex justify-content-between mt-4">
   <div>
-    <h1 class="mb-0"><%= @volleyball_sets.count == 1 ?  @volleyball_sets.first.to_s : @game %> Stats</h1>
+    <h1 class="mb-0"><%= @game %> Stats</h1>
     <small class="text-muted"><%= @game.date.strftime("%Y-%m-%d") %>
   </div>
+  <div>
+    <%= link_to "Tournament Stats", tournament_path(@game.tournament), class: "btn btn-light btn-sm" if @game.tournament.present? %>
+  </div>
 </div>
+<ul class="nav nav-tabs mt-3">
+  <li class="nav-item">
+    <%= link_to "Game", stats_game_path(@game), class: "nav-link #{"active" if params[:volleyball_set_id].nil?}" %>
+  </li>
+  <% @game.volleyball_sets.each do |volleyball_set| %>
+    <li class="nav-item">
+      <%= link_to "Set #{volleyball_set.position}", stats_game_path(@game, {volleyball_set_id: volleyball_set.id}), class: "nav-link #{"active" if params[:volleyball_set_id] == volleyball_set.id.to_s}" %>
+    </li>
+  <% end %>
+</ul>
 <div class="row mt-4">
   <div class="col-lg-6">
     <div class="card">
@@ -220,6 +233,7 @@
             <th class="text-center bg-light">2</th>
             <th class="text-center bg-light">1</th>
             <th class="text-center bg-light">RE</th>
+            <th class="text-center bg-light">%</th>
           <%# Block %>
             <th class="text-center">BS / BA</th>
             <th class="text-center">BE</th>
@@ -254,6 +268,7 @@
               <td class="text-center bg-light"><%= @events.where(player: players).rally_skill_serve_receive.where(quality: 2).count %></td>
               <td class="text-center bg-light"><%= @events.where(player: players).rally_skill_serve_receive.where(quality: 1).count %></td>
               <td class="text-center bg-light"><%= @events.where(player: players).skill_error_serve_receive.count %></td>
+              <td class="text-center bg-light"><%= Games::StatsService.passing_average(events: @events.where(player: players)).round(3) %></td>
             <%# Block %>
               <td class="text-center"><%= @events.where(player: players).skill_point_block.count %></td>
               <td class="text-center"><%= @events.where(player: players).skill_error_block.count %></td>
@@ -286,6 +301,7 @@
             <td class="text-center bg-light"><%= @home_team_events.rally_skill_serve_receive.where(quality: 2).count %></td>
             <td class="text-center bg-light"><%= @home_team_events.rally_skill_serve_receive.where(quality: 1).count %></td>
             <td class="text-center bg-light"><%= @home_team_events.skill_error_serve_receive.count %></td>
+              <td class="text-center bg-light"><%= Games::StatsService.passing_average(events: @home_team_events).round(3) %></td>
           <%# Block %>
             <td class="text-center"><%= @home_team_events.skill_point_block.count %></td>
             <td class="text-center"><%= @home_team_events.skill_error_block.count %></td>

@@ -1,12 +1,22 @@
-<div class="d-flex flex-row mt-3 m-md-0">
-  <div class="text-center w-100">
-    <small class="text-muted text-nowrap"><%= @volleyball_set.game.home_team %></small>
-    <h4 class="my-1"><%= @volleyball_set.home_score %></h4>
-    <%= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: true)) %>
-  </div>
-  <div class="text-center w-100">
-    <small class="text-muted text-nowrap"><%= @volleyball_set.game.away_team %></small>
-    <h4 class="my-1"><%= @volleyball_set.away_score %></h4>
-    <%= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: false)) %>
-  </div>
-</div>
+<table class="table table-sm table-hover">
+  <tbody>
+    <tr>
+      <td><%= @volleyball_set.game.home_team %></td>
+      <td>?</td>
+      <% @volleyball_set.game.volleyball_sets.excluding(@volleyball_set).each do |volleyball_set| %>
+        <td class="text-center"><%= volleyball_set.home_score %></td>
+      <% end %>
+      <td class="text-center text-bg-primary fw-b"><%= @volleyball_set.home_score %></td>
+      <td class="p-0"><%= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: true)) %></td>
+    </tr>
+    <tr>
+      <td><%= @volleyball_set.game.away_team %></td>
+      <td>?</td>
+      <% @volleyball_set.game.volleyball_sets.excluding(@volleyball_set).each do |volleyball_set| %>
+        <td class="text-center"><%= volleyball_set.away_score %></td>
+      <% end %>
+      <td class="text-center text-bg-primary fw-b"><%= @volleyball_set.away_score %></td>
+      <td class="p-0"><%= render(VolleyballSets::TimeoutComponent.new(volleyball_set: @volleyball_set, home: false)) %></td>
+    </tr>
+  </tbody>
+</table>

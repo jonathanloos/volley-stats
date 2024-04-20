@@ -22,8 +22,8 @@
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace "player_rotation_#{@away_team_player.team.name.underscore}" do %>
-  <%= render(Players::CardComponent.new(player: @away_team_player)) %>
+<%= turbo_stream.replace dom_id(@away_team_player.team, :card) do %>
+  <%= render(Players::AwayCardComponent.new(player: @away_team_player)) %>
 <% end %>
 
 <%= turbo_stream.replace dom_id(@volleyball_set, :score) do %>

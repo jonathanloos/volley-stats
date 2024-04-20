@@ -47,8 +47,8 @@ class VolleyballSet < ApplicationRecord
     return true if points.empty? && serving_team == game.away_team
 
     return false if points.empty?
-    return true if points.last.point_earned? && points.last.team == game.away_team
-    return true if points.last.point_given? && points.last.team == game.home_team
+    return true if events.last.point_earned? && events.last.team == game.away_team
+    return true if events.last.point_given? && events.last.team == game.home_team
 
     false
   end

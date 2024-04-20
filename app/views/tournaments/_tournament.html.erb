@@ -122,7 +122,7 @@
 
     <h4 class="mb-2">Game Breakdown</h4>
     <% @tournament.games.each do |game| %>
-      <h5 class="mt-4 mb-1"><%= game %> vs. <%= game.away_team %></h5>
+      <h5 class="mt-4 mb-1"><%= link_to "#{game} vs. #{game.away_team}", stats_game_path(game) %></h5>
       <table class="table table-sm table-hover border">
         <thead>
           <tr>
@@ -157,7 +157,7 @@
               <th class="text-center bg-light">2</th>
               <th class="text-center bg-light">1</th>
               <th class="text-center bg-light">RE</th>
-              <th class="text-venter bg-light">%</th>
+              <th class="text-center bg-light">%</th>
             <%# Block %>
               <th class="text-center">BS / BA</th>
               <th class="text-center">BE</th>
@@ -206,33 +206,33 @@
           <tr class="fw-bold">
             <td colspan="3" class="text-end">Totals:</td>
             <%# Attack %>
-              <td class="text-center bg-light"><%= @events.where(game: game).skill_point_attack.count %></td>
-              <td class="text-center bg-light"><%= @events.where(game: game).skill_error_attack.count %></td>
-              <td class="text-center bg-light"><%= @events.where(game: game).attack_attempts.count %></td>
-              <td class="text-center bg-light"><%= Games::StatsService.attack_percentage(events: @events.where(game: game)).round(3) %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).skill_point_attack.count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).skill_error_attack.count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).attack_attempts.count %></td>
+              <td class="text-center bg-light"><%= Games::StatsService.attack_percentage(events: @home_team_events.where(game: game)).round(3) %></td>
             <%# Set %>
-              <td class="text-center bg-light"><%= @events.where(game: game).rally_skill_assist.count %></td>
-              <td class="text-center bg-light"><%= @events.where(game: game).ball_handling_errors.count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).rally_skill_assist.count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).ball_handling_errors.count %></td>
             <%# Serve %>
-              <td class="text-center"><%= @events.where(game: game).skill_point_ace.count %></td>
-              <td class="text-center"><%= @events.where(game: game).skill_error_serve.count %></td>
-              <td class="text-center"><%= @events.where(game: game).serve_attempts.count %></td>
+              <td class="text-center"><%= @home_team_events.where(game: game).skill_point_ace.count %></td>
+              <td class="text-center"><%= @home_team_events.where(game: game).skill_error_serve.count %></td>
+              <td class="text-center"><%= @home_team_events.where(game: game).serve_attempts.count %></td>
             <%# Serve Receive %>
-              <td class="text-center bg-light"><%= @events.where(game: game).rally_skill_serve_receive.where(quality: 4).count %></td>
-              <td class="text-center bg-light"><%= @events.where(game: game).rally_skill_serve_receive.where(quality: 3).count %></td>
-              <td class="text-center bg-light"><%= @events.where(game: game).rally_skill_serve_receive.where(quality: 2).count %></td>
-              <td class="text-center bg-light"><%= @events.where(game: game).rally_skill_serve_receive.where(quality: 1).count %></td>
-              <td class="text-center bg-light"><%= @events.where(game: game).skill_error_serve_receive.count %></td>
-              <td class="text-center bg-light"><%= Games::StatsService.passing_average(events: @events.where(game: game)).round(3) %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).rally_skill_serve_receive.where(quality: 4).count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).rally_skill_serve_receive.where(quality: 3).count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).rally_skill_serve_receive.where(quality: 2).count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).rally_skill_serve_receive.where(quality: 1).count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).skill_error_serve_receive.count %></td>
+              <td class="text-center bg-light"><%= Games::StatsService.passing_average(events: @home_team_events.where(game: game)).round(3) %></td>
             <%# Block %>
-              <td class="text-center"><%= @events.where(game: game).skill_point_block.count %></td>
-              <td class="text-center"><%= @events.where(game: game).skill_error_block.count %></td>
+              <td class="text-center"><%= @home_team_events.where(game: game).skill_point_block.count %></td>
+              <td class="text-center"><%= @home_team_events.where(game: game).skill_error_block.count %></td>
             <%# Dig %>
-              <td class="text-center bg-light"><%= @events.where(game: game).rally_skill_dig.count %></td>
+              <td class="text-center bg-light"><%= @home_team_events.where(game: game).rally_skill_dig.count %></td>
             <%# Errors %>
-              <td class="text-center"><%= @events.where(game: game).skill_error_net.count %></td>
-              <td class="text-center"><%= @events.where(game: game).skill_error_double.count %></td>
-            <td class="text-center"><%= @events.where(game: game).where.not(skill_error: [nil] + Event::ATTACK_ERROR_CATEGORIES + [:serve_receive, :serve, :under, :net, :double]).count %></td>
+              <td class="text-center"><%= @home_team_events.where(game: game).skill_error_net.count %></td>
+              <td class="text-center"><%= @home_team_events.where(game: game).skill_error_double.count %></td>
+            <td class="text-center"><%= @home_team_events.where(game: game).where.not(skill_error: [nil] + Event::ATTACK_ERROR_CATEGORIES + [:serve_receive, :serve, :under, :net, :double]).count %></td>
           </tr>
         </tbody>
       </table>

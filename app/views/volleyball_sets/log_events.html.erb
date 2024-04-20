@@ -3,13 +3,14 @@
 <% end %>
 
 <div>
-  <div class="row mt-4">
+  <div class="d-flex flex-row mt-3 gap-2">
+    <%= link_to "< Back", game_path(@volleyball_set.game), class: "btn btn-sm btn-light" %>
+    <%= link_to "Events", volleyball_set_events_path(@volleyball_set), class: "btn btn-sm btn-light", target: "_blank" %>
+    <%= link_to "Stats", stats_game_path(@volleyball_set.game, {volleyball_set_id: @volleyball_set.id}), class: "btn btn-sm btn-light", target: "_blank" %>
+  </div>
+  <div class="row mt-2">
     <div class="col-md-8">
       <h2 class="mb-0"><%= @volleyball_set.game %> <span class="text-muted">Set <%= @volleyball_set.position %></span></h2>
-      <small class="text-muted"><%= @volleyball_set.game.date.strftime("%Y-%m-%d") %></small>
-      <%= link_to "Game", game_path(@volleyball_set.game), class: "btn btn-sm btn-light" %>
-      <%= link_to "Events", volleyball_set_events_path(@volleyball_set), class: "btn btn-sm btn-light", target: "_blank" %>
-      <%= link_to "Stats", stats_game_path(@volleyball_set.game, {volleyball_set_id: @volleyball_set.id}), class: "btn btn-sm btn-light", target: "_blank" %>
     </div>
     <div class="col-md-4">
       <%= turbo_frame_tag dom_id(@volleyball_set, :score) do %>
@@ -18,9 +19,9 @@
     </div>
   </div>
   <%= turbo_frame_tag dom_id(@volleyball_set, :additional_information) do %>
-    <%= render(VolleyballSets::AddtionalInformationComponent.new(volleyball_set: @volleyball_set)) %>
+    <%#= render(VolleyballSets::AddtionalInformationComponent.new(volleyball_set: @volleyball_set)) %>
   <% end %>
-  <div class="row g-1 mt-4">
+  <div class="row g-2 mt-2">
     <div class="col-md-4">
       <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 4))) %>
     </div>
@@ -30,18 +31,18 @@
     <div class="col-md-4">
       <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 2))) %>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 mt-md-4">
       <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 5))) %>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 mt-md-4">
       <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 6))) %>
     </div>
-     <div class="col-md-4">
+     <div class="col-md-4 mt-md-4">
       <%= render(Players::CardComponent.new(player: @volleyball_set.players.find_by(rotation: 1))) %>
     </div>
 
-    <div class="col-md-4">
-      <%= render(Players::CardComponent.new(player: @volleyball_set.away_team_player)) %>
+    <div class="col mt-md-4">
+      <%= render(Players::AwayCardComponent.new(player: @volleyball_set.away_team_player)) %>
     </div>
   </div>
 </div>

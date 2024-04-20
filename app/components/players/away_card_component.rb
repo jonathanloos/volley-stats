@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Players::CardComponent < ApplicationComponent
+class Players::AwayCardComponent < ApplicationComponent
   def initialize(player:)
     @player = player
     @volleyball_set = @player.volleyball_set
@@ -13,7 +13,7 @@ class Players::CardComponent < ApplicationComponent
 
       @player.front_row_position
     else
-      @player.rotation
+      @player.rotation || @player.team.name.underscore
     end
   end
 end

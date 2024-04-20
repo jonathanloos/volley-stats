@@ -2,6 +2,8 @@ class VolleyballSetsController < ApplicationController
   before_action :set_volleyball_set, only: %i[ show edit update destroy log_events set_lineup ]
   before_action :set_game, only: %i[ create ]
 
+  layout :choose_layout
+
   # GET /volleyball_sets or /volleyball_sets.json
   def index
     @volleyball_sets = VolleyballSet.all
@@ -72,17 +74,24 @@ class VolleyballSetsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_volleyball_set
-      @volleyball_set = VolleyballSet.find(params[:id])
-    end
 
-    def set_game
-      @game = Game.find(params[:game_id])
-    end
+  def choose_layout
+    return "in_game" if %w[log_events].include?(action_name)
+    
+    "layouts/admin"
+  end
 
-    # Only allow a list of trusted parameters through.
-    def volleyball_set_params
-      params.require(:volleyball_set).permit(:starting_setter_rotation, :serving_team_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_volleyball_set
+    @volleyball_set = VolleyballSet.find(params[:id])
+  end
+
+  def set_game
+    @game = Game.find(params[:game_id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def volleyball_set_params
+    params.require(:volleyball_set).permit(:starting_setter_rotation, :serving_team_id)
+  end
 end
