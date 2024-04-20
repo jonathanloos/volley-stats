@@ -1,6 +1,8 @@
 class TournamentsController < ApplicationController
   before_action :set_tournament, only: %i[ show edit update destroy ]
 
+  layout "admin"
+
   # GET /tournaments or /tournaments.json
   def index
     @tournaments = Tournament.all

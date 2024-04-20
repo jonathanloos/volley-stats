@@ -1,0 +1,7 @@
+<% content_for(:content) do %>
+  <div class="mx-md-3">
+    <%= content_for?(:content) ? yield(:content) : yield %>
+  </div>
+<% end %>
+
+<%= render(template: "layouts/application") %>
