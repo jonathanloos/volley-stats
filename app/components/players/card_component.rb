@@ -13,7 +13,7 @@ class Players::CardComponent < ApplicationComponent
 
       @player.front_row_position
     else
-      @player.rotation || @player.team.name.underscore
+      @player.rotation
     end
   end
 end
