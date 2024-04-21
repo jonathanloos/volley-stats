@@ -37,7 +37,7 @@ class VolleyballSets::LineupService < ApplicationService
 
       if @libero_id.present?
         libero = @volleyball_set.players.find(@libero_id)
-        libero.update!(starting_libero: true, position: :libero)
+        libero.update!(starting_libero: true, position: :libero, front_row_position: 3, back_row_position: 5)
       end
 
       true

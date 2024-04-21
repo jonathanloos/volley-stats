@@ -11,7 +11,7 @@ class Players::CardComponent < ApplicationComponent
     if @volleyball_set.in_rally?
       return @player.back_row_position if @player.back_row?
 
-      @player.front_row_position
+      @player.in_game_front_row_position
     else
       @player.rotation
     end
