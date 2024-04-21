@@ -72,8 +72,8 @@ class Player < ApplicationRecord
     [4,3,2].include?(rotation)
   end
 
-  def front_row_position
-    return super unless serve_receive_rotation_one?
+  def in_game_front_row_position
+    return front_row_position unless serve_receive_rotation_one?
 
     return 2 if volleyball_left_side?
     return 4 if volleyball_right_side?

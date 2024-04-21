@@ -4,7 +4,7 @@
 
 <% if @volleyball_set.in_rally? %>
   <% @volleyball_set.players.front_row.each do |player| %>
-    <%= turbo_stream.replace "player_rotation_#{player.front_row_position}" do %>
+    <%= turbo_stream.replace "player_rotation_#{player.in_game_front_row_position}" do %>
       <%= render(Players::CardComponent.new(player: player)) %>
     <% end %>
   <% end %>
